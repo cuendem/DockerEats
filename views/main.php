@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DockerEats</title>
+    <title><?=$title?></title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="shortcut icon" href="img/icons/IconDockerEats.ico" type="image/x-icon">
 </head>
 <body>
-    <img src="img/logos/DockerEatsLogo.png" alt="" style="width: 50vw;">
-    <script src="scripts/script.js"></script>
+    <?php include_once($view); ?>
 </body>
 </html>
