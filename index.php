@@ -4,7 +4,9 @@ include_once("config/parameters.php");
 include_once("controllers/productController.php");
 
     if (!isset($_GET['controller'])) {
-        header("Location:".url."?controller=product");
+        $title = "DockerEats: Containerized Food Just For You";
+        $view = "views/homepage.php";
+        include_once("views/main.php");
     } else {
         $controller_name = $_GET['controller']."Controller";
         if (class_exists($controller_name)) {
