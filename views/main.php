@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/css/style.css?ver=1">
     <link rel="shortcut icon" href="img/icons/IconDockerEats.ico" type="image/x-icon">
 </head>
-<body>
+<body id="<?=$pageid?>">
     <?php include_once($view); ?>
+    <script src="/scripts/script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

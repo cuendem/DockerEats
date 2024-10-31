@@ -1,4 +1,4 @@
-<header>
+<header id="header">
     <nav>
         <a href="/" class="logo"><img src="/img/logos/DockerEatsLogo.png" alt=""></a>
         <ul>

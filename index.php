@@ -6,6 +6,7 @@ include_once("controllers/productController.php");
     if (!isset($_GET['controller'])) {
         $title = "DockerEats: Containerized Food";
         $view = "views/homepage.php";
+        $pageid = "home";
         include_once("views/main.php");
     } else {
         $controller_name = $_GET['controller']."Controller";
