@@ -42,6 +42,12 @@
 
 @font-face {
     font-family: Poppins;
+    src: url(../fonts/Poppins/Poppins-Medium.ttf);
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: Poppins;
     src: url(../fonts/Poppins/Poppins-Bold.ttf);
     font-weight: bold;
 }
@@ -74,7 +80,7 @@
 ======================
 */
 
-h1, h2 {
+h1, h2, h3, h4, h5 {
     font-family: Poppins, sans-serif;
 }
 
@@ -93,9 +99,32 @@ h2 {
     background: var(--docker-gradient);
     background-clip: text;
     font-size: 24px;
-    font-family: Poppins, sans-serif;
     letter-spacing: -1.25px;
     width: fit-content;
+}
+
+h3 {
+    font-weight: bold;
+    font-size: 56px;
+    color: black;
+}
+
+h4 {
+    font-weight: bold;
+    font-size: 48px;
+    color: var(--queequeg-blue);
+}
+
+h5 {
+    font-weight: 500;
+    font-size: 20px;
+    color: var(--queequeg-blue);
+}
+
+p {
+    font-family: Roboto, sans-serif;
+    font-size: 16px;
+    color: var(--mermaid-gray);
 }
 
 .btn-selected {
@@ -103,11 +132,11 @@ h2 {
     background-color: var(--ishmael-blue);
     border-width: 0px;
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: .6rem 1.2rem;
 }
 
-.btn-selected:hover {
+.btn-selected:not(.btn-secondary):hover {
     background-color: var(--ricardo-blue);
 }
 
@@ -117,11 +146,11 @@ h2 {
     border-width: 2px;
     border-color: var(--charon-gray);
     font-weight: 600;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: .6rem 1.2rem;
 }
 
-.btn-normal:hover {
+.btn-normal:not(.btn-secondary):hover {
     background-color: var(--smee-gray);
 }
 
@@ -137,6 +166,12 @@ h2 {
 .btn-cookies:hover {
     background-color: var(--ishmael-blue);
     color: white;
+}
+
+.btn-secondary {
+    border-radius: 100px;
+    border-width: 0px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .25);
 }
 
 .undraggable {
@@ -336,6 +371,14 @@ footer .logo {
     gap: 16px;
 }
 
+.footerLower .socialMedia a {
+    transition: 0.3s ease;
+}
+
+.footerLower .socialMedia a:hover {
+    opacity: 0.5;
+}
+
 .footerLower .socialMedia svg {
     width: 30px;
 }
@@ -372,7 +415,7 @@ footer .logo {
 ======================
 */
 
-#home .banner {
+#home #banner {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -384,24 +427,28 @@ footer .logo {
     background-repeat: no-repeat;
 }
 
-#home .banner .bannerText h1, p {
+#home #banner .bannerText h1 {
+    margin-bottom: 10px;
+}
+
+#home #banner .bannerText p {
     margin: 0px;
 }
 
-#home .banner .bannerText p {
+#home #banner .bannerText p {
     color: var(--queequeg-blue);
     text-align: center;
     font-weight: 500;
     font-size: clamp(18px, 4vw, 24px);
 }
 
-#home .banner .bannerButtons {
+#home #banner .bannerButtons {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
 }
 
-#home .banner .bannerContainer {
+#home #banner .bannerContainer {
     display: flex;
     justify-content: center;
     position: relative;
@@ -411,7 +458,7 @@ footer .logo {
     padding-bottom: 50%;
 }
 
-#home .banner .bannerContainer img {
+#home #banner .bannerContainer img {
     position: absolute;
     top: 0;
     left: 50%;
@@ -419,7 +466,7 @@ footer .logo {
     width: 60vw;
 }
 
-#home .whatis::before {
+#home #whatis::before {
     background-position: bottom;
     -webkit-mask-image: url(/svg/footerbefore.svg);
     mask-image: url(/svg/footerbefore.svg);
@@ -432,12 +479,96 @@ footer .logo {
     mask-size: auto 100%;
     position: absolute;
     width: 100%;
+    padding: 0px;
     z-index: 1;
     top: calc(-5vw + 2px);
 }
 
-#home .whatis {
+#home #whatis {
     background-color: var(--pilot-white);
     position: relative;
-    padding-top: 40px;
+}
+
+#home .whatisContainer {
+    padding: 50px 8vw 5vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#home .whatisText, #home .whyorderText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#home .whatisText p {
+    width: 50vw;
+}
+
+#home .whatisButtons, .whatisButtons2 {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+#home .whatisBody {
+    display: grid;
+    grid-template-columns: 48% auto 48%;
+    margin: 40px auto;
+}
+
+#home .whatisBodyText h4 {
+    margin-bottom: 15px;
+}
+
+#home .whatisBodyText p:not(:last-child) {
+    margin-bottom: 30px;
+}
+
+#home .whatisBodyImage {
+    border-radius: 20px;
+    background-color: var(--pallid-white);
+    border: 1px solid var(--charon-gray);
+    position: relative;
+    overflow: hidden;
+}
+
+#home .whatisBodyImage img {
+    width: 120%;
+    position: absolute;
+    transform: translate(10%, 10%);
+}
+
+#home #whyorder::before {
+    background-position: bottom;
+    -webkit-mask-image: url(/svg/footerbefore.svg);
+    mask-image: url(/svg/footerbefore.svg);
+    -webkit-mask-position: bottom;
+    mask-position: bottom;
+    background-color: inherit;
+    content: "";
+    height: 5vw;
+    -webkit-mask-size: auto 100%;
+    mask-size: auto 100%;
+    position: absolute;
+    width: 100%;
+    padding: 0px;
+    z-index: 1;
+    top: calc(-5vw + 2px);
+}
+
+#home #whyorder {
+    background-color: white;
+    position: relative;
+}
+
+#home .whyorderContainer {
+    padding: 50px 8vw 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
 }
