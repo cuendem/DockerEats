@@ -13,7 +13,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/style.css?ver=1"> <!-- ?ver=1 to avoid cacheing the CSS for testing -->
 
-    <link rel="shortcut icon" href="img/icons/IconDockerEats.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/img/icons/IconDockerEats.ico" type="image/x-icon">
 </head>
 <body id="<?=$pageid?>">
     <?php include_once($view); ?>

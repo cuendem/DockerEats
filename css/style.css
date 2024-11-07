@@ -99,7 +99,6 @@ h2 {
     background-clip: text;
     font-size: 24px;
     letter-spacing: -1.25px;
-    width: fit-content;
 }
 
 h3 {
@@ -131,11 +130,13 @@ p {
     background-color: var(--ishmael-blue);
     border-width: 0px;
     font-weight: 600;
+    font-size: 18px;
     border-radius: 5px;
     padding: .6rem 1.2rem;
 }
 
 .btn-selected:not(.btn-secondary):hover {
+    color: white;
     background-color: var(--ricardo-blue);
 }
 
@@ -145,11 +146,13 @@ p {
     border-width: 2px;
     border-color: var(--charon-gray);
     font-weight: 600;
+    font-size: 18px;
     border-radius: 5px;
     padding: .6rem 1.2rem;
 }
 
 .btn-normal:not(.btn-secondary):hover {
+    border-color: var(--charon-gray);
     background-color: var(--smee-gray);
 }
 
@@ -179,6 +182,12 @@ p {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.lead {
+    color: var(--queequeg-blue);
+    font-weight: 500;
+    font-size: clamp(18px, 4vw, 24px);
 }
 
 /*
@@ -391,47 +400,25 @@ footer .logo {
 ======================
 */
 
+/*
+======================
+        BANNER
+======================
+*/
+
 #home #banner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-    padding: 0px 12vw;
     background-image: url(/svg/DockerWave.svg);
     background-position: center clamp(150px, calc(12vw + 100px), 600px);
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-#home #banner .bannerText h1 {
-    margin-bottom: 10px;
-}
-
-#home #banner .bannerText p {
-    margin: 0px;
-}
-
-#home #banner .bannerText p {
-    color: var(--queequeg-blue);
-    text-align: center;
-    font-weight: 500;
-    font-size: clamp(18px, 4vw, 24px);
-}
-
-#home #banner .bannerButtons {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
 #home #banner .bannerContainer {
-    display: flex;
-    justify-content: center;
     position: relative;
     overflow: hidden;
     width: 100%;
     height: fit-content;
-    padding-bottom: 50%;
+    padding-bottom: 38%;
 }
 
 #home #banner .bannerContainer img {
@@ -441,6 +428,12 @@ footer .logo {
     transform: translateX(-50%);
     width: 60vw;
 }
+
+/*
+======================
+    WHAT IS DOCKEREATS
+======================
+*/
 
 #home #whatis::before {
     background-position: bottom;
@@ -458,50 +451,17 @@ footer .logo {
     padding: 0px;
     z-index: 1;
     top: calc(-5vw + 2px);
+    left: 0;
 }
 
 #home #whatis {
     background-color: var(--pilot-white);
     position: relative;
-}
-
-#home .whatisContainer {
-    padding: 50px 8vw 5vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-#home .whatisText, #home .whyorderText {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-#home .whatisText p {
-    width: 50vw;
-}
-
-#home .whatisButtons, .whatisButtons2 {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+    padding-top: 5vw;
 }
 
 #home .whatisBody {
-    display: grid;
-    grid-template-columns: 48% auto 48%;
-    margin: 40px auto;
-}
-
-#home .whatisBodyText h4 {
-    margin-bottom: 15px;
-}
-
-#home .whatisBodyText p:not(:last-child) {
-    margin-bottom: 30px;
+    padding: 0px 6vw;
 }
 
 #home .whatisBodyImage {
