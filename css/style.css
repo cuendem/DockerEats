@@ -99,6 +99,7 @@ h2 {
     background-clip: text;
     font-size: 24px;
     letter-spacing: -1.25px;
+    display: inline-block;
 }
 
 h3 {
@@ -154,6 +155,7 @@ p {
 .btn-normal:not(.btn-secondary):hover {
     border-color: var(--charon-gray);
     background-color: var(--smee-gray);
+    color: var(--starbuck-black);
 }
 
 .btn-cookies {
@@ -253,6 +255,25 @@ main section {
 
 main section:last-child {
     padding-bottom: calc(4% + 5vw - 4px);
+}
+
+.wave-separator::before {
+    background-position: bottom;
+    -webkit-mask-image: url(/svg/footerbefore.svg);
+    mask-image: url(/svg/footerbefore.svg);
+    -webkit-mask-position: bottom;
+    mask-position: bottom;
+    background-color: inherit;
+    content: "";
+    height: 5vw;
+    -webkit-mask-size: auto 100%;
+    mask-size: auto 100%;
+    position: absolute;
+    width: 100%;
+    padding: 0px;
+    z-index: 1;
+    top: calc(-5vw + 2px);
+    left: 0;
 }
 
 /*
@@ -396,6 +417,47 @@ footer .logo {
 
 /*
 ======================
+    REVIEWS
+======================
+*/
+
+.review {
+    border-radius: 20px;
+    max-width: 450px;
+    background-color: var(--pallid-white);
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .25);
+    border-width: 0px;
+}
+
+.review img {
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.review .card-title {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: var(--docker-gradient);
+    background-clip: text;
+    width: fit-content;
+}
+
+.review .card-subtitle {
+    color: var(--ishmael-blue) !important;
+    font-size: 1.2rem;
+}
+
+.review .card-body {
+    padding-left: 0px;
+}
+
+.review .card-text {
+    color: var(--queequeg-blue);
+}
+
+/*
+======================
         HOMEPAGE
 ======================
 */
@@ -435,76 +497,88 @@ footer .logo {
 ======================
 */
 
-#home #whatis::before {
-    background-position: bottom;
-    -webkit-mask-image: url(/svg/footerbefore.svg);
-    mask-image: url(/svg/footerbefore.svg);
-    -webkit-mask-position: bottom;
-    mask-position: bottom;
-    background-color: inherit;
-    content: "";
-    height: 5vw;
-    -webkit-mask-size: auto 100%;
-    mask-size: auto 100%;
-    position: absolute;
-    width: 100%;
-    padding: 0px;
-    z-index: 1;
-    top: calc(-5vw + 2px);
-    left: 0;
-}
-
 #home #whatis {
     background-color: var(--pilot-white);
     position: relative;
     padding-top: 5vw;
+    padding-bottom: 5vw;
 }
 
-#home .whatisBody {
-    padding: 0px 6vw;
+#home #whatis .whatisBody {
+    margin-top: 5vw;
+    padding: 0px 7vw;
 }
 
-#home .whatisBodyImage {
+#home #whatis .whatisImage {
     border-radius: 20px;
     background-color: var(--pallid-white);
     border: 1px solid var(--charon-gray);
     position: relative;
     overflow: hidden;
+    min-height: 400px;
+    height: auto;
 }
 
-#home .whatisBodyImage img {
+#home #whatis .whatisImage img {
     width: 120%;
     position: absolute;
     transform: translate(10%, 10%);
 }
 
-#home #whyorder::before {
-    background-position: bottom;
-    -webkit-mask-image: url(/svg/footerbefore.svg);
-    mask-image: url(/svg/footerbefore.svg);
-    -webkit-mask-position: bottom;
-    mask-position: bottom;
-    background-color: inherit;
-    content: "";
-    height: 5vw;
-    -webkit-mask-size: auto 100%;
-    mask-size: auto 100%;
-    position: absolute;
-    width: 100%;
-    padding: 0px;
-    z-index: 1;
-    top: calc(-5vw + 2px);
-}
+/*
+======================
+    WHY ORDER DOCKEREATS
+======================
+*/
 
 #home #whyorder {
     background-color: white;
     position: relative;
+    padding-top: 5vw;
+    padding-bottom: 5vw;
 }
 
-#home .whyorderContainer {
-    padding: 50px 8vw 0px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+#home #whyorder a {
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+    color: var(--ishmael-blue);
+}
+
+#home #whyorder a:hover {
+    text-decoration: underline;
+    color: var(--queequeg-blue);
+}
+
+#home #whyorder .siteNumbers h3 {
+    margin-bottom: 0px;
+    font-size: clamp(60px, 10vw, 80px);
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: var(--docker-gradient);
+    background-clip: text;
+    display: inline-block;
+    line-height: 0.8em;
+    margin-top: 2vw;
+}
+
+#home #whyorder .siteNumbers p {
+    color: var(--queequeg-blue);
+    font-size: 20px;
+    margin-bottom: 0px;
+}
+
+/*
+======================
+    GET STARTED
+======================
+*/
+
+#home #getstarted {
+    position: relative;
+    background-color: var(--smee-gray);
+    padding-top: 5vw;
+    padding-left: 7vw;
+    padding-right: 7vw;
 }
