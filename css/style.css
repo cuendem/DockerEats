@@ -104,13 +104,13 @@ h2 {
 
 h3 {
     font-weight: bold;
-    font-size: 56px;
+    font-size: clamp(32px, 7vw, 60px);
     color: black;
 }
 
 h4 {
     font-weight: bold;
-    font-size: 48px;
+    font-size: clamp(32px, 7vw, 50px);;
     color: var(--queequeg-blue);
 }
 
@@ -190,6 +190,19 @@ p {
     color: var(--queequeg-blue);
     font-weight: 500;
     font-size: clamp(18px, 4vw, 24px);
+}
+
+a.arrow {
+    font-size: 18px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.3s ease;
+    color: var(--ishmael-blue);
+}
+
+a.arrow:hover {
+    text-decoration: underline;
+    color: var(--queequeg-blue);
 }
 
 /*
@@ -282,73 +295,39 @@ main section:last-child {
 ======================
 */
 
-footer::before {
-    background-position: bottom;
-    -webkit-mask-image: url(/svg/footerbefore.svg);
-    mask-image: url(/svg/footerbefore.svg);
-    -webkit-mask-position: bottom;
-    mask-position: bottom;
-    background-color: inherit;
-    content: "";
-    height: 5vw;
-    -webkit-mask-size: auto 100%;
-    mask-size: auto 100%;
-    position: absolute;
-    width: 100%;
-    z-index: 1;
-    top: calc(-5vw + 2px);
-}
-
 footer {
     background-color: var(--pilot-white);
     position: relative;
+    padding: 3rem 6rem;
 }
 
-.footerContainer {
-    margin: 0px 120px;
-    padding: 60px 0px 120px;
-}
-
-.footerUpper {
-    display: flex;
-    justify-content: space-between;
-}
-
-.footerUpperLinks {
-    display: flex;
-    gap: 120px;
-}
-
-.footerUpperLinks div {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.footerUpperLinks ul {
+.footerUpper ul {
     list-style-type: None;
-    line-height-step: 20px;
     padding: 0px;
-    margin: 0px;
+    width: fit-content;
 }
 
-.footerUpperLinks ul li:not(:last-child) { 
+.footerUpper ul li:not(:last-child) { 
     margin-bottom: 5px;  
 }
 
-.footerUpperLinks ul li.footerLinkListHead { 
+.footerUpper ul li.footerLinkListHead { 
     margin-bottom: 15px;
     font-family: Poppins, sans-serif;
     color: var(--mermaid-gray);
     font-size: 18px;
 }
 
-.footerUpperLinks a {
+.footerUpper .footerLast { 
+    width: fit-content;
+}
+
+.footerUpper a {
     text-decoration: none;
     color: var(--mermaid-gray);
 }
 
-.footerUpperLinks a:hover {
+.footerUpper a:hover {
     text-decoration: underline;
 }
 
@@ -357,24 +336,17 @@ footer .logo {
 }
 
 .footerLower {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 60px;
-    padding-top: 15px;
     border-top: 1px solid var(--smee-gray);
+}
+
+.footerLower .d-flex {
+    flex-wrap: wrap;
 }
 
 .footerLower ul {
     list-style-type: None;
-    display: flex;
-    align-items: center;
     padding: 0px;
     margin: 0px;
-}
-
-.footerLower .socialMedia {
-    gap: 16px;
 }
 
 .footerLower .socialMedia a {
@@ -410,7 +382,7 @@ footer .logo {
     position: absolute;
     top: 50%;
     right: 0;
-    transform: translateY(-30%);
+    transform: translateY(-50%);
     height: 50%;
     border-right: 1px solid var(--mermaid-gray);
 }
@@ -501,11 +473,10 @@ footer .logo {
     background-color: var(--pilot-white);
     position: relative;
     padding-top: 5vw;
-    padding-bottom: 5vw;
+    padding-bottom: 6vw;
 }
 
 #home #whatis .whatisBody {
-    margin-top: 5vw;
     padding: 0px 7vw;
 }
 
@@ -535,20 +506,7 @@ footer .logo {
     background-color: white;
     position: relative;
     padding-top: 5vw;
-    padding-bottom: 5vw;
-}
-
-#home #whyorder a {
-    font-size: 18px;
-    font-weight: 600;
-    text-decoration: none;
-    transition: 0.3s ease;
-    color: var(--ishmael-blue);
-}
-
-#home #whyorder a:hover {
-    text-decoration: underline;
-    color: var(--queequeg-blue);
+    padding-bottom: 6vw;
 }
 
 #home #whyorder .siteNumbers h3 {
@@ -581,4 +539,34 @@ footer .logo {
     padding-top: 5vw;
     padding-left: 7vw;
     padding-right: 7vw;
+}
+
+#home #getstarted h2 {
+    width: fit-content;
+}
+
+#home #getstarted svg {
+    width: 40px;
+    stroke: var(--ishmael-blue);
+    stroke-width: 1.5px;
+}
+
+#home #getstarted .filled {
+    background-color: var(--ishmael-blue);
+    border-radius: 24px;
+    padding: 90px 60px;
+}
+
+#home #getstarted .filled h4, #home #getstarted .filled h5 {
+    color: white;
+}
+
+#home #getstarted .filled .btn-selected {
+    padding: .8rem 2rem;
+    background-color: white;
+    color: var(--ishmael-blue);
+}
+
+#home #getstarted .filled .btn-selected:hover {
+    background-color: var(--smee-gray);
 }
