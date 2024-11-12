@@ -3,11 +3,16 @@
 include_once("models/Product.php");
 include_once("config/dataBase.php");
 
-class ProductDAO {
-    public static function getAll($order = 'id') {
+class ProductsDAO {
+    public static function getAll($type = 0) {
         $con = DataBase::connect();
-        $stmt = $con->prepare('SELECT * FROM PRODUCTS');
-        // $stmt->bind_param('s',$order);
+
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS ORDER BY id_category');
+        if ($type != 0) {
+            $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type = ? ORDER BY id_category');
+            $stmt->bind_param('i',$type);
+        }
+
         $stmt->execute();
         $result = $stmt->get_result();
 

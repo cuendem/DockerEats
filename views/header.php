@@ -1,4 +1,4 @@
-<header id="header" class="mb-4">
+<header id="header" class="mb-4 position-sticky top-0 z-3">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid px-4 py-2">
             <a class="navbar-brand" href="/">
@@ -17,23 +17,25 @@
                         <ul class="dropdown-menu" aria-labelledby="headerContainersDropdown">
                             <li><a class="dropdown-item" href="#">What is a container?</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Mains</a></li>
-                            <li><a class="dropdown-item" href="#">Branches</a></li>
-                            <li><a class="dropdown-item" href="#">Drinks</a></li>
-                            <li><a class="dropdown-item" href="#">Desserts</a></li>
+                            <li><a class="dropdown-item" href="/products/">All products</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/products/mains">Mains</a></li>
+                            <li><a class="dropdown-item" href="/products/branches">Branches</a></li>
+                            <li><a class="dropdown-item" href="/products/drinks">Drinks</a></li>
+                            <li><a class="dropdown-item" href="/products/desserts">Desserts</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Our Ingredients</a>
+                        <a class="nav-link" href="ingredients/">Our Ingredients</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Special Offers</a>
+                        <a class="nav-link" href="offers/">Special Offers</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">About Us</a>
                     </li>
                 </ul>
-                <div class="navbar-right nav-item d-flex align-items-center">
+                <div class="navbar-nav navbar-right nav-item d-flex align-items-center gap-3">
                     <svg class="me-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M14.9536 14.9458L21 21M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></g></svg>
                     <button type="button" class="btn btn-normal">Sign In</button>
                 </div>

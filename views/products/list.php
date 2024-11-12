@@ -1,4 +1,5 @@
-<h1>Our Products</h1>
+<?php include_once('views/header.php') ?>
+<h1>Our <?=$type?></h1>
 <a href="?controller=product&action=create">Create Product</a>
 <table>
     <tr>
@@ -20,3 +21,4 @@
     </tr>
     <?php } ?>
 </table>
+<?php include_once('views/footer.php') ?>

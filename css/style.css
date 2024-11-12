@@ -136,7 +136,7 @@ p {
     padding: .6rem 1.2rem;
 }
 
-.btn-selected:not(.btn-secondary):hover {
+.btn-selected:hover {
     color: white;
     background-color: var(--ricardo-blue);
 }
@@ -152,7 +152,7 @@ p {
     padding: .6rem 1.2rem;
 }
 
-.btn-normal:not(.btn-secondary):hover {
+.btn-normal:hover {
     border-color: var(--charon-gray);
     background-color: var(--smee-gray);
     color: var(--starbuck-black);
@@ -172,7 +172,7 @@ p {
     color: white;
 }
 
-.btn-secondary {
+.btn-pilled {
     border-radius: 100px;
     border-width: 0px;
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .25);
@@ -213,9 +213,6 @@ a.arrow:hover {
 
 header {
     border-bottom: 2px solid var(--charon-gray);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
     background-color: white;
     transition: 0.3s ease;
 }
@@ -262,10 +259,6 @@ header.hidden {
 ======================
 */
 
-main section {
-    margin: auto;
-}
-
 main section:last-child {
     padding-bottom: calc(4% + 5vw - 4px);
 }
@@ -287,6 +280,10 @@ main section:last-child {
     z-index: 1;
     top: calc(-5vw + 2px);
     left: 0;
+}
+
+.wave-separator {
+    position: relative;
 }
 
 /*
@@ -337,10 +334,6 @@ footer .logo {
 
 .footerLower {
     border-top: 1px solid var(--smee-gray);
-}
-
-.footerLower .d-flex {
-    flex-wrap: wrap;
 }
 
 .footerLower ul {
@@ -448,18 +441,12 @@ footer .logo {
 }
 
 #home #banner .bannerContainer {
-    position: relative;
-    overflow: hidden;
     width: 100%;
     height: fit-content;
     padding-bottom: 38%;
 }
 
 #home #banner .bannerContainer img {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
     width: 60vw;
 }
 
@@ -471,9 +458,18 @@ footer .logo {
 
 #home #whatis {
     background-color: var(--pilot-white);
-    position: relative;
     padding-top: 5vw;
     padding-bottom: 6vw;
+}
+
+#home #whatis .btn svg {
+    width: 25px;
+    stroke: var(--ishmael-blue);
+    stroke-width: 2px;
+}
+
+#home #whatis .btn-selected svg {
+    stroke: white;
 }
 
 #home #whatis .whatisBody {
@@ -484,15 +480,12 @@ footer .logo {
     border-radius: 20px;
     background-color: var(--pallid-white);
     border: 1px solid var(--charon-gray);
-    position: relative;
-    overflow: hidden;
     min-height: 400px;
     height: auto;
 }
 
 #home #whatis .whatisImage img {
     width: 120%;
-    position: absolute;
     transform: translate(10%, 10%);
 }
 
@@ -504,7 +497,6 @@ footer .logo {
 
 #home #whyorder {
     background-color: white;
-    position: relative;
     padding-top: 5vw;
     padding-bottom: 6vw;
 }

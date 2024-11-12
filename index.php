@@ -1,7 +1,7 @@
 <?php
 
 include_once("config/parameters.php");
-include_once("controllers/productController.php");
+include_once("controllers/productsController.php");
 
     if (!isset($_GET['controller'])) {
         $title = "DockerEats: Containerized Food";
