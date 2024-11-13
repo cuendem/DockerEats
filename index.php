@@ -4,7 +4,7 @@ include_once("config/parameters.php");
 include_once("controllers/productsController.php");
 
     if (!isset($_GET['controller'])) {
-        $title = "DockerEats: Containerized Food";
+        $title = "Containerized Food";
         $view = "views/homepage.php";
         $pageid = "home";
         include_once("views/main.php");

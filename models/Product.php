@@ -7,7 +7,6 @@ class Product {
     protected $name;
     protected $description;
     protected $price;
-    protected $times_bought;
 
     public function __construct() {
 
@@ -81,18 +80,6 @@ class Product {
     public function setPrice($price)
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    public function getTimes_bought()
-    {
-        return $this->times_bought;
-    }
-
-    public function setTimes_bought($times_bought)
-    {
-        $this->times_bought = $times_bought;
 
         return $this;
     }

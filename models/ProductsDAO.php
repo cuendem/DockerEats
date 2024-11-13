@@ -4,15 +4,45 @@ include_once("models/Product.php");
 include_once("config/dataBase.php");
 
 class ProductsDAO {
-    public static function getAll($type = 0) {
+    public static function getAll($type = '%') {
         $con = DataBase::connect();
 
-        $stmt = $con->prepare('SELECT * FROM PRODUCTS ORDER BY id_category');
-        if ($type != 0) {
-            $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type = ? ORDER BY id_category');
-            $stmt->bind_param('i',$type);
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
+
+        // Bind the parameter (using 's' for a string pattern)
+        $stmt->bind_param('s', $type);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $products = [];
+        while ($product = $result->fetch_object("Product")) {
+            $products[] = $product;
         }
 
+        $con->close();
+
+        return $products;
+    }
+
+    public static function getByCat($category, $type = '%') {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare(
+            'SELECT * 
+            FROM PRODUCTS as P
+            JOIN CATEGORIES_PRODUCTS as CP ON P.id_product = CP.id_product
+            WHERE CP.id_category LIKE ? AND P.id_type LIKE ?
+            ORDER BY P.id_type, P.name'
+        );
+
+        // Bind the parameter (using 's' for a string pattern)
+        $stmt->bind_param('ss', $category, $type);
+
+        // Execute the query
         $stmt->execute();
         $result = $stmt->get_result();
 
@@ -28,8 +58,8 @@ class ProductsDAO {
 
     public static function store($product) {
         $con = DataBase::connect();
-        $stmt = $con->prepare('INSERT INTO PRODUCTS (id_type, id_category, name, price, times_bought) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('iisdi',$product->getId_type(),$product->getId_category(),$product->getName(),$product->getPrice(),$product->getTimes_bought());
+        $stmt = $con->prepare('INSERT INTO PRODUCTS (id_type, id_category, name, price) VALUES (?, ?, ?, ?)');
+        $stmt->bind_param('iisdi',$product->getId_type(),$product->getId_category(),$product->getName(),$product->getPrice());
 
         $stmt->execute();
 
