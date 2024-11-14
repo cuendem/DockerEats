@@ -180,6 +180,15 @@ p {
     box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .25);
 }
 
+.btn svg {
+    width: 25px;
+    fill: var(--ishmael-blue);
+}
+
+.btn-selected svg {
+    fill: white;
+}
+
 .undraggable {
     -webkit-user-drag: none;
     user-select: none;
@@ -435,6 +444,8 @@ footer .logo {
     border-width: 0px;
     box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
     background-color: var(--pallid-white);
+    position: relative;
+    overflow: hidden;
 }
 
 .product img {
@@ -443,6 +454,8 @@ footer .logo {
 
 .product .card-title {
     border-radius: 15px 15px 0px 0px;
+    font-size: 24px;
+    z-index: 2;
 }
 
 .product .card-subtitle {
@@ -450,6 +463,21 @@ footer .logo {
     font-family: Poppins, sans-serif;
     font-weight: 500;
     margin-bottom: 0px;
+    font-size: 20px;
+    z-index: 2;
+}
+
+.product .typeicon {
+    position: absolute;
+    fill: var(--pequod-blue);
+    stroke: var(--pequod-blue);
+    stroke-width: 0px;
+    opacity: 35%;
+    max-width: 100px;
+    bottom: 0;
+    right: 0;
+    transform: rotate(-15deg) translate(25%, 25%);
+    z-index: 1;
 }
 
 /*
@@ -491,16 +519,6 @@ footer .logo {
     background-color: var(--pilot-white);
     padding-top: 5vw;
     padding-bottom: 6vw;
-}
-
-#home #whatis .btn svg {
-    width: 25px;
-    stroke: var(--ishmael-blue);
-    stroke-width: 2px;
-}
-
-#home #whatis .btn-selected svg {
-    stroke: white;
 }
 
 #home #whatis .whatisBody {
@@ -618,9 +636,17 @@ footer .logo {
 
 #productlist #list {
     background-color: white;
-    padding-top: 6vw;
+}
+
+#productlist #list .categoryRow {
+    background-color: white;
     padding-left: 7vw;
     padding-right: 7vw;
+    position: relative;
+}
+
+#productlist #list .categoryRow.grayed {
+    background-color: var(--pilot-white);
 }
 
 #productlist #list .categoryName {
