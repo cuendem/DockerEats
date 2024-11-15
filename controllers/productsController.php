@@ -10,6 +10,12 @@ class productsController {
         $categories = CategoriesDAO::getAll();
         $pageid = "productlist";
         $view = "views/products/list.php";
+        $buttons = ['normal', 'normal', 'normal', 'normal'];
+
+        if ($type != '%') {
+            $buttons[$type-1] = 'selected';
+        }
+
         include_once("views/main.php");
     }
 

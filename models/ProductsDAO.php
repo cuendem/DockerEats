@@ -32,7 +32,7 @@ class ProductsDAO {
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare(
-            'SELECT * 
+            'SELECT P.id_product, P.id_type, P.name, P.price
             FROM PRODUCTS as P
             JOIN CATEGORIES_PRODUCTS as CP ON P.id_product = CP.id_product
             WHERE CP.id_category LIKE ? AND P.id_type LIKE ?

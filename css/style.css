@@ -480,6 +480,29 @@ footer .logo {
     z-index: 1;
 }
 
+.product .over18deco {
+    position: absolute;
+    fill: var(--aleph-red2);
+    stroke: var(--aleph-red2);
+    stroke-width: 0px;
+    max-width: 70px;
+    top: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.product .over18 {
+    position: absolute;
+    fill: white;
+    stroke: white;
+    stroke-width: 0px;
+    max-width: 30px;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    transform: translate(-20%, 20%);
+}
+
 /*
 ======================
         HOMEPAGE

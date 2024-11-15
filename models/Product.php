@@ -27,6 +27,12 @@ class Product {
         }
     }
 
+    public function isAlcoholic() {
+        $alcoholicProducts = ProductsDAO::getByCat(10); // 10 - Alcoholic
+
+        return in_array($this, $alcoholicProducts) ? true : false;
+    }
+
     public function getId_product()
     {
         return $this->id_product;
