@@ -2,6 +2,7 @@
 
 include_once("config/parameters.php");
 include_once("controllers/productsController.php");
+include_once("controllers/userController.php");
 
     if (!isset($_GET['controller'])) {
         $title = "Containerized Food";

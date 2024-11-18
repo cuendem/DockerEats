@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
+    RewriteRule ^account/(.*)$ user/$1 [L]
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f
-    RewriteRule ^(.*)/(.*) ?controller=$1&action=$2
+    RewriteRule ^(.*)/(.*) ?controller=$1&action=$2 [L]
 </IfModule>

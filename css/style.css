@@ -34,7 +34,7 @@
 
     /* Warning */
     --aleph-red: #7F2E39;
-    --aleph-red2: #A03B4E;
+    --aleph-red2: #a03b4e;
 }
 
 @font-face {
@@ -480,23 +480,9 @@ footer .logo {
     z-index: 1;
 }
 
-.product .over18deco {
-    position: absolute;
-    fill: var(--aleph-red2);
-    stroke: var(--aleph-red2);
-    stroke-width: 0px;
-    max-width: 70px;
-    top: 0;
-    right: 0;
-    z-index: 1;
-}
-
 .product .over18 {
     position: absolute;
-    fill: white;
-    stroke: white;
-    stroke-width: 0px;
-    max-width: 30px;
+    max-width: 40px;
     top: 0;
     right: 0;
     z-index: 2;
@@ -686,4 +672,107 @@ footer .logo {
 
 #productlist #list .productsCategory .product:hover {
     transform: translateY(-0.5rem);
+}
+
+/*
+======================
+    SIGN IN PAGE
+======================
+*/
+
+#signin {
+    background-color: var(--pilot-white);
+}
+
+#signin a {
+    font-size: 14px;
+    margin: 0px;
+}
+
+#signin .signin-cont {
+    background-color: white;
+    border: 1px solid var(--charon-gray);
+    border-radius: 5px;
+    width: 400px;
+}
+
+#signin .signin-cont.big {
+    margin-top: 5rem;
+}
+
+#signin .signin-cont .logo {
+    width: 80%;
+}
+
+#signin .signin-cont h1 {
+    font-size: 24px;
+    color: var(--starbuck-black);
+    font-family: Roboto, sans-serif;
+    font-weight: normal;
+    margin: 0px;
+}
+
+#signin .signin-cont p {
+    font-size: 14px;
+    color: var(--starbuck-black);
+    text-align: center;
+    margin: 0px;
+}
+
+#signin .signin-cont form {
+    width: 100%;
+}
+
+#signin .inputDiv {
+    width: 100%;
+    position: relative;
+}
+
+#signin .signin-cont form input {
+    height: 52px;
+    padding: 0px 16px;
+    border: 1px solid var(--charon-gray);
+    border-radius: 3px;
+    width: 100%;
+    transition: 0.2s ease;
+    outline: 2px solid white;
+}
+
+#signin .inputDiv label {
+    position: absolute;
+    left: 16px;
+    top: 26px;
+    padding: 1px 6px;
+    color: var(--vergilius-gray);
+    background-color: white;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transform-origin: left center;
+    transition: 0.2s ease;
+}
+
+#signin .inputDiv:focus-within label, #signin .inputDiv input:not(:placeholder-shown) + label {
+    transform: scale(0.8) translateX(-8px) translateY(calc(-36px - 50%));
+}
+
+#signin .inputDiv:focus-within input {
+    outline: 2px solid var(--ishmael-blue);
+}
+
+#signin .inputDiv:focus-within label {
+    color: var(--ishmael-blue);
+}
+
+#signin .signin-cont form input[type='submit'] {
+    color: white;
+    background-color: var(--ishmael-blue);
+    border: 0px solid var(--ishmael-blue);
+}
+
+#signin .signin-cont form input[type='submit']:hover {
+    background-color: var(--ricardo-blue);
+}
+
+#signin .signin-cont a {
+    font-weight: bold;
 }

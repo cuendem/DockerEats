@@ -6,16 +6,16 @@
         <div class="col-xl-8 row footerUpper d-flex justify-content-between gap-5">
             <ul>
                 <li class="footerLinkListHead">Containers</li>
-                <li><a href="#">Mains</a></li>
-                <li><a href="#">Branches</a></li>
-                <li><a href="#">Drinks</a></li>
-                <li><a href="#">Desserts</a></li>
+                <li><a href="/products/mains">Mains</a></li>
+                <li><a href="/products/branches">Branches</a></li>
+                <li><a href="/products/drinks">Drinks</a></li>
+                <li><a href="/products/desserts">Desserts</a></li>
             </ul>
             <ul>
                 <li class="footerLinkListHead">Promotions</li>
-                <li><a href="#">Sales</a></li>
-                <li><a href="#">Coupons</a></li>
-                <li><a href="#">Special Offers</a></li>
+                <li><a href="/sales/">Sales</a></li>
+                <li><a href="/coupons/">Coupons</a></li>
+                <li><a href="/sales/">Special Offers</a></li>
             </ul>
             <ul>
                 <li class="footerLinkListHead">Company</li>
