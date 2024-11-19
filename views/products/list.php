@@ -20,7 +20,7 @@
                 <div class="productsCategory d-flex pt-3 pb-5 flex-wrap justify-content-around gap-3">
                 <?php foreach ($products as $product) { ?>
                     <div class="card product">
-                        <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top" alt="<?=$product->getName()?>">
+                        <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
                         <div class="card-body d-flex flex-column justify-content-between">
                             <?=$product->getTypeIcon()?>
                             <?=$product->alcoholIcon()?>

@@ -3,7 +3,6 @@
 include_once("models/UsersDAO.php");
 
 class userController {
-
     public function index() {
         if (isset($_SESSION['username'])) {
             $pageid = "myaccount";
@@ -11,7 +10,7 @@ class userController {
             $title = $_SESSION['username'];
         } else {
             $pageid = "signin";
-            $view = "views/signin.php";
+            $view = "views/users/signin.php";
             $title = "Sign In";
         }
 

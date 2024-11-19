@@ -33,8 +33,8 @@
     --he-yellow2: #DDC500;
 
     /* Warning */
-    --aleph-red: #7F2E39;
-    --aleph-red2: #a03b4e;
+    --aleph-red: #a03b4e;
+    --aleph-red2: #d00e17;
 }
 
 @font-face {
@@ -751,6 +751,14 @@ footer .logo {
     transition: 0.2s ease;
 }
 
+#signin .signin-cont form input.error {
+    border: 1px solid var(--aleph-red2);
+}
+
+#signin .inputDiv label.error {
+    color: var(--aleph-red2);
+}
+
 #signin .inputDiv:focus-within label, #signin .inputDiv input:not(:placeholder-shown) + label {
     transform: scale(0.8) translateX(-8px) translateY(calc(-36px - 50%));
 }
@@ -759,8 +767,17 @@ footer .logo {
     outline: 2px solid var(--ishmael-blue);
 }
 
-#signin .inputDiv:focus-within label {
+#signin .inputDiv:focus-within input.error {
+    outline: 2px solid var(--aleph-red2);
+}
+
+#signin .inputDiv:focus-within label:not(.error) {
     color: var(--ishmael-blue);
+}
+
+#signin .inputDiv .errorpopup {
+    color: var(--aleph-red2);
+    font-size: 12px;
 }
 
 #signin .signin-cont form input[type='submit'] {
@@ -775,4 +792,58 @@ footer .logo {
 
 #signin .signin-cont a {
     font-weight: bold;
+    width: fit-content;
+}
+
+#signin footer ul {
+    list-style: none;
+}
+
+#signin footer ul li:not(:last-child) {
+    padding-right: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+#signin footer ul li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(50%, -50%);
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: var(--charon-gray);
+}
+
+/*
+======================
+    404 PAGE
+======================
+*/
+
+#notfound .notfoundbody {
+    height: 80vh;
+}
+
+#notfound .notfoundbody img {
+    width: 400px;
+}
+
+#notfound h1 {
+    position: fixed;
+    top: -9999px;
+}
+
+#notfound h3 {
+    font-size: 40px;
+}
+
+#notfound h3, #notfound p {
+    color: var(--queequeg-blue);
+}
+
+#notfound .notfoundbody .btn-normal {
+    padding: .8rem 2.2rem;
 }

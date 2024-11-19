@@ -14,18 +14,18 @@
             <ul>
                 <li class="footerLinkListHead">Promotions</li>
                 <li><a href="/sales/">Sales</a></li>
-                <li><a href="/coupons/">Coupons</a></li>
+                <li><a href="/sales/">Coupons</a></li>
                 <li><a href="/sales/">Special Offers</a></li>
             </ul>
             <ul>
                 <li class="footerLinkListHead">Company</li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Newsletter</a></li>
-                <li><a href="#">Why DockerEats</a></li>
-                <li><a href="#">Guidelines</a></li>
-                <li><a href="#">Swag Store</a></li>
-                <li><a href="#">Customer Success</a></li>
-                <li><a href="#">Careers</a></li>
+                <li><a href="/aboutus/">About Us</a></li>
+                <li><a href="/newsletter/">Newsletter</a></li>
+                <li><a href="/#whyorder">Why DockerEats</a></li>
+                <li><a href="/logoguidelines/">Guidelines</a></li>
+                <li><a href="/swag/">Swag Store</a></li>
+                <li><a href="/customers/">Customer Success</a></li>
+                <li><a href="/careers/">Careers</a></li>
             </ul>
             <div class="footerLast px-0">
                 <ul>
