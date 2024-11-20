@@ -13,13 +13,12 @@ if(isset($_POST['email'], $_POST['password'])) {
     } else {
         $user = $users[0];
 
-        if ($_POST['password'] == $user->getPassword()) { 
-            session_start();
-
+        if (password_verify($_POST['password'], $user->getPassword())) { 
             $_SESSION['id_user'] = $user->getId_user();
             $_SESSION['username'] = $user->getUsername();
+            $_SESSION['email'] = $user->getEmail();
 
-            header('location:/');
+            header('location:/account/');
         } else {
             $passworderror = "error";
         }

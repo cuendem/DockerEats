@@ -11,10 +11,18 @@ class CategoriesDAO {
         $stmt->execute();
         $result = $stmt->get_result();
 
+        $alcoholic = null;
+
         $categories = [];
         while ($category = $result->fetch_object("Category")) {
-            $categories[] = $category;
+            if ($category->getId_category() == 10) {
+                $alcoholic = $category;
+            } else {
+                $categories[] = $category;
+            }
         }
+
+        $categories[] = $alcoholic;
 
         $con->close();
 

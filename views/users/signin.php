@@ -1,5 +1,3 @@
-<?php include_once('models/user_authentication.php'); ?>
-
 <div class="d-flex flex-column gap-4 justify-content-center align-items-center position-relative">
     <div class="signin-cont big p-5 d-flex flex-column align-items-center gap-4">
         <img class="logo" src="/img/logos/DockerEatsLogo.png" alt="DockerEats Logo">
@@ -12,7 +10,7 @@
                 <?php if ($emailerror != "") { ?>
                     <span class="errorpopup">
                         <i class="bi bi-exclamation-circle-fill"></i>
-                        No user has this email address associated
+                        No user with this email address associated
                     </span>
                 <?php } ?>
             </div>
@@ -23,7 +21,7 @@
                 <?php if ($passworderror != "") { ?>
                     <span class="errorpopup">
                         <i class="bi bi-exclamation-circle-fill"></i>
-                        Wrong password
+                        Password authentication failed
                     </span>
                 <?php } ?>
                 <!-- If possible, add a toggleable "Show password" button here -->

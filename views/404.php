@@ -1,5 +1,5 @@
 <?php include_once('header.php') ?>
-<div class="notfoundbody container-fluid text-center d-flex align-items-center justify-content-center">
+<section class="notfoundbody container-fluid text-center d-flex align-items-center justify-content-center">
     <div class="row">
         <div class="col">
             <img src="/svg/404.svg" alt="Docker 404">
@@ -9,5 +9,5 @@
             <a href="/" class="return btn btn-normal mt-3">Return to Shore</a>
         </div>
     </div>
-</div>
+</section>
 <?php include_once('footer.php') ?>
