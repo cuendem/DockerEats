@@ -761,31 +761,31 @@ footer .logo {
 ======================
 */
 
-#signin {
+#signin, #signup {
     background-color: var(--pilot-white);
 }
 
-#signin a {
+#signin a, #signup a {
     font-size: 14px;
     margin: 0px;
 }
 
-#signin .signin-cont {
+.sign .sign-cont {
     background-color: white;
     border: 1px solid var(--charon-gray);
     border-radius: 5px;
     width: 400px;
 }
 
-#signin .signin-cont.big {
+.sign .sign-cont.big {
     margin-top: 5rem;
 }
 
-#signin .signin-cont .logo {
+.sign .sign-cont .logo {
     width: 80%;
 }
 
-#signin .signin-cont h1 {
+.sign .sign-cont h1 {
     font-size: 24px;
     color: var(--starbuck-black);
     font-family: Roboto, sans-serif;
@@ -793,23 +793,22 @@ footer .logo {
     margin: 0px;
 }
 
-#signin .signin-cont p {
+.sign .sign-cont p {
     font-size: 14px;
     color: var(--starbuck-black);
     text-align: center;
     margin: 0px;
 }
 
-#signin .signin-cont form {
+.sign .sign-cont form {
     width: 100%;
 }
 
-#signin .inputDiv {
+.inputDiv {
     width: 100%;
-    position: relative;
 }
 
-#signin .signin-cont form input {
+.inputDiv input {
     height: 52px;
     padding: 0px 16px;
     border: 1px solid var(--charon-gray);
@@ -819,7 +818,17 @@ footer .logo {
     outline: 2px solid white;
 }
 
-#signin .inputDiv label {
+.inputDiv input[type='submit'] {
+    color: white;
+    background-color: var(--ishmael-blue);
+    border: 0px solid var(--ishmael-blue);
+}
+
+.inputDiv input[type='submit']:hover {
+    background-color: var(--ricardo-blue);
+}
+
+.inputDiv label {
     position: absolute;
     left: 16px;
     top: 26px;
@@ -832,61 +841,63 @@ footer .logo {
     transition: 0.2s ease;
 }
 
-#signin .signin-cont form input.error {
+.sign .sign-cont form input.error {
     border: 1px solid var(--aleph-red2);
 }
 
-#signin .inputDiv label.error {
+.inputDiv label.error {
     color: var(--aleph-red2);
 }
 
-#signin .inputDiv:focus-within label, #signin .inputDiv input:not(:placeholder-shown) + label {
+.inputDiv:focus-within label, .inputDiv input:not(:placeholder-shown) + label {
     transform: scale(0.8) translateX(-8px) translateY(calc(-36px - 50%));
 }
 
-#signin .inputDiv:focus-within input {
+.inputDiv:focus-within input {
     outline: 2px solid var(--ishmael-blue);
 }
 
-#signin .inputDiv:focus-within input.error {
+.inputDiv:focus-within input.error {
     outline: 2px solid var(--aleph-red2);
 }
 
-#signin .inputDiv:focus-within label:not(.error) {
+.inputDiv:focus-within label:not(.error) {
     color: var(--ishmael-blue);
 }
 
-#signin .inputDiv .errorpopup {
-    color: var(--aleph-red2);
+.inputDiv .popup {
     font-size: 12px;
 }
 
-#signin .signin-cont form input[type='submit'] {
-    color: white;
-    background-color: var(--ishmael-blue);
-    border: 0px solid var(--ishmael-blue);
+.inputDiv .popup.error {
+    color: var(--aleph-red2);
 }
 
-#signin .signin-cont form input[type='submit']:hover {
-    background-color: var(--ricardo-blue);
+.inputDiv .popup.info {
+    color: var(--ishmael-blue);
+    display: none;
 }
 
-#signin .signin-cont a {
+.inputDiv:focus-within .popup.info {
+    display: inline;
+}
+
+.sign .sign-cont a {
     font-weight: bold;
     width: fit-content;
 }
 
-#signin footer ul {
+.sign footer ul {
     list-style: none;
 }
 
-#signin footer ul li:not(:last-child) {
+.sign footer ul li:not(:last-child) {
     padding-right: 10px;
     margin-right: 10px;
     position: relative;
 }
 
-#signin footer ul li:not(:last-child)::after {
+.sign footer ul li:not(:last-child)::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -943,10 +954,11 @@ footer .logo {
     margin-bottom: 0px;
 }
 
-#account .pfpbig {
+#account .pfpbig, #edituser .pfpbig {
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 #account #options {
@@ -964,4 +976,31 @@ footer .logo {
 
 #account .option:hover {
     box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+#edituser #edit-cont {
+    background-color: var(--pilot-white);
+}
+
+#edituser #edit-cont input[type='file'] {
+    display: none;
+}
+
+#edituser #edit-cont #preview-image-label {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--queequeg-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.3s ease;
+    opacity: 0;
+}
+
+#edituser #edit-cont #preview-image-label:hover {
+    opacity: 0.3;
 }

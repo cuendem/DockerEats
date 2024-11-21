@@ -46,6 +46,20 @@ class UsersDAO {
 
         return $users;
     }
+
+    public static function store($user) {
+        $con = DataBase::connect();
+        $stmt = $con->prepare('INSERT INTO USERS (username, password, email) VALUES (?, ?, ?)');
+        $stmt->bind_param('sss',$user->getUsername(),$user->getPassword(),$user->getEmail());
+
+        $stmt->execute();
+
+        $lastID = $con->insert_id;
+
+        $con->close();
+
+        return $lastID;
+    }
 }
 
 ?>
