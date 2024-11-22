@@ -6,9 +6,9 @@ $emailerror = "";
 $passworderror = "";
 
 if(isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['repeatpassword'])) {
-    $users = UsersDAO::getByEmail($_POST['email']);
+    $user = UsersDAO::getByEmail($_POST['email']);
 
-    if (!empty($users)) {
+    if (!is_null($user)) {
         $emailerror = "error";
     } else {
         if ($_POST['password'] !== $_POST['repeatpassword']) {

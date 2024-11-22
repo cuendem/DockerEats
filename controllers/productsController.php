@@ -1,7 +1,7 @@
 <?php
 
-include_once("models/ProductsDAO.php");
-include_once("models/CategoriesDAO.php");
+include_once("models/products/ProductsDAO.php");
+include_once("models/categories/CategoriesDAO.php");
 
 class productsController {
 

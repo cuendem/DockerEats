@@ -6,13 +6,11 @@ $emailerror = "";
 $passworderror = "";
 
 if(isset($_POST['email'], $_POST['password'])) {
-    $users = UsersDAO::getByEmail($_POST['email']);
+    $user = UsersDAO::getByEmail($_POST['email']);
 
-    if (empty($users)) {
+    if (is_null($user)) {
         $emailerror = "error";
     } else {
-        $user = $users[0];
-
         if (password_verify($_POST['password'], $user->getPassword())) { 
             $_SESSION['id_user'] = $user->getId_user();
             $_SESSION['username'] = $user->getUsername();

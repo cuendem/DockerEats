@@ -1,6 +1,6 @@
 <?php
 
-include_once("models/Category.php");
+include_once("models/categories/Category.php");
 include_once("config/dataBase.php");
 
 class CategoriesDAO {

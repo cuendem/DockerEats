@@ -1,6 +1,6 @@
 <?php
 
-include_once("models/UsersDAO.php");
+include_once("models/users/UsersDAO.php");
 
 class userController {
     public function index() {
@@ -21,7 +21,7 @@ class userController {
         $pageid = "signin";
         $view = "views/users/signin.php";
         $title = "Sign In";
-        include_once("models/user_authentication.php");
+        include_once("models/users/user_authentication.php");
         include_once("views/main.php");
     }
 
@@ -29,7 +29,7 @@ class userController {
         $pageid = "signup";
         $view = "views/users/signup.php";
         $title = "Sign Up";
-        include_once("models/user_signup.php");
+        include_once("models/users/user_signup.php");
         include_once("views/main.php");
     }
 
@@ -42,6 +42,7 @@ class userController {
         $pageid = "edituser";
         $view = "views/users/edit.php";
         $title = "Account Settings";
+        include_once("models/users/edit_user.php");
         include_once("views/main.php");
     }
 
@@ -60,6 +61,15 @@ class userController {
         $newUser->setEmail($email);
 
         UsersDAO::store($newUser);
+    }
+
+    public static function editUser($id, $username = null, $password = null) {
+        $user = UsersDAO::getById($id);
+
+        if (!is_null($username)) { $user->setUsername($username); }
+        if (!is_null($password)) { $user->setPassword($password); }
+
+        UsersDAO::update($user);
     }
 }
 

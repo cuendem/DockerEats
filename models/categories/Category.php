@@ -1,6 +1,6 @@
 <?php
 
-include_once("models/ProductsDAO.php");
+include_once("models/products/ProductsDAO.php");
 
 class Category {
     protected $id_category;
