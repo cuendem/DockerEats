@@ -6,8 +6,8 @@
             <h1>Build whatever.<br>Eat wherever.</h1>
             <p class="lead">Build your very own food container. Unlimited combinations.</p>
             <p class="my-2">
-                <button type="button" class="mt-3 mx-2 btn btn-selected">Start building</button>
-                <button type="button" class="mt-3 mx-2 btn btn-normal">Learn more about DockerEats</button>
+                <a href="/build/" class="mt-3 mx-2 btn btn-selected">Start building</a>
+                <a href="/#whatis" class="mt-3 mx-2 btn btn-normal">Learn more about DockerEats</a>
             </p>
         </div>
     </div>

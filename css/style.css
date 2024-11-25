@@ -344,8 +344,16 @@ header.hidden {
     border-radius: 5px;
 }
 
+.profile-dropdown .dropdown-item i {
+    transition: 0.3s ease;
+}
+
 .profile-dropdown .dropdown-item:hover {
     background-color: var(--smee-gray);
+}
+
+.profile-dropdown .dropdown-item:hover i {
+    transform: rotate(20deg) scale(125%);
 }
 
 .profile-dropdown .dropdown-item.signout {
@@ -1034,4 +1042,57 @@ footer .logo {
     stroke: white;
     width: 50%;
     z-index: 1;
+}
+
+/*
+======================
+    BUILD PAGE
+======================
+*/
+
+#build #container-graph {
+    background-color: var(--pallid-white);
+    border: 20px solid var(--pequod-blue);
+    border-radius: 50px;
+    aspect-ratio: 1 / .75;
+    overflow: hidden;
+}
+
+#build #container-graph #container-top {
+    height: 40%;
+}
+
+#build #container-graph #container-bottom {
+    height: 60%;
+}
+
+#build #container-graph .typeicon {
+    fill: var(--pequod-blue);
+    stroke: var(--pequod-blue);
+    stroke-width: 0px;
+    max-width: 100px;
+}
+
+#build #container-graph #container-dessert {
+    border: 0px solid var(--pequod-blue);
+    border-right-width: 10px;
+    border-bottom-width: 10px;
+}
+
+#build #container-graph #container-drink {
+    border: 0px solid var(--pequod-blue);
+    border-left-width: 10px;
+    border-bottom-width: 10px;
+}
+
+#build #container-graph #container-main {
+    border: 0px solid var(--pequod-blue);
+    border-right-width: 10px;
+    border-top-width: 10px;
+}
+
+#build #container-graph #container-branch {
+    border: 0px solid var(--pequod-blue);
+    border-left-width: 10px;
+    border-top-width: 10px;
 }

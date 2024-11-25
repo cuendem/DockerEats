@@ -2,6 +2,7 @@
     RewriteEngine on
     ErrorDocument 404 /404/
     RewriteRule ^account/(.*)$ user/$1 [L]
+    RewriteRule ^build/(.*)$ container/$1 [L]
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteRule ^(.*)/(.*) ?controller=$1&action=$2 [L]
