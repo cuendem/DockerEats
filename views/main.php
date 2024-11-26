@@ -15,8 +15,6 @@
     <link rel="stylesheet" href="/css/style.css?ver=1"> <!-- ?ver=1 to avoid cacheing the CSS for testing -->
 </head>
 <body id="<?=$pageid?>">
-    <script src="/scripts/helpers.js"></script>
-
     <?php include_once($view); ?>
 
     <script src="/scripts/script.js"></script>

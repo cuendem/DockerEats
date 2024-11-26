@@ -232,35 +232,35 @@ header.hidden {
     transform: translateY(-100%);
 }
 
-.navbar-brand img {
+header .navbar-brand img {
     height: 35px;
 }
 
-.navbar-nav > li > a {
+header .navbar-nav > li > a {
     text-decoration: none;
     color: black;
     font-weight: 500;
 }
 
-.navbar-nav > li > a:hover {
+header .navbar-nav > li > a:hover {
     text-decoration: none;
     color: black;
 }
 
-.dropdown-toggle::after {
+header .dropdown-toggle::after {
     display: none;
 }
 
-.dropdown-chevron {
+header .dropdown-chevron {
     width: 1em;
     transition: 0.3s ease;
 }
 
-.show > .dropdown-chevron {
+header .show > .dropdown-chevron {
     transform: rotate(180deg);
 }
 
-.navbar-right svg {
+header .navbar-right svg {
     height: 30px;
 }
 
@@ -1050,6 +1050,14 @@ footer .logo {
 ======================
 */
 
+#build #container {
+    background-image: url(/svg/DockerWave2.svg);
+    background-position: center bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding-bottom: 6vw;
+}
+
 #build #container-graph {
     background-color: var(--pallid-white);
     border: 20px solid var(--pequod-blue);
@@ -1067,10 +1075,27 @@ footer .logo {
 }
 
 #build #container-graph .typeicon {
-    fill: var(--pequod-blue);
-    stroke: var(--pequod-blue);
-    stroke-width: 0px;
     max-width: 100px;
+    aspect-ratio: 1 / 1;
+    transition: 0.3s ease;
+    border: 0px;
+    background-color: transparent;
+    padding: 0px;
+}
+
+#build #container-graph .typeicon:hover {
+    transform: scale(110%);
+}
+
+#build #container-graph .typeicon svg {
+    fill: var(--pequod-blue);
+    stroke-width: 0px;
+    width: 100%;
+    transition: 0.3s ease;
+}
+
+#build #container-graph .typeicon:hover svg {
+    fill: var(--ishmael-blue);
 }
 
 #build #container-graph #container-dessert {
@@ -1095,4 +1120,118 @@ footer .logo {
     border: 0px solid var(--pequod-blue);
     border-left-width: 10px;
     border-top-width: 10px;
+}
+
+#build #building {
+    background-color: white;
+}
+
+#build #building {
+    position: relative;
+    background-color: var(--smee-gray);
+    padding-top: 5vw;
+    padding-left: 7vw;
+    padding-right: 7vw;
+}
+
+#build #building h2 {
+    width: fit-content;
+}
+
+#build #building svg {
+    fill: var(--ishmael-blue);
+    stroke: var(--ishmael-blue);
+    stroke-width: 0px;
+    width: 40px;
+}
+
+/*
+======================
+    OVERLAY STUFF
+======================
+*/
+
+#build .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+#build .overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+#build .overlay .overlay-modal {
+    width: 80%;
+    max-width: 1000px;
+    height: 80%;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#build .overlay .overlay-modal .header {
+    background-color: var(--ishmael-blue);
+    border-radius: 50px 50px 0px 0px;
+}
+
+#build .overlay .overlay-modal .header .title svg {
+    max-width: 65px;
+    fill: white;
+    stroke-width: 0px;
+}
+
+#build .overlay .overlay-modal .header h4 {
+    color: white;
+    margin: 0px;
+}
+
+#build .overlay .overlay-modal .header form {
+    background-color: var(--ricardo-blue);
+    border-radius: 10px;
+    width: 40%;
+    padding: 12px;
+}
+
+#build .overlay .overlay-modal .header form svg {
+    stroke: white;
+    width: 30px;
+}
+
+#build .overlay .overlay-modal .header input {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px;
+    color: white;
+    width: 100%;
+}
+
+#build .overlay .overlay-modal .header input::placeholder {
+    color: var(--pequod-blue);
+    opacity: .5;
+}
+
+#build .overlay .overlay-modal .header input:focus {
+    outline: none;
+}
+
+#build .overlay .overlay-modal .sidebar {
+    background-color: var(--smee-gray);
+    border-radius: 0px 0px 0px 50px;
+}
+
+#build .overlay .overlay-modal .list {
+    background-color: white;
+    border-radius: 0px 0px 50px 0px;
 }
