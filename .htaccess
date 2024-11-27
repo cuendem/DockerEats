@@ -1,8 +1,15 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
+
     ErrorDocument 404 /404/
+
     RewriteRule ^account/(.*)$ user/$1 [L]
     RewriteRule ^build/(.*)$ container/$1 [L]
+
+    # Add custom rule for the /build/add/main/3 pattern
+    RewriteRule ^container/(.*)/(.*)/(.*)$ ?controller=container&action=$1&type=$2&id=$3 [L]
+
+    # General catch-all rule
     RewriteCond %{SCRIPT_FILENAME} !-d
     RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteRule ^(.*)/(.*) ?controller=$1&action=$2 [L]

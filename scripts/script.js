@@ -44,18 +44,23 @@ function openOverlay(overlay) {
     overlay.classList.toggle('hidden');
 }
 
-const buildMain = document.getElementById('build-main');
-const buildMainOV = document.getElementById('build-main-overlay');
+const types = ['main', 'branch', 'drink', 'dessert'];
 
-// Open overlay when clicked
-buildMain.addEventListener('click', () => {
-    openOverlay(buildMainOV);
+types.forEach(type => {
+    const buildButton = document.getElementById(`build-${type}`);
+    const buildOverlay = document.getElementById(`build-${type}-overlay`);
+
+    // Open overlay when clicked
+    buildButton.addEventListener('click', () => {
+        console.log(`${type}clicked!`);
+        openOverlay(buildOverlay);
+    });
+
+    // Exit when clicked outside
+    buildOverlay.addEventListener('click', (e) => {
+        if (e.target === e.currentTarget) {
+            // Only trigger if clicked the overlay itself (not the div inside which has all the stuff)
+            openOverlay(buildOverlay);
+        }
+    });
 });
-
-// Exit when clicked outside
-buildMainOV.addEventListener('click', (e) => {
-    if (e.target === e.currentTarget) {
-        // Only trigger if clicked the overlay itself (not the div inside which has all the stuff)
-        openOverlay(buildMainOV);
-    }
-})

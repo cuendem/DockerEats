@@ -366,7 +366,7 @@ header .navbar-right svg {
 ======================
 */
 
-main section:last-child {
+main section:not(.abnormal):last-of-type {
     padding-bottom: calc(4% + 5vw - 4px);
 }
 
@@ -1074,6 +1074,10 @@ footer .logo {
     height: 60%;
 }
 
+#build #container-graph .hidden {
+    display: none;
+}
+
 #build #container-graph .typeicon {
     max-width: 100px;
     aspect-ratio: 1 / 1;
@@ -1098,28 +1102,35 @@ footer .logo {
     fill: var(--ishmael-blue);
 }
 
-#build #container-graph #container-dessert {
+#build #container-graph #container-dessert,
+#build #container-graph #container-drink,
+#build #container-graph #container-main,
+#build #container-graph #container-branch {
     border: 0px solid var(--pequod-blue);
+}
+
+#build #container-graph #container-dessert {
     border-right-width: 10px;
     border-bottom-width: 10px;
 }
 
 #build #container-graph #container-drink {
-    border: 0px solid var(--pequod-blue);
     border-left-width: 10px;
     border-bottom-width: 10px;
 }
 
 #build #container-graph #container-main {
-    border: 0px solid var(--pequod-blue);
     border-right-width: 10px;
     border-top-width: 10px;
 }
 
 #build #container-graph #container-branch {
-    border: 0px solid var(--pequod-blue);
     border-left-width: 10px;
     border-top-width: 10px;
+}
+
+#build #container-graph .selected-product {
+    width: 100px;
 }
 
 #build #building {
@@ -1176,7 +1187,6 @@ footer .logo {
 #build .overlay .overlay-modal {
     width: 80%;
     max-width: 1000px;
-    height: 80%;
     border-radius: 50px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
@@ -1226,6 +1236,10 @@ footer .logo {
     outline: none;
 }
 
+#build .overlay .overlay-modal .overlay-content .row {
+    height: 550px;
+}
+
 #build .overlay .overlay-modal .sidebar {
     background-color: var(--smee-gray);
     border-radius: 0px 0px 0px 50px;
@@ -1234,4 +1248,30 @@ footer .logo {
 #build .overlay .overlay-modal .list {
     background-color: white;
     border-radius: 0px 0px 50px 0px;
+    padding: 1.5rem;
+}
+
+#build .overlay .overlay-modal .list .category-products:not(:last-of-type) {
+    margin-bottom: 1.5rem;
+}
+
+#build .overlay .overlay-modal .list .category-products a {
+    text-decoration: none;
+}
+
+#build .overlay .product {
+    flex: 0 0 150px;
+    transition: 0.3s ease;
+}
+
+#build .overlay .product:hover {
+    transform: scale(105%);
+}
+
+#build .overlay .product .card-title {
+    font-size: 17px;
+}
+
+#build .overlay .product .card-subtitle {
+    font-size: 15px;
 }
