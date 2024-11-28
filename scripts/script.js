@@ -64,3 +64,49 @@ types.forEach(type => {
         }
     });
 });
+
+document.querySelectorAll('input[name="dishname"]').forEach(input => {
+    // Add to all 4 inputs
+    input.addEventListener('input', (event) => {
+        // When being typed
+        const searchValue = event.target.value.toLowerCase();
+        const overlay = event.target.closest('.overlay');
+        const categories = overlay.querySelectorAll('.category-products'); // Select all product containers
+
+        categories.forEach(category => {
+            const products = category.querySelectorAll('.card.product');
+            let hasVisibleProducts = false;
+
+            products.forEach(product => {
+                const productName = product.querySelector('.card-title').textContent.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = ''; // Show matching product
+                    hasVisibleProducts = true; // At least one product is visible in this category
+                } else {
+                    product.style.display = 'none'; // Hide non-matching product
+                }
+            });
+
+            // Toggle visibility of the category based on product visibility
+            const categoryHr = category.previousElementSibling; // The <hr>
+            const categoryHeading = categoryHr.previousElementSibling; // The <h5>
+            if (hasVisibleProducts) {
+                category.style.display = ''; // Show category
+                category.style.padding = '';
+                category.style.margin = '';
+                category.classList.add('p-1');
+
+                categoryHr.style.display = ''; // Show hr
+                categoryHeading.style.display = ''; // Show heading
+            } else {
+                category.style.display = 'none'; // Hide category
+                category.style.padding = '0px';
+                category.classList.remove('p-1');
+                category.style.margin = '0px';
+
+                categoryHr.style.display = 'none'; // Hide hr
+                categoryHeading.style.display = 'none'; // Hide heading
+            }
+        });
+    });
+});

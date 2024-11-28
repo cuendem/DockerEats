@@ -1130,7 +1130,21 @@ footer .logo {
 }
 
 #build #container-graph .selected-product {
-    width: 100px;
+    max-width: 120px;
+    border-radius: 25px;
+    border: 10px solid var(--pequod-blue);
+}
+
+#build #container-graph .selected-product-remove {
+    color: var(--ishmael-blue);
+    font-size: 30px;
+    transform: translate(-70%, -40%);
+    transition: 0.3s ease;
+}
+
+#build #container-graph .selected-product-remove:hover {
+    color: var(--aleph-red2);
+    transform: translate(-70%, -40%) scale(120%);
 }
 
 #build #building {

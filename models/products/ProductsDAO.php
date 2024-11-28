@@ -4,6 +4,33 @@ include_once("models/products/Product.php");
 include_once("config/dataBase.php");
 
 class ProductsDAO {
+    public static function get($id) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_product LIKE ?');
+
+        // Bind the parameter (using 's' for a string pattern)
+        $stmt->bind_param('s', $id);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $products = [];
+        while ($product = $result->fetch_object("Product")) {
+            $products[] = $product;
+        }
+
+        $con->close();
+
+        if (count($products) > 0) {
+            return $products[0];
+        } else {
+            return null;
+        }
+    }
+
     public static function getAll($type = '%') {
         $con = DataBase::connect();
 
@@ -25,6 +52,29 @@ class ProductsDAO {
         $con->close();
 
         return $products;
+    }
+
+    public static function getRandom($type = '%') {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
+
+        // Bind the parameter (using 's' for a string pattern)
+        $stmt->bind_param('s', $type);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $products = [];
+        while ($product = $result->fetch_object("Product")) {
+            $products[] = $product;
+        }
+
+        $con->close();
+
+        return $products[array_rand($products)];
     }
 
     public static function getByCat($category, $type = '%') {

@@ -22,7 +22,7 @@
                     <div class="card product">
                         <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
                         <div class="card-body d-flex flex-column justify-content-between">
-                            <?=$product->getTypeIcon()?>
+                            <?=productsController::getTypeIcon($product->getId_type())?>
                             <?=$product->alcoholIcon()?>
                             <h5 class="card-title"><?=$product->getName()?></h5>
                             <p class="card-subtitle"><?=$product->getPrice()?> €</p>
