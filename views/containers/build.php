@@ -14,8 +14,6 @@
     </div>
 </section>
 
-<?=var_dump($_SESSION)?>
-
 <section id="container" class="container-fluid text-center mt-3">
     <div class="row px-3">
         <div id="container-graph" class="col-md-8 col-lg-6 mx-auto container-fluid position-relative">
@@ -60,6 +58,11 @@
                         <button id="build-branch" class="typeicon <?=isset($_SESSION['container']['branch']) ? 'hidden' : ''?>"><?=productsController::getTypeIcon(2)?></button>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row px-3">
+        <div class="col-md-8 col-lg-6 mx-auto">
+            <a href="/build/remove/all" class="mt-3 mx-2 btn btn-warning">Clear container</a>
         </div>
     </div>
 </section>

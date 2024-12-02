@@ -22,7 +22,7 @@
         </div>
         <div class="col-xl-4">
             <div class="option">
-                <span>Kill yourself</span>
+                <span>Other</span>
             </div>
         </div>
     </div>

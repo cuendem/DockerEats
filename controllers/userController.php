@@ -4,17 +4,21 @@ include_once("models/users/UsersDAO.php");
 
 class userController {
     public function index() {
-        if (isset($_SESSION['username'])) {
-            # Logged in
-            $pageid = "account";
-            $view = "views/users/show.php";
-            $title = $_SESSION['username'];
-            include_once("models/sign_out.php");
-            include_once("views/main.php");
-        } else {
-            # Not logged in
-            header("location:/account/signin");
-        }
+        include_once('models/protection.php');
+
+        $pageid = "account";
+        $view = "views/users/show.php";
+        $title = $_SESSION['username'];
+        include_once("views/main.php");
+    }
+
+    public function cart() {
+        include_once('models/protection.php');
+
+        $pageid = "cart";
+        $view = "views/users/cart.php";
+        $title = "Your Cart";
+        include_once("views/main.php");
     }
 
     public function signin() {

@@ -6,8 +6,8 @@
     RewriteRule ^account/(.*)$ user/$1 [L]
     RewriteRule ^build/(.*)$ container/$1 [L]
 
-    RewriteRule ^container/(.*)/(.*)/(.*)$ ?controller=container&action=$1&type=$2&id=$3 [L]
-    RewriteRule ^container/(.*)/(.*)$ ?controller=container&action=$1&type=$2 [L]
+    RewriteRule ^container/(.*)/(.*)/(.*)$ ?controller=container&action=$1&param1=$2&param2=$3 [L]
+    RewriteRule ^container/(.*)/(.*)$ ?controller=container&action=$1&param1=$2 [L]
 
     # General catch-all rule
     RewriteCond %{SCRIPT_FILENAME} !-d

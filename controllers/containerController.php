@@ -19,10 +19,10 @@ class containerController {
     public function add() {
         include_once('models/protection.php');
 
-        if (isset($_GET['type'], $_GET['id'])) {
-            $product = ProductsDAO::get($_GET['id']);
+        if (isset($_GET['param1'], $_GET['param2'])) {
+            $product = ProductsDAO::get($_GET['param2']);
             if (!is_null($product)) {
-                $_SESSION['container'][$_GET['type']] = $product;
+                $_SESSION['container'][$_GET['param1']] = $product;
                 header('Location:/build/');
             } else {
                 header('Location:/');
@@ -35,8 +35,15 @@ class containerController {
     public function remove() {
         include_once('models/protection.php');
 
-        if (isset($_GET['type'])) {
-            $_SESSION['container'][$_GET['type']] = null;
+        if (isset($_GET['param1'])) {
+            $type = $_GET['param1'];
+
+            if ($type == 'all') {
+                unset($_SESSION['container']);
+            } else {
+                unset($_SESSION['container'][$type]);
+            }
+
             header('Location:/build/');
         } else {
             header('Location:/');
@@ -52,6 +59,27 @@ class containerController {
         $_SESSION['container']['dessert'] = ProductsDAO::getRandom(4);
 
         header('Location:/build/');
+    }
+
+    public function addtocart() {
+        include_once('models/protection.php');
+
+        if (isset($_SESSION['container']['main'], $_SESSION['container']['branch'], $_SESSION['container']['drink'], $_SESSION['container']['dessert'])) {
+            $_SESSION['cart'][] = $_SESSION['container'];
+            unset($_SESSION['container']);
+        }
+
+        header('Location:/build/');
+    }
+
+    public function removefromcart() {
+        include_once('models/protection.php');
+
+        if (isset($_GET['param1'])) {
+            unset($_SESSION['cart'][intval($_GET['param1'])]);
+        }
+
+        header('Location:/account/cart');
     }
 }
 
