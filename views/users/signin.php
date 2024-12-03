@@ -5,7 +5,7 @@
         <p>We recommend signing into DockerEats with your personal email address, not your work one that you may already use on Docker.</p>
         <form class="d-flex flex-column gap-3" action="" method="POST">
             <div class="inputDiv position-relative">
-                <input class="<?=$emailerror?>" type="email" name="email" id="email" required placeholder=" ">
+                <input class="<?=$emailerror?>" type="email" name="email" id="email" required placeholder=" " autocomplete="email">
                 <label class="<?=$emailerror?>" for="email">Email address</label>
                 <?php if ($emailerror != "") { ?>
                     <span class="popup error">
@@ -16,7 +16,7 @@
             </div>
 
             <div class="inputDiv position-relative">
-                <input class="<?=$passworderror?>" type="password" name="password" id="password" required placeholder=" ">
+                <input class="<?=$passworderror?>" type="password" name="password" id="password" required placeholder=" " autocomplete="current-password">
                 <label class="<?=$passworderror?>" for="password">Password</label>
                 <?php if ($passworderror != "") { ?>
                     <span class="popup error">

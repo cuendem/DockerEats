@@ -1,22 +1,24 @@
 // Hide header when scrolling
-
 let lastScrollPosition = 0;
 const header = document.getElementById('header');
 
-window.addEventListener('scroll', () => {
-    const currentScrollPosition = window.scrollY;
+if (header) {
+    window.addEventListener('scroll', () => {
+        const currentScrollPosition = window.scrollY;
+    
+        if (currentScrollPosition > lastScrollPosition) {
+            // Scrolling down, hide the header
+            header.classList.add('hidden');
+        } else {
+            // Scrolling up, show the header
+            header.classList.remove('hidden');
+        }
+    
+        lastScrollPosition = currentScrollPosition;
+    });
+}
 
-    if (currentScrollPosition > lastScrollPosition) {
-        // Scrolling down, hide the header
-        header.classList.add('hidden');
-    } else {
-        // Scrolling up, show the header
-        header.classList.remove('hidden');
-    }
-
-    lastScrollPosition = currentScrollPosition;
-});
-
+// Preview PFP when changing it
 function previewPfp() {
     // Get the file input element
     var fileInput = event.target;
@@ -51,20 +53,22 @@ types.forEach(type => {
     const buildOverlay = document.getElementById(`build-${type}-overlay`);
 
     // Open overlay when clicked
-    buildButton.addEventListener('click', () => {
-        console.log(`${type}clicked!`);
-        openOverlay(buildOverlay);
-    });
-
-    // Exit when clicked outside
-    buildOverlay.addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) {
-            // Only trigger if clicked the overlay itself (not the div inside which has all the stuff)
+    if (buildButton && buildOverlay) {
+        buildButton.addEventListener('click', () => {
             openOverlay(buildOverlay);
-        }
-    });
+        });
+    
+        // Exit when clicked outside
+        buildOverlay.addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                // Only trigger if clicked the overlay itself (not the div inside which has all the stuff)
+                openOverlay(buildOverlay);
+            }
+        });
+    }
 });
 
+// Search function in the popup overlays
 document.querySelectorAll('input[name="dishname"]').forEach(input => {
     // Add to all 4 inputs
     input.addEventListener('input', (event) => {
@@ -110,3 +114,48 @@ document.querySelectorAll('input[name="dishname"]').forEach(input => {
         });
     });
 });
+
+// Delivery type selection in cart
+// Helper function to toggle the selected state
+function toggleSelection(isDelivery) {
+    const deliveryElement = document.getElementById('home-delivery');
+    const pickupElement = document.getElementById('pick-up');
+    const deliveryButton = document.getElementById('select-delivery');
+    const pickupButton = document.getElementById('select-pickup');
+    const pickupInput = document.getElementById('pickup-selected'); // Hidden input for pickup selection
+
+    // Update the 'selected' classes
+    if (isDelivery) {
+        deliveryElement.classList.add('selected');
+        pickupElement.classList.remove('selected');
+    } else {
+        deliveryElement.classList.remove('selected');
+        pickupElement.classList.add('selected');
+    }
+
+    // Update the hidden input values
+    document.getElementById('delivery-selected').value = isDelivery ? 'true' : 'false';
+    pickupInput.value = isDelivery ? 'false' : 'true'; // Update the pickup-selected input value
+
+    // Update button states
+    deliveryButton.innerHTML = isDelivery ? 'Selected' : 'Select';
+    deliveryButton.classList.toggle('btn-normal', !isDelivery);
+    deliveryButton.classList.toggle('btn-selected', isDelivery);
+
+    pickupButton.innerHTML = isDelivery ? 'Select' : 'Selected';
+    pickupButton.classList.toggle('btn-normal', isDelivery);
+    pickupButton.classList.toggle('btn-selected', !isDelivery);
+}
+
+// Event listeners for delivery and pickup selection
+if (document.getElementById('select-delivery') && document.getElementById('select-pickup')) {
+    document.getElementById('select-delivery').addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleSelection(true); // Delivery selected
+    });
+
+    document.getElementById('select-pickup').addEventListener('click', (e) => {
+        e.preventDefault();
+        toggleSelection(false); // Pickup selected
+    });
+}

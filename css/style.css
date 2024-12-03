@@ -131,7 +131,8 @@ p {
 .btn-selected {
     color: white;
     background-color: var(--ishmael-blue);
-    border-width: 0px;
+    border-width: 2px;
+    border-color: var(--ishmael-blue);
     font-weight: 600;
     font-size: 18px;
     border-radius: 5px;
@@ -141,6 +142,7 @@ p {
 .btn-selected:hover {
     color: white;
     background-color: var(--ricardo-blue);
+    border-color: var(--ricardo-blue);
 }
 
 .btn-normal {
@@ -1318,6 +1320,10 @@ footer .logo {
 #cart #banner {
     margin-bottom: 4vw;
 }
+#cart #order {
+    padding-left: 5vw;
+    padding-right: 5vw;
+}
 
 #cart #order .right {
     border-left: 2px solid var(--charon-gray);
@@ -1338,7 +1344,8 @@ footer .logo {
     font-size: 32px;
 }
 
-#cart #order .container-order {
+#cart #order .container-order, #cart #order .delivery-type  {
+    min-width: 335px;
     width: 48%;
 }
 
@@ -1436,4 +1443,87 @@ footer .logo {
     font-family: Poppins, sans-serif;
     font-size: 24px;
     font-weight: 500;
+}
+
+#cart #order .delivery-type {
+    box-sizing: border-box;
+    border-radius: 30px;
+    background-color: var(--smee-gray);
+    transition: 1s ease;
+    background-image: url(/svg/DockerWave2.svg);
+    background-position: right 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
+}
+
+#cart #order .delivery-type.selected {
+    background-color: var(--pip-blue);
+    background-position: right 80px;
+}
+
+#cart #order .delivery-type * {
+    transition: 0.3s ease;
+}
+
+#cart #order .delivery-type .lead {
+    font-family: Poppins, sans-serif;
+    color: var(--starbuck-black);
+    font-weight: 500;
+    font-size: 38px;
+}
+
+#cart #order .delivery-type.selected .lead {
+    color: var(--ishmael-blue);
+}
+
+#cart #order .delivery-type.selected label {
+    color: white;
+}
+
+#cart #order .delivery-type .description {
+    color: var(--ahab-gray);
+    font-size: 18px;
+    width: 70%;
+}
+
+#cart #order .delivery-type .inputs {
+    width: 100%;
+}
+
+#cart #order .delivery-type input, #cart #order .delivery-type select {
+    padding: 10px;
+    border-radius: 10px;
+    border-width: 0px;
+    border: 2px solid white;
+}
+
+#cart #order .delivery-type input:focus, #cart #order .delivery-type select:focus {
+    outline: 0px;
+    border: 2px solid var(--ishmael-blue);
+}
+
+#cart #order .delivery-type input::placeholder {
+    color: var(--charon-gray);
+    opacity: 1;
+}
+
+#cart #order .delivery-type .input-container input {
+    width: calc(50% - .25rem);
+}
+
+#cart #order .delivery-type .btn-selected {
+    background-color: var(--queequeg-blue);
+    border-color: var(--queequeg-blue);
+}
+
+#cart #order .delivery-type .btn-selected:hover {
+    background-color: var(--ricardo-blue);
+    border-color: var(--ricardo-blue);
+}
+
+#cart #order .payment-container {
+    background-color: var(--pallid-white);
+    border-radius: 30px;
+    box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
 }
