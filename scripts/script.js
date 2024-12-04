@@ -123,6 +123,7 @@ function toggleSelection(isDelivery) {
     const deliveryButton = document.getElementById('select-delivery');
     const pickupButton = document.getElementById('select-pickup');
     const pickupInput = document.getElementById('pickup-selected'); // Hidden input for pickup selection
+    const deliveryFee = document.getElementById('delivery-fee');
 
     // Update the 'selected' classes
     if (isDelivery) {
@@ -145,6 +146,8 @@ function toggleSelection(isDelivery) {
     pickupButton.innerHTML = isDelivery ? 'Select' : 'Selected';
     pickupButton.classList.toggle('btn-normal', isDelivery);
     pickupButton.classList.toggle('btn-selected', !isDelivery);
+
+    deliveryFee.classList.toggle('hidden', !isDelivery);
 }
 
 // Event listeners for delivery and pickup selection
