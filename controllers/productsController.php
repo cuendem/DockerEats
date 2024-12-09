@@ -23,7 +23,6 @@ class productsController {
 
     public function index($title = 'Menu', $type = '%')
     {
-        $categories = CategoriesDAO::getAll();
         $pageid = "productlist";
         $view = "views/products/list.php";
         $buttons = ['normal', 'normal', 'normal', 'normal']; # All normal by default
@@ -31,6 +30,9 @@ class productsController {
         if ($type != '%') { # If calling from a different function
             $buttons[$type-1] = 'selected'; # Set the function's corresponding type to selected
         }
+
+        $categories = CategoriesDAO::getAll();
+        $alcoholicProducts = ProductsDAO::getByCat(10);
 
         include_once("views/main.php");
     }

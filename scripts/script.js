@@ -122,21 +122,22 @@ function toggleSelection(isDelivery) {
     const pickupElement = document.getElementById('pick-up');
     const deliveryButton = document.getElementById('select-delivery');
     const pickupButton = document.getElementById('select-pickup');
+    const deliveryInput = document.getElementById('delivery-selected'); // Hidden input for pickup selection
     const pickupInput = document.getElementById('pickup-selected'); // Hidden input for pickup selection
     const deliveryFee = document.getElementById('delivery-fee');
+    const totalPrice = document.getElementById('total-price');
 
-    // Update the 'selected' classes
-    if (isDelivery) {
-        deliveryElement.classList.add('selected');
-        pickupElement.classList.remove('selected');
-    } else {
-        deliveryElement.classList.remove('selected');
-        pickupElement.classList.add('selected');
+    if ((isDelivery && deliveryInput.value != 'true') || (!isDelivery && pickupInput.value != 'true')) {
+        totalPrice.innerHTML = Math.round((parseFloat(totalPrice.innerHTML) + (isDelivery ? 2.99 : -2.99)) * 100) / 100 + " €";
     }
 
     // Update the hidden input values
-    document.getElementById('delivery-selected').value = isDelivery ? 'true' : 'false';
-    pickupInput.value = isDelivery ? 'false' : 'true'; // Update the pickup-selected input value
+    deliveryInput.value = isDelivery ? 'true' : 'false';
+    pickupInput.value = isDelivery ? 'false' : 'true';
+
+    // Update containers
+    deliveryElement.classList.toggle('selected', isDelivery);
+    pickupElement.classList.toggle('selected', !isDelivery);
 
     // Update button states
     deliveryButton.innerHTML = isDelivery ? 'Selected' : 'Select';

@@ -5,6 +5,8 @@ include_once("controllers/productsController.php");
 include_once("controllers/userController.php");
 include_once("controllers/containerController.php");
 include_once("controllers/establishmentsController.php");
+include_once("controllers/couponsController.php");
+include_once("controllers/offersController.php");
 
 include_once("models/session_init.php");
 

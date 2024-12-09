@@ -606,6 +606,14 @@ footer .logo {
     transform: translate(-20%, 20%);
 }
 
+.product .saleicon {
+    position: absolute;
+    max-width: 50px;
+    top: 0;
+    right: 0;
+    z-index: 2;
+}
+
 /*
 ======================
         HOMEPAGE
@@ -854,13 +862,13 @@ footer .logo {
     outline: 2px solid white;
 }
 
-.inputDiv input[type='submit'] {
+input[type='submit'] {
     color: white;
     background-color: var(--ishmael-blue);
     border: 0px solid var(--ishmael-blue);
 }
 
-.inputDiv input[type='submit']:hover {
+input[type='submit']:hover {
     background-color: var(--ricardo-blue);
 }
 
@@ -1311,6 +1319,16 @@ footer .logo {
     font-size: 15px;
 }
 
+#build .overlay .product .card-subtitle.crossed-out {
+    text-decoration: line-through;
+    color: var(--aleph-red2);
+}
+
+#build .overlay .product .card-subtitle.discounted {
+    font-size: 17px;
+    color: var(--ishmael-blue);
+}
+
 /*
 ======================
     CART PAGE
@@ -1392,6 +1410,16 @@ footer .logo {
     z-index: 2;
 }
 
+#cart #order .container-order .price.crossed-out {
+    text-decoration: line-through;
+    color: var(--aleph-red2);
+    font-size: 15px;
+}
+
+#cart #order .container-order .price.discounted {
+    color: var(--ishmael-blue);
+}
+
 #cart #order .container-order .main {
     background-color: var(--pallid-white);
     border-radius: 30px 30px 0px 0px;
@@ -1446,7 +1474,7 @@ footer .logo {
     font-weight: 500;
 }
 
-#cart #order .delivery-type {
+#cart #order .delivery-type, #cart #order .coupon-container {
     box-sizing: border-box;
     border-radius: 30px;
     background-color: var(--smee-gray);
@@ -1463,11 +1491,11 @@ footer .logo {
     background-position: right 80px;
 }
 
-#cart #order .delivery-type * {
+#cart #order .delivery-type *, #cart #order .coupon-container * {
     transition: 0.3s ease;
 }
 
-#cart #order .delivery-type .lead {
+#cart #order .delivery-type .lead, #cart #order .coupon-container .lead {
     font-family: Poppins, sans-serif;
     color: var(--starbuck-black);
     font-weight: 500;
@@ -1482,7 +1510,7 @@ footer .logo {
     color: white;
 }
 
-#cart #order .delivery-type .description {
+#cart #order .delivery-type .description, #cart #order .coupon-container .description {
     color: var(--ahab-gray);
     font-size: 18px;
     width: 70%;
@@ -1496,6 +1524,9 @@ footer .logo {
     padding: 10px;
     border-radius: 10px;
     border-width: 0px;
+}
+
+#cart #order input:not([type='submit']), #cart #order select {
     border: 2px solid white;
 }
 

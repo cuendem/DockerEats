@@ -122,9 +122,17 @@
                                         <a href="/build/add/<?=$type?>/<?=$product->getId_product()?>" class="card product">
                                             <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
                                             <div class="card-body d-flex flex-column justify-content-between">
-                                                <?=$product->alcoholIcon()?>
+                                                <?=$product->alcoholIcon($alcoholicProducts)?>
                                                 <h5 class="card-title"><?=$product->getName()?></h5>
-                                                <p class="card-subtitle"><?=$product->getPrice()?> €</p>
+                                                <?php $appliedSale = $product->isOnSale($currentSales);
+                                                if ($appliedSale) { ?>
+                                                    <div class="d-flex align-items-end gap-2">
+                                                        <p class="card-subtitle crossed-out"><?=$product->getPrice()?> €</p>
+                                                        <p class="card-subtitle discounted"><?=$product->getDiscountedPrice($appliedSale)?> €</p>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <p class="card-subtitle"><?=$product->getPrice()?> €</p>
+                                                <?php } ?>
                                             </div>
                                         </a>
                                     <?php } ?>

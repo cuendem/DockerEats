@@ -8,10 +8,13 @@ class containerController {
     public function index() {
         include_once('models/protection.php');
 
-        $categories = CategoriesDAO::getAll();
         $pageid = "build";
         $title = "Build";
         $view = "views/containers/build.php";
+
+        $categories = CategoriesDAO::getAll();
+        $alcoholicProducts = ProductsDAO::getByCat(10);
+        $currentSales = OffersDAO::getAllAvailable();
 
         include_once("views/main.php");
     }

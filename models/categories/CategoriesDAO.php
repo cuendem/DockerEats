@@ -29,6 +29,24 @@ class CategoriesDAO {
         return $categories;
     }
 
+    public static function getIDsByProduct($product = '%') {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('SELECT id_category FROM CATEGORIES_PRODUCTS WHERE id_product LIKE ?');
+        $stmt->bind_param('s', $product);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $categories = [];
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row['id_category'];
+        }
+
+        $con->close();
+
+        return $categories;
+    }
+
     public static function store($category) {
         $con = DataBase::connect();
         $stmt = $con->prepare('INSERT INTO CATEGORIES (name) VALUES (?)');

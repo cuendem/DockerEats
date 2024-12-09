@@ -18,6 +18,11 @@ class userController {
         $pageid = "cart";
         $view = "views/users/cart.php";
         $title = "Your Cart";
+
+        $categories = CategoriesDAO::getAll();
+        $currentSales = OffersDAO::getAllAvailable();
+
+        include_once("models/coupons/coupon_authentication.php");
         include_once("views/main.php");
     }
 

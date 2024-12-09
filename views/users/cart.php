@@ -12,7 +12,7 @@
 <section id="order" class="container-fluid">
     <div class="row">
         <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) { ?>
-            <div class="col-md-12 col-lg-7">
+            <div class="col-md-12 col-lg-7 d-flex flex-column gap-4">
                 <div class="containers">
                     <div class="section-title d-flex align-items-center gap-2">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M15.5777 3.38197L17.5777 4.43152C19.7294 5.56066 20.8052 6.12523 21.4026 7.13974C22 8.15425 22 9.41667 22 11.9415V12.0585C22 14.5833 22 15.8458 21.4026 16.8603C20.8052 17.8748 19.7294 18.4393 17.5777 19.5685L15.5777 20.618C13.8221 21.5393 12.9443 22 12 22C11.0557 22 10.1779 21.5393 8.42229 20.618L6.42229 19.5685C4.27063 18.4393 3.19479 17.8748 2.5974 16.8603C2 15.8458 2 14.5833 2 12.0585V11.9415C2 9.41667 2 8.15425 2.5974 7.13974C3.19479 6.12523 4.27063 5.56066 6.42229 4.43152L8.42229 3.38197C10.1779 2.46066 11.0557 2 12 2C12.9443 2 13.8221 2.46066 15.5777 3.38197Z" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M21 7.5L12 12M12 12L3 7.5M12 12V21.5" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
@@ -21,54 +21,34 @@
                     <div class="containers-list d-flex justify-content-center flex-wrap gap-4">
                         <?php foreach ($_SESSION['cart'] as $i => $cart_container) { ?>
                             <div class="container-order d-flex flex-column align-items-end position-relative">
-                                <div class="container-order-products w-100">
-                                    <div class="main d-flex p-3 gap-3 w-100">
-                                        <img src="/img/products/product<?=$cart_container['main']->getId_product()?>.webp" alt="<?=$cart_container['main']->getName()?>">
+                                <?php $contPrice = 0;
+                                foreach (['main', 'branch', 'drink', 'dessert'] as $i => $type) {
+                                    $product = $cart_container[$type]; ?>
+                                    <div class="<?=$type?> d-flex p-3 gap-3 w-100">
+                                        <img src="/img/products/product<?=$product->getId_product()?>.webp" alt="<?=$product->getName()?>">
                                         <div class="content position-relative flex-grow-1">
-                                            <?=productsController::getTypeIcon(1)?>
-                                            <span class="product-name"><?=$cart_container['main']->getName()?></span>
+                                            <?=productsController::getTypeIcon($i+1)?>
+                                            <span class="product-name"><?=$product->getName()?></span>
                                             <div class="customs">
-
+                                                
                                             </div>
-                                            <span class="price position-absolute bottom-0 end-0"><?=$cart_container['main']->getPrice()?> €</span>
+                                            
+                                                <?php $appliedSale = $product->isOnSale($currentSales);
+                                                if ($appliedSale) {
+                                                    $finalProductPrice = $product->getDiscountedPrice($appliedSale); ?>
+                                                    <div class="d-flex align-items-end gap-2 position-absolute bottom-0 end-0">
+                                                        <span class="price crossed-out"><?=$product->getPrice()?> €</span>
+                                                        <span class="price discounted"><?=$finalProductPrice?> €</span>
+                                                    </div>
+                                                <?php } else {
+                                                    $finalProductPrice = $product->getPrice(); ?>
+                                                    <span class="price position-absolute bottom-0 end-0"><?=$finalProductPrice?> €</span>
+                                                <?php } $contPrice += $finalProductPrice; ?>
                                         </div>
                                     </div>
-                                    <div class="branch d-flex p-3 gap-3 w-100">
-                                        <img src="/img/products/product<?=$cart_container['branch']->getId_product()?>.webp" alt="<?=$cart_container['branch']->getName()?>">
-                                        <div class="content position-relative flex-grow-1">
-                                            <?=productsController::getTypeIcon(2)?>
-                                            <span class="product-name"><?=$cart_container['branch']->getName()?></span>
-                                            <div class="customs">
-
-                                            </div>
-                                            <span class="price position-absolute bottom-0 end-0"><?=$cart_container['branch']->getPrice()?> €</span>
-                                        </div>
-                                    </div>
-                                    <div class="drink d-flex p-3 gap-3 w-100">
-                                        <img src="/img/products/product<?=$cart_container['drink']->getId_product()?>.webp" alt="<?=$cart_container['drink']->getName()?>">
-                                        <div class="content position-relative flex-grow-1">
-                                            <?=productsController::getTypeIcon(3)?>
-                                            <span class="product-name"><?=$cart_container['drink']->getName()?></span>
-                                            <div class="customs">
-
-                                            </div>
-                                            <span class="price position-absolute bottom-0 end-0"><?=$cart_container['drink']->getPrice()?> €</span>
-                                        </div>
-                                    </div>
-                                    <div class="dessert d-flex p-3 gap-3 w-100">
-                                        <img src="/img/products/product<?=$cart_container['dessert']->getId_product()?>.webp" alt="<?=$cart_container['dessert']->getName()?>">
-                                        <div class="content position-relative flex-grow-1">
-                                            <?=productsController::getTypeIcon(4)?>
-                                            <span class="product-name"><?=$cart_container['dessert']->getName()?></span>
-                                            <div class="customs">
-
-                                            </div>
-                                            <span class="price position-absolute bottom-0 end-0"><?=$cart_container['dessert']->getPrice()?> €</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php } ?>
                                 <div class="bottom-tag d-flex align-items-center">
-                                    <span class="total px-4 py-2"><?=$cart_container['main']->getPrice()+$cart_container['branch']->getPrice()+$cart_container['drink']->getPrice()+$cart_container['dessert']->getPrice()?> €</span>
+                                    <span class="total px-4 py-2"><?=$contPrice?> €</span>
                                     <a href="/build/removefromcart/<?=$i?>" class="container-remove px-3 py-2 bi bi-trash-fill"></a>
                                 </div>
                             </div>
@@ -118,47 +98,65 @@
                         </div>
                     </div>
                 </div>
+                <div class="coupons">
+                    <div class="section-title d-flex align-items-center gap-2">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M9.78133 3.89027C10.3452 3.40974 10.6271 3.16948 10.9219 3.02859C11.6037 2.70271 12.3963 2.70271 13.0781 3.02859C13.3729 3.16948 13.6548 3.40974 14.2187 3.89027C14.4431 4.08152 14.5553 4.17715 14.6752 4.25747C14.9499 4.4416 15.2584 4.56939 15.5828 4.63344C15.7244 4.66139 15.8713 4.67312 16.1653 4.69657C16.9038 4.7555 17.273 4.78497 17.5811 4.89378C18.2936 5.14546 18.8541 5.70591 19.1058 6.41844C19.2146 6.72651 19.244 7.09576 19.303 7.83426C19.3264 8.12819 19.3381 8.27515 19.3661 8.41669C19.4301 8.74114 19.5579 9.04965 19.7421 9.32437C19.8224 9.44421 19.918 9.55642 20.1093 9.78084C20.5898 10.3447 20.8301 10.6267 20.971 10.9214C21.2968 11.6032 21.2968 12.3958 20.971 13.0776C20.8301 13.3724 20.5898 13.6543 20.1093 14.2182C19.918 14.4426 19.8224 14.5548 19.7421 14.6747C19.5579 14.9494 19.4301 15.2579 19.3661 15.5824C19.3381 15.7239 19.3264 15.8709 19.303 16.1648C19.244 16.9033 19.2146 17.2725 19.1058 17.5806C18.8541 18.2931 18.2936 18.8536 17.5811 19.1053C17.273 19.2141 16.9038 19.2435 16.1653 19.3025C15.8713 19.3259 15.7244 19.3377 15.5828 19.3656C15.2584 19.4297 14.9499 19.5574 14.6752 19.7416C14.5553 19.8219 14.4431 19.9175 14.2187 20.1088C13.6548 20.5893 13.3729 20.8296 13.0781 20.9705C12.3963 21.2963 11.6037 21.2963 10.9219 20.9705C10.6271 20.8296 10.3452 20.5893 9.78133 20.1088C9.55691 19.9175 9.44469 19.8219 9.32485 19.7416C9.05014 19.5574 8.74163 19.4297 8.41718 19.3656C8.27564 19.3377 8.12868 19.3259 7.83475 19.3025C7.09625 19.2435 6.72699 19.2141 6.41893 19.1053C5.7064 18.8536 5.14594 18.2931 4.89427 17.5806C4.78546 17.2725 4.75599 16.9033 4.69706 16.1648C4.6736 15.8709 4.66188 15.7239 4.63393 15.5824C4.56988 15.2579 4.44209 14.9494 4.25796 14.6747C4.17764 14.5548 4.08201 14.4426 3.89076 14.2182C3.41023 13.6543 3.16997 13.3724 3.02907 13.0776C2.7032 12.3958 2.7032 11.6032 3.02907 10.9214C3.16997 10.6266 3.41023 10.3447 3.89076 9.78084C4.08201 9.55642 4.17764 9.44421 4.25796 9.32437C4.44209 9.04965 4.56988 8.74114 4.63393 8.41669C4.66188 8.27515 4.6736 8.12819 4.69706 7.83426C4.75599 7.09576 4.78546 6.72651 4.89427 6.41844C5.14594 5.70591 5.7064 5.14546 6.41893 4.89378C6.72699 4.78497 7.09625 4.7555 7.83475 4.69657C8.12868 4.67312 8.27564 4.66139 8.41718 4.63344C8.74163 4.56939 9.05014 4.4416 9.32485 4.25747C9.4447 4.17715 9.55691 4.08152 9.78133 3.89027Z" stroke="#1D63ED" stroke-width="1.5"></path> <path d="M9 15L15 9" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path d="M15.5 14.5C15.5 15.0523 15.0523 15.5 14.5 15.5C13.9477 15.5 13.5 15.0523 13.5 14.5C13.5 13.9477 13.9477 13.5 14.5 13.5C15.0523 13.5 15.5 13.9477 15.5 14.5Z" fill="#1D63ED"></path> <path d="M10.5 9.5C10.5 10.0523 10.0523 10.5 9.5 10.5C8.94772 10.5 8.5 10.0523 8.5 9.5C8.5 8.94772 8.94772 8.5 9.5 8.5C10.0523 8.5 10.5 8.94772 10.5 9.5Z" fill="#1D63ED"></path> </g></svg>
+                        <h2>Coupons</h2>
+                    </div>
+                    <div class="coupon-container d-flex flex-column align-items-center gap-4 p-3">
+                        <div class="d-flex flex-column align-items-center">
+                            <span class="lead">Enter a coupon</span>
+                            <span class="description">Found one of our coupons? Enter it here to get a neat discount with your order!</span>
+                        </div>
+                        <form action="" method="post">
+                            <input type="text" id="coupon-code" name="coupon-code" placeholder="Coupon...">
+                            <input type="submit" value="Redeem">
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="col-md-12 col-lg-5 right">
-                <div class="payment d-flex flex-column h-100">
+                <div class="payment d-flex flex-column">
                     <div class="section-title d-flex align-items-center gap-2">
                         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 10C2 7.17157 2 5.75736 2.87868 4.87868C3.75736 4 5.17157 4 8 4H13C15.8284 4 17.2426 4 18.1213 4.87868C19 5.75736 19 7.17157 19 10C19 12.8284 19 14.2426 18.1213 15.1213C17.2426 16 15.8284 16 13 16H8C5.17157 16 3.75736 16 2.87868 15.1213C2 14.2426 2 12.8284 2 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M19.0003 7.07617C19.9754 7.17208 20.6317 7.38885 21.1216 7.87873C22.0003 8.75741 22.0003 10.1716 22.0003 13.0001C22.0003 15.8285 22.0003 17.2427 21.1216 18.1214C20.2429 19.0001 18.8287 19.0001 16.0003 19.0001H11.0003C8.17187 19.0001 6.75766 19.0001 5.87898 18.1214C5.38909 17.6315 5.17233 16.9751 5.07642 16" stroke="#1D63ED" stroke-width="1.5"></path> <path d="M13 10C13 11.3807 11.8807 12.5 10.5 12.5C9.11929 12.5 8 11.3807 8 10C8 8.61929 9.11929 7.5 10.5 7.5C11.8807 7.5 13 8.61929 13 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M16 12L16 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M5 12L5 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
                         <h2>Payment</h2>
                     </div>
-                    <div class="payment-container d-flex flex-column p-4 flex-grow-1 justify-content-between">
+                    <div class="payment-container d-flex flex-column p-4 gap-4">
                         <div class="bill d-flex flex-column gap-2">
                             <?php $totalContPrice = 0;
                             foreach ($_SESSION['cart'] as $i => $cart_container) { 
-                                $contPrice = $cart_container['main']->getPrice()+$cart_container['branch']->getPrice()+$cart_container['drink']->getPrice()+$cart_container['dessert']->getPrice()?>
+                                $contPrice = 0; ?>
                                 <div class="d-flex justify-content-between align-items-center gap-3">
                                     <span class="container-data d-flex align-items-center">Container <?=$i+1?></span>
                                     <hr class="flex-grow-1">
+                                </div>
+                                <?php foreach (['main', 'branch', 'drink', 'dessert'] as $type) {
+                                    $product = $cart_container[$type]; ?>
+                                    <div class="ms-4 d-flex justify-content-between align-items-center gap-3">
+                                        <span class="product-data d-flex align-items-center"><?=$product->getName()?></span>
+                                        <hr class="flex-grow-1">
+                                        <span class="product-data d-flex align-items-center">
+                                            <?php $appliedSale = $product->isOnSale($currentSales);
+                                            if ($appliedSale) {
+                                                $finalProductPrice = $product->getDiscountedPrice($appliedSale);
+                                            } else {
+                                                $finalProductPrice = $product->getPrice();
+                                            }
+
+                                            $contPrice += $finalProductPrice;
+                                            echo $finalProductPrice;
+                                            ?> €</span>
+                                    </div>
+                                <?php } ?>
+                                <div class="d-flex justify-content-between align-items-center gap-3">
+                                    <span class="container-data d-flex align-items-center">Total</span>
+                                    <hr class="flex-grow-1">
                                     <span class="container-data d-flex align-items-center"><?=$contPrice?> €</span>
-                                </div>
-                                <div class="ms-4 d-flex justify-content-between align-items-center gap-3">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['main']->getName()?></span>
-                                    <hr class="flex-grow-1">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['main']->getPrice()?> €</span>
-                                </div>
-                                <div class="ms-4 d-flex justify-content-between align-items-center gap-3">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['branch']->getName()?></span>
-                                    <hr class="flex-grow-1">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['branch']->getPrice()?> €</span>
-                                </div>
-                                <div class="ms-4 d-flex justify-content-between align-items-center gap-3">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['drink']->getName()?></span>
-                                    <hr class="flex-grow-1">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['drink']->getPrice()?> €</span>
-                                </div>
-                                <div class="ms-4 d-flex justify-content-between align-items-center gap-3">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['dessert']->getName()?></span>
-                                    <hr class="flex-grow-1">
-                                    <span class="product-data d-flex align-items-center"><?=$cart_container['dessert']->getPrice()?> €</span>
                                 </div>
                             <?php $totalContPrice += $contPrice; } ?>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between align-items-center gap-3">
-                                <span class="container-data d-flex align-items-center">Total</span>
+                                <span class="container-data d-flex align-items-center">All containers</span>
                                 <hr class="flex-grow-1">
                                 <span class="total-container-price"><?=$totalContPrice?> €</span>
                             </div>
@@ -173,15 +171,84 @@
                                 <span class="added-extras d-flex align-items-center">2.99 €</span>
                             </div>
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
-                                <span class="added-extras d-flex align-items-center">Discounts</span>
+                                <span class="added-extras d-flex align-items-center">Sales</span>
                                 <hr class="flex-grow-1">
-                                <span class="added-extras d-flex align-items-center grayed">No discounts applied</span>
+                                <?php if (count($currentSales) > 0) { ?>
+                                    <span class="added-extras d-flex align-items-center"><?=$currentSales[0]->getSummary()?></span>
+                                <?php } else { ?>
+                                    <span class="added-extras d-flex align-items-center grayed">No sales applied</span>
+                                <?php } ?>
                             </div>
+                            <?php if (count($currentSales) > 1) {
+                                foreach ($currentSales as $i => $sale) {
+                                    if ($i != 0) { ?>
+                                        <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
+                                            <div></div>
+                                            <span class="added-extras d-flex align-items-center"><?=$sale->getSummary()?></span>
+                                        </div>
+                                    <?php }
+                                }
+                            } ?>
+                            <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
+                                <span class="added-extras d-flex align-items-center">Coupons</span>
+                                <hr class="flex-grow-1">
+                                <?php if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) { ?>
+                                    <span class="added-extras d-flex align-items-center"><?=$_SESSION['coupons'][0]->getSummary()?></span>
+                                <?php } else { ?>
+                                    <span class="added-extras d-flex align-items-center grayed">No coupons used</span>
+                                <?php } ?>
+                            </div>
+                            <?php if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 1) {
+                                foreach ($_SESSION['coupons'] as $i => $coupon) {
+                                    if ($i != 0) { ?>
+                                        <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
+                                            <div></div>
+                                            <span class="added-extras d-flex align-items-center"><?=$coupon->getSummary()?></span>
+                                        </div>
+                                    <?php }
+                                }
+                            } ?>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between align-items-center gap-3">
                                 <span class="total-price d-flex align-items-center">TOTAL</span>
                                 <hr class="flex-grow-1">
-                                <span id="total-price" class="total-price align-self-end"><?=round($totalContPrice*1.08, 2)+2.99?> €</span>
+                                <span id="total-price" class="total-price align-self-end"><?php
+                                    // Apply taxes
+                                    $totalContPrice = round($totalContPrice*1.08, 2);
+
+                                    // Delivery fee
+                                    $totalContPrice += 2.99;
+
+                                    // Apply sales
+                                    if (count($currentSales) > 0) {
+                                        foreach ($currentSales as $i => $sale) {
+                                            if ($sale -> getScope() == 1) {
+                                                if ($sale -> getDiscount_type() == 2) {
+                                                    // Percentage-based sale
+                                                    $totalContPrice = round($totalContPrice*(1 - ($sale->getDiscount() / 100)), 2);
+                                                } else {
+                                                    // Base-based sale
+                                                    $totalContPrice -= $sale->getDiscount();
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Apply coupons
+                                    if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) {
+                                        foreach ($_SESSION['coupons'] as $i => $coupon) {
+                                            if ($coupon -> getDiscount_type() == 2) {
+                                                // Percentage-based coupon
+                                                $totalContPrice = round($totalContPrice*(1 - ($coupon->getDiscount() / 100)), 2);
+                                            } else {
+                                                // Base-based coupon
+                                                $totalContPrice -= $coupon->getDiscount();
+                                            }
+                                        }
+                                    }
+
+                                    echo $totalContPrice;
+                                ?> €</span>
                             </div>
                             <hr class="my-3">
                         </div>
