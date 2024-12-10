@@ -1,7 +1,7 @@
 <?php
 
-class Offer {
-    protected $id_offer;
+class Sale {
+    protected $id_sale;
     protected $name;
     protected $description;
     protected $discount;
@@ -27,21 +27,21 @@ class Offer {
     }
 
     /**
-     * Get the value of id_offer
+     * Get the value of id_sale
      */ 
-    public function getId_offer()
+    public function getId_sale()
     {
-        return $this->id_offer;
+        return $this->id_sale;
     }
 
     /**
-     * Set the value of id_offer
+     * Set the value of id_sale
      *
      * @return  self
      */ 
-    public function setId_offer($id_offer)
+    public function setId_sale($id_sale)
     {
-        $this->id_offer = $id_offer;
+        $this->id_sale = $id_sale;
 
         return $this;
     }

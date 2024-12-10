@@ -1530,7 +1530,7 @@ input[type='submit']:hover {
     border: 2px solid white;
 }
 
-#cart #order input:focus, #cart #order select:focus {
+#cart #order input:not([type='submit']):focus, #cart #order select:focus {
     outline: 0px;
     border: 2px solid var(--ishmael-blue);
 }
@@ -1623,6 +1623,7 @@ input[type='submit']:hover {
     font-family: Poppins, sans-serif;
     font-size: 20px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 #cart #order .payment-container .accordion-button:not(.collapsed) {

@@ -2,7 +2,7 @@
 
 include_once('CouponsDAO.php');
 
-if(isset($_POST['coupon-code'])) {
+if(isset($_POST['coupon-code'], $_POST['coupon-button']) && $_POST['coupon-code'] != '') {
     $coupon = CouponsDAO::getAvailable($_POST['coupon-code']);
 
     if (is_null($coupon)) {

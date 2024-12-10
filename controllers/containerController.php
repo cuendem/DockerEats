@@ -14,7 +14,7 @@ class containerController {
 
         $categories = CategoriesDAO::getAll();
         $alcoholicProducts = ProductsDAO::getByCat(10);
-        $currentSales = OffersDAO::getAllAvailable();
+        $currentSales = SalesDAO::getAllAvailable();
 
         include_once("views/main.php");
     }

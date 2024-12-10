@@ -27,14 +27,8 @@ class ContainersDAO {
     public static function store($order) {
         $con = DataBase::connect();
 
-        $id_user = $order->getId_user();
-        $id_establishment = $order->getId_establishment();
-        $date_order = $order->getDate_order();
-        $delivery_address = $order->getDelivery_address();
-        $cart = $order->getCart();
-
-        $stmt = $con->prepare('INSERT INTO ORDERS (id_user, id_establishment, date_order, delivery_address, cart) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('iisss', $id_user, $id_establishment, $date_order, $delivery_address, $cart);
+        $stmt = $con->prepare('INSERT INTO CONTAINERS (id_order) VALUES (?)');
+        $stmt->bind_param('i', $order);
 
         $stmt->execute();
 

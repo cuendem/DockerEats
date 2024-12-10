@@ -1,91 +1,49 @@
 <?php
 
 class Container {
-    protected $id_user;
-    protected $username;
-    protected $password;
-    protected $email;
+    protected $id_container;
+    protected $id_order;
 
     public function __construct() {
 
     }
 
     /**
-     * Get the value of id_user
+     * Get the value of id_container
      */ 
-    public function getId_user()
+    public function getId_container()
     {
-        return $this->id_user;
+        return $this->id_container;
     }
 
     /**
-     * Set the value of id_user
+     * Set the value of id_container
      *
      * @return  self
      */ 
-    public function setId_user($id_user)
+    public function setId_container($id_container)
     {
-        $this->id_user = $id_user;
+        $this->id_container = $id_container;
 
         return $this;
     }
 
     /**
-     * Get the value of username
+     * Get the value of id_order
      */ 
-    public function getUsername()
+    public function getId_order()
     {
-        return $this->username;
+        return $this->id_order;
     }
 
     /**
-     * Set the value of username
+     * Set the value of id_order
      *
      * @return  self
      */ 
-    public function setUsername($username)
+    public function setId_order($id_order)
     {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of password
-     */ 
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set the value of password
-     *
-     * @return  self
-     */ 
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of email
-     */ 
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set the value of email
-     *
-     * @return  self
-     */ 
-    public function setEmail($email)
-    {
-        $this->email = $email;
+        $this->id_order = $id_order;
 
         return $this;
     }

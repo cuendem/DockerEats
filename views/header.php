@@ -38,7 +38,7 @@
                         <a class="nav-link" href="/ingredients/">Ingredients</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/offers/">Offers</a>
+                        <a class="nav-link" href="/sales/">Sales</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/about/">About Us</a>

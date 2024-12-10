@@ -10,7 +10,7 @@
 </section>
 
 <section id="order" class="container-fluid">
-    <div class="row">
+    <form action="" method="post" class="row">
         <?php if (isset($_SESSION['cart']) && count($_SESSION['cart']) > 0) { ?>
             <div class="col-md-12 col-lg-7 d-flex flex-column gap-4">
                 <div class="containers">
@@ -21,18 +21,18 @@
                     <div class="containers-list d-flex justify-content-center flex-wrap gap-4">
                         <?php foreach ($_SESSION['cart'] as $i => $cart_container) { ?>
                             <div class="container-order d-flex flex-column align-items-end position-relative">
-                                <?php $contPrice = 0;
-                                foreach (['main', 'branch', 'drink', 'dessert'] as $i => $type) {
-                                    $product = $cart_container[$type]; ?>
-                                    <div class="<?=$type?> d-flex p-3 gap-3 w-100">
-                                        <img src="/img/products/product<?=$product->getId_product()?>.webp" alt="<?=$product->getName()?>">
-                                        <div class="content position-relative flex-grow-1">
-                                            <?=productsController::getTypeIcon($i+1)?>
-                                            <span class="product-name"><?=$product->getName()?></span>
-                                            <div class="customs">
-                                                
-                                            </div>
-                                            
+                                <div class="container-order-products d-flex flex-column w-100">
+                                    <?php $contPrice = 0;
+                                    foreach (['main', 'branch', 'drink', 'dessert'] as $i => $type) {
+                                        $product = $cart_container[$type]; ?>
+                                        <div class="<?=$type?> d-flex p-3 gap-3 w-100">
+                                            <img src="/img/products/product<?=$product->getId_product()?>.webp" alt="<?=$product->getName()?>">
+                                            <div class="content position-relative flex-grow-1">
+                                                <?=productsController::getTypeIcon($i+1)?>
+                                                <span class="product-name"><?=$product->getName()?></span>
+                                                <div class="customs">
+                                                    
+                                                </div>
                                                 <?php $appliedSale = $product->isOnSale($currentSales);
                                                 if ($appliedSale) {
                                                     $finalProductPrice = $product->getDiscountedPrice($appliedSale); ?>
@@ -44,9 +44,10 @@
                                                     $finalProductPrice = $product->getPrice(); ?>
                                                     <span class="price position-absolute bottom-0 end-0"><?=$finalProductPrice?> €</span>
                                                 <?php } $contPrice += $finalProductPrice; ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                <?php } ?>
+                                    <?php } ?>
+                                </div>
                                 <div class="bottom-tag d-flex align-items-center">
                                     <span class="total px-4 py-2"><?=$contPrice?> €</span>
                                     <a href="/build/removefromcart/<?=$i?>" class="container-remove px-3 py-2 bi bi-trash-fill"></a>
@@ -69,12 +70,12 @@
                             <div class="inputs d-flex flex-column gap-2">
                                 <input type="text" id="address" name="address" placeholder="Address..." autocomplete="street-address">
                                 <div class="input-container d-flex gap-2">
-                                    <input type="text" id="floor" name="floor" placeholder="Floor..." autocomplete="address-level3">
                                     <input type="text" id="town" name="town" placeholder="Town..." autocomplete="address-level2">
+                                    <input type="text" id="postalcode" name="postalcode" placeholder="Postal code..." autocomplete="postal-code">
                                 </div>
                                 <div class="input-container d-flex gap-2">
                                     <input type="text" id="city" name="city" placeholder="City..." autocomplete="address-level1">
-                                    <input type="text" id="postalcode" name="postalcode" placeholder="Postal code..." autocomplete="postal-code">
+                                    <input type="text" id="country" name="country" placeholder="Country..." autocomplete="country-name">
                                 </div>
                                 <input type="text" id="delivery-selected" name="delivery-selected" value="true" hidden>
                             </div>
@@ -108,10 +109,10 @@
                             <span class="lead">Enter a coupon</span>
                             <span class="description">Found one of our coupons? Enter it here to get a neat discount with your order!</span>
                         </div>
-                        <form action="" method="post">
+                        <div>
                             <input type="text" id="coupon-code" name="coupon-code" placeholder="Coupon...">
-                            <input type="submit" value="Redeem">
-                        </form>
+                            <input type="submit" name="coupon-button" value="Redeem">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -252,15 +253,22 @@
                             </div>
                             <hr class="my-3">
                         </div>
-                        <div class="payment-method">
+                        <div>
                             <h5>Select payment method</h5>
                             <div class="accordion d-flex flex-column gap-3" id="payment-accordion">
+                                <!-- Credit Card Option -->
                                 <div class="accordion-item">
                                     <h5 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#payment-card" aria-expanded="true" aria-controls="payment-card">
-                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M10 16H6" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M14 16H12.5" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M2 10L22 10" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                                        <input type="radio" name="payment-method" id="payment-card-radio" value="card" class="d-none" checked>
+                                        <label for="payment-card-radio" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#payment-card" aria-expanded="true" aria-controls="payment-card">
+                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="#1D63ED" stroke-width="1.5"></path>
+                                                <path opacity="0.5" d="M10 16H6" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path>
+                                                <path opacity="0.5" d="M14 16H12.5" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path>
+                                                <path opacity="0.5" d="M2 10L22 10" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path>
+                                            </svg>
                                             Credit Card
-                                        </button>
+                                        </label>
                                     </h5>
                                     <div id="payment-card" class="accordion-collapse collapse show" data-bs-parent="#payment-accordion">
                                         <div class="accordion-body">
@@ -275,12 +283,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- PayPal Option -->
                                 <div class="accordion-item">
                                     <h5 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#payment-paypal" aria-expanded="false" aria-controls="payment-paypal">
-                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M13 3H7.76556C6.75692 3 5.90612 3.75107 5.78101 4.75193L4.12403 18.0077C4.05817 18.5346 4.46901 19 5 19H6.30575C7.28342 19 8.1178 18.2932 8.27853 17.3288L8.8356 13.9864C8.93047 13.4172 9.42294 13 10 13H13C19 13 19 3 13 3Z" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7.32317 18.7378L7.14142 20.0101C7.06678 20.5326 7.47221 21 8 21V21H9.43845C10.3562 21 11.1561 20.3754 11.3787 19.4851L11.7575 17.9702C11.9 17.4 12.4123 17 13 17V17H16C21.393 17 21.9386 8.92103 17.6368 7.28638" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                                        <input type="radio" name="payment-method" id="payment-paypal-radio" value="paypal" class="d-none">
+                                        <label for="payment-paypal-radio" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#payment-paypal" aria-expanded="false" aria-controls="payment-paypal">
+                                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M13 3H7.76556C6.75692 3 5.90612 3.75107 5.78101 4.75193L4.12403 18.0077C4.05817 18.5346 4.46901 19 5 19H6.30575C7.28342 19 8.1178 18.2932 8.27853 17.3288L8.8356 13.9864C8.93047 13.4172 9.42294 13 10 13H13C19 13 19 3 13 3Z" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                                <path d="M7.32317 18.7378L7.14142 20.0101C7.06678 20.5326 7.47221 21 8 21H9.43845C10.3562 21 11.1561 20.3754 11.3787 19.4851L11.7575 17.9702C11.9 17.4 12.4123 17 13 17H16C21.393 17 21.9386 8.92103 17.6368 7.28638" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
                                             PayPal
-                                        </button>
+                                        </label>
                                     </h5>
                                     <div id="payment-paypal" class="accordion-collapse collapse" data-bs-parent="#payment-accordion">
                                         <div class="accordion-body">
@@ -288,12 +301,14 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Cash Option -->
                                 <div class="accordion-item">
                                     <h5 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#payment-cash" aria-expanded="false" aria-controls="payment-cash">
+                                        <input type="radio" name="payment-method" id="payment-cash-radio" value="cash" class="d-none">
+                                        <label for="payment-cash-radio" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#payment-cash" aria-expanded="false" aria-controls="payment-cash">
                                             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 10C2 7.17157 2 5.75736 2.87868 4.87868C3.75736 4 5.17157 4 8 4H13C15.8284 4 17.2426 4 18.1213 4.87868C19 5.75736 19 7.17157 19 10C19 12.8284 19 14.2426 18.1213 15.1213C17.2426 16 15.8284 16 13 16H8C5.17157 16 3.75736 16 2.87868 15.1213C2 14.2426 2 12.8284 2 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M19.0003 7.07617C19.9754 7.17208 20.6317 7.38885 21.1216 7.87873C22.0003 8.75741 22.0003 10.1716 22.0003 13.0001C22.0003 15.8285 22.0003 17.2427 21.1216 18.1214C20.2429 19.0001 18.8287 19.0001 16.0003 19.0001H11.0003C8.17187 19.0001 6.75766 19.0001 5.87898 18.1214C5.38909 17.6315 5.17233 16.9751 5.07642 16" stroke="#1D63ED" stroke-width="1.5"></path> <path d="M13 10C13 11.3807 11.8807 12.5 10.5 12.5C9.11929 12.5 8 11.3807 8 10C8 8.61929 9.11929 7.5 10.5 7.5C11.8807 7.5 13 8.61929 13 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M16 12L16 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M5 12L5 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
                                             Cash
-                                        </button>
+                                        </label>
                                     </h5>
                                     <div id="payment-cash" class="accordion-collapse collapse" data-bs-parent="#payment-accordion">
                                         <div class="accordion-body">
@@ -303,7 +318,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="" id="buy-button" class="btn btn-selected w-100 mt-3">Finish and buy!</a>
+                        <input type="submit" name="buy-button" id="buy-button" class="btn btn-selected w-100 mt-3" value="Finish and buy!">
                     </div>
                 </div>
             </div>
@@ -313,7 +328,7 @@
                 <a href="/build/" class="mt-3 btn btn-selected">Build one now!</a>
             </div>
         <?php } ?>
-    </div>
+    </form>
 </section>
 </main>
 

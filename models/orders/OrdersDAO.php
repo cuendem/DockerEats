@@ -7,7 +7,7 @@ class OrdersDAO {
     public static function getAll() {
         $con = DataBase::connect();
 
-        // Prepare the SQL statement with LIKE
+        // Prepare the SQL statement
         $stmt = $con->prepare('SELECT * FROM ORDERS');
 
         // Execute the query
@@ -31,10 +31,14 @@ class OrdersDAO {
         $id_establishment = $order->getId_establishment();
         $date_order = $order->getDate_order();
         $delivery_address = $order->getDelivery_address();
-        $cart = $order->getCart();
+        $payment_type = $order->getPayment_type();
+        $card_number = $order->getCard_number();
+        $expiration_date = $order->getExpiration_date();
+        $cvc = $order->getCvc();
+        $card_holder = $order->getCard_holder();
 
-        $stmt = $con->prepare('INSERT INTO ORDERS (id_user, id_establishment, date_order, delivery_address, cart) VALUES (?, ?, ?, ?, ?)');
-        $stmt->bind_param('iisss', $id_user, $id_establishment, $date_order, $delivery_address, $cart);
+        $stmt = $con->prepare('INSERT INTO ORDERS (id_user, id_establishment, date_order, delivery_address, payment_type, card_number, expiration_date, cvc, card_holder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $stmt->bind_param('iisssisis', $id_user, $id_establishment, $date_order, $delivery_address, $payment_type, $card_number, $expiration_date, $cvc, $card_holder);
 
         $stmt->execute();
 

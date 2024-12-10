@@ -122,12 +122,19 @@ function toggleSelection(isDelivery) {
     const pickupElement = document.getElementById('pick-up');
     const deliveryButton = document.getElementById('select-delivery');
     const pickupButton = document.getElementById('select-pickup');
-    const deliveryInput = document.getElementById('delivery-selected'); // Hidden input for pickup selection
+    const deliveryInput = document.getElementById('delivery-selected'); // Hidden input for delivery selection
     const pickupInput = document.getElementById('pickup-selected'); // Hidden input for pickup selection
     const deliveryFee = document.getElementById('delivery-fee');
     const totalPrice = document.getElementById('total-price');
 
-    if ((isDelivery && deliveryInput.value != 'true') || (!isDelivery && pickupInput.value != 'true')) {
+    // Fields to make required for delivery
+    const addressField = document.getElementById('address');
+    const floorField = document.getElementById('floor');
+    const townField = document.getElementById('town');
+    const cityField = document.getElementById('city');
+    const postalcodeField = document.getElementById('postalcode');
+
+    if ((isDelivery && deliveryInput.value !== 'true') || (!isDelivery && pickupInput.value !== 'true')) {
         totalPrice.innerHTML = Math.round((parseFloat(totalPrice.innerHTML) + (isDelivery ? 2.99 : -2.99)) * 100) / 100 + " €";
     }
 
@@ -149,6 +156,15 @@ function toggleSelection(isDelivery) {
     pickupButton.classList.toggle('btn-selected', !isDelivery);
 
     deliveryFee.classList.toggle('hidden', !isDelivery);
+
+    // Toggle required attribute for delivery fields
+    [addressField, floorField, townField, cityField, postalcodeField].forEach((field) => {
+        if (isDelivery) {
+            field.setAttribute('required', 'required');
+        } else {
+            field.removeAttribute('required');
+        }
+    });
 }
 
 // Event listeners for delivery and pickup selection

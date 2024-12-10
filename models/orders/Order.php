@@ -6,7 +6,11 @@ class Order {
     protected $id_establishment;
     protected $date_order;
     protected $delivery_address;
-    protected $cart;
+    protected $payment_type;
+    protected $card_number;
+    protected $expiration_date;
+    protected $cvc;
+    protected $card_holder;
 
     public function __construct() {
 
@@ -113,21 +117,101 @@ class Order {
     }
 
     /**
-     * Get the value of cart
+     * Get the value of payment_type
      */ 
-    public function getCart()
+    public function getPayment_type()
     {
-        return $this->cart;
+        return $this->payment_type;
     }
 
     /**
-     * Set the value of cart
+     * Set the value of payment_type
      *
      * @return  self
      */ 
-    public function setCart($cart)
+    public function setPayment_type($payment_type)
     {
-        $this->cart = $cart;
+        $this->payment_type = $payment_type;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of card_number
+     */ 
+    public function getCard_number()
+    {
+        return $this->card_number;
+    }
+
+    /**
+     * Set the value of card_number
+     *
+     * @return  self
+     */ 
+    public function setCard_number($card_number)
+    {
+        $this->card_number = $card_number;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of expiration_date
+     */ 
+    public function getExpiration_date()
+    {
+        return $this->expiration_date;
+    }
+
+    /**
+     * Set the value of expiration_date
+     *
+     * @return  self
+     */ 
+    public function setExpiration_date($expiration_date)
+    {
+        $this->expiration_date = $expiration_date;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of cvc
+     */ 
+    public function getCvc()
+    {
+        return $this->cvc;
+    }
+
+    /**
+     * Set the value of cvc
+     *
+     * @return  self
+     */ 
+    public function setCvc($cvc)
+    {
+        $this->cvc = $cvc;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of card_holder
+     */ 
+    public function getCard_holder()
+    {
+        return $this->card_holder;
+    }
+
+    /**
+     * Set the value of card_holder
+     *
+     * @return  self
+     */ 
+    public function setCard_holder($card_holder)
+    {
+        $this->card_holder = $card_holder;
 
         return $this;
     }

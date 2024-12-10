@@ -47,6 +47,17 @@ class CouponsDAO {
         // Return the first valid coupon, or null if none found
         return count($coupons) > 0 ? $coupons[0] : null;
     }
+
+    public static function storeCouponOrderRelation($id_order, $coupon) {
+        $con = DataBase::connect();
+
+        $id_coupon = $coupon->getId_coupon();
+
+        $stmt = $con->prepare('INSERT INTO COUPONS_ORDERS (id_coupon, id_order) VALUES (?, ?)');
+        $stmt->bind_param('ii', $id_coupon, $id_order);
+        $stmt->execute();
+        $con->close();
+    }
 }
 
 ?>
