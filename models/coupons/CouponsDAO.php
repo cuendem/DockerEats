@@ -58,6 +58,26 @@ class CouponsDAO {
         $stmt->execute();
         $con->close();
     }
+
+    public static function getOrderCoupons($id_order) {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('SELECT * FROM COUPONS_ORDERS WHERE id_order LIKE ?');
+        $stmt->bind_param('i', $id_order);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $coupons = [];
+        while ($coupon = $result->fetch_object("Coupon")) {
+            $coupons[] = $coupon;
+        }
+
+        $con->close();
+
+        return $coupons;
+    }
 }
 
 ?>

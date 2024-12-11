@@ -24,6 +24,27 @@ class PartsDAO {
         return $parts;
     }
 
+    public static function getFromContainer($id_container) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare('SELECT * FROM CONTAINER_PARTS WHERE id_container LIKE ?');
+        $stmt->bind_param('i', $id_container);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $parts = [];
+        while ($part = $result->fetch_object("Part")) {
+            $parts[] = $part;
+        }
+
+        $con->close();
+
+        return $parts;
+    }
+
     public static function store($part) {
         $con = DataBase::connect();
 

@@ -24,14 +24,14 @@ class SalesDAO {
         return $sales;
     }
 
-    public static function getAllAvailable($scope = '%') {
+    public static function getAllAvailable($date, $scope = '%') {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE and date validity checks
-        $stmt = $con->prepare('SELECT * FROM SALES WHERE date_start <= CURDATE() AND (date_end IS NULL OR date_end >= CURDATE()) AND scope LIKE ?');
+        $stmt = $con->prepare('SELECT * FROM SALES WHERE date_start <= ? AND (date_end IS NULL OR date_end >= ?) AND scope LIKE ?');
 
         // Bind the parameter (using 's' for a string pattern)
-        $stmt->bind_param('s', $scope);
+        $stmt->bind_param('sss', $date, $date, $scope);
 
         // Execute the query
         $stmt->execute();

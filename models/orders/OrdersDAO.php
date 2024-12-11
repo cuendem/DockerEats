@@ -8,7 +8,7 @@ class OrdersDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('SELECT * FROM ORDERS');
+        $stmt = $con->prepare('SELECT * FROM ORDERS ORDER BY id_order DESC');
 
         // Execute the query
         $stmt->execute();

@@ -72,7 +72,7 @@
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/account/">My profile<i class="bi bi-person-fill"></i></a></li>
                             <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/account/cart">My cart<i class="bi bi-cart-fill"></i></a></li>
-                            <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/account/orders">My orders<i class="bi bi-box-seam-fill"></i></a></li>
+                            <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/orders/">My orders<i class="bi bi-box-seam-fill"></i></a></li>
                             <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/account/edit">Account settings<i class="bi bi-gear-fill"></i></a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item signout d-flex justify-content-between align-items-center" href="/account/signout">Sign Out<i class="bi bi-box-arrow-right"></i></a></li>

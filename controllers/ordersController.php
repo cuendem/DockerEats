@@ -1,10 +1,19 @@
 <?php
 
 include_once("models/orders/OrdersDAO.php");
-include_once("models/containers/ContainersDAO.php");
 include_once("models/parts/PartsDAO.php");
 
 class ordersController {
+    public function index() {
+        $pageid = "orders";
+        $title = "Orders";
+        $view = "views/orders/list.php";
+
+        $orders = OrdersDAO::getAll();
+
+        include_once("views/main.php");
+    }
+
     public static function createOrder($data) {
         // Delivery type
         if ($data['delivery-selected'] == 'true') {

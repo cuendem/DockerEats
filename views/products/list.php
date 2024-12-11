@@ -17,10 +17,12 @@
         if (count($products) > 0) { $i++; ?>
             <div class="categoryRow pb-4 <?php if ($i > 1) { echo 'wave-separator pt-4 '; } if ($i % 2 == 0) { echo 'grayed'; } ?>">
                 <h2 class="categoryName"><?=$category->getName()?></h2>
-                <div class="productsCategory d-flex pt-3 pb-5 flex-wrap justify-content-around gap-3">
+                <div class="productsCategory d-flex pt-3 pb-5 flex-wrap gap-3">
                 <?php foreach ($products as $product) { ?>
                     <div class="card product">
-                        <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
+                        <div class="overflow-hidden">
+                            <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
+                        </div>
                         <div class="card-body d-flex flex-column justify-content-between">
                             <?=productsController::getTypeIcon($product->getId_type())?>
                             <?=$product->alcoholIcon($alcoholicProducts)?>

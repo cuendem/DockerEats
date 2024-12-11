@@ -791,12 +791,12 @@ footer .logo {
     border-top: 1px solid var(--charon-gray);
 }
 
-#productlist #list .productsCategory .product {
+#productlist #list .productsCategory .product img {
     transition: 0.3s ease;
 }
 
-#productlist #list .productsCategory .product:hover {
-    transform: translateY(-0.5rem);
+#productlist #list .productsCategory .product:hover img {
+    transform: scale(115%);
 }
 
 /*
@@ -1658,4 +1658,116 @@ input[type='submit']:hover {
     font-family: Poppins, sans-serif;
     font-size: 25px;
     font-weight: 500;
+}
+
+/*
+ORDERS
+*/
+
+#orders #banner {
+    background-color: var(--pilot-white);
+}
+
+#orders #list {
+    background-color: white;
+    padding-left: 10vw;
+    padding-right: 10vw;
+}
+
+.order {
+    background-color: var(--pallid-white);
+    border-radius: 30px;
+    box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
+}
+
+.order .userdata {
+    transform: translate(-5%, -10%);
+}
+
+.order .userdata img {
+    border-radius: 100px;
+    width: 120px;
+    border: 10px solid var(--pequod-blue);
+    z-index: 1;
+}
+
+.order .userdata .userdatatext .date {
+    color: white;
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    background-color: var(--pequod-blue);
+    padding: 10px 15px 10px 65px;
+    border-radius: 0px 100px 100px 0px;
+    margin-left: -60px;
+}
+
+.order .userdata .userdatatext .username {
+    color: var(--queequeg-blue);
+    font-family: Poppins, sans-serif;
+    font-size: 18px;
+    background-color: var(--pip-blue);
+    padding: 5px 20px 5px 65px;
+    border-radius: 0px 0px 100px 0px;
+    width: fit-content;
+    margin-left: -60px;
+}
+
+.order .orderpills .orderpill {
+    background-color: white;
+    box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
+    border-radius: 100px;
+    width: 200px;
+}
+
+.order .orderpills .orderpill svg {
+    width: 40px;
+}
+
+.order .orderpills .orderpill span {
+    text-align: center;
+    color: var(--queequeg-blue);
+    font-family: Poppins, sans-serif;
+    font-size: 20px;
+}
+
+.order .orderbottom {
+    margin-top: 110px;
+}
+
+.order .ordercontainer {
+    border: 6px solid var(--pequod-blue);
+    border-radius: 15px;
+    overflow: hidden;
+    min-width: 150px;
+    max-width: 150px;
+}
+
+.order .ordercontainer .dessert {
+    border-right: 3px solid var(--pequod-blue);
+    border-bottom: 3px solid var(--pequod-blue);
+}
+
+.order .ordercontainer .drink {
+    border-left: 3px solid var(--pequod-blue);
+    border-bottom: 3px solid var(--pequod-blue);
+}
+
+.order .ordercontainer .main {
+    border-right: 3px solid var(--pequod-blue);
+    border-top: 3px solid var(--pequod-blue);
+}
+
+.order .ordercontainer .branch {
+    border-left: 3px solid var(--pequod-blue);
+    border-top: 3px solid var(--pequod-blue);
+}
+
+.order .price {
+    background-color: var(--ishmael-blue);
+    border-radius: 30px 0px 30px 0px;
+    color: white;
+    font-family: Poppins, sans-serif;
+    font-weight: bold;
+    font-size: 50px;
 }

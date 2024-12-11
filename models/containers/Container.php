@@ -8,6 +8,30 @@ class Container {
 
     }
 
+    public function getPart($id_part_type)
+    {
+        $parts = PartsDAO::getFromContainer($this->id_container);
+
+        foreach ($parts as $i => $part) {
+            $product = $part->getProduct();
+            if ($product->getId_type() == $id_part_type) {
+                return $part;
+            }
+        }
+    }
+
+    public function getPartProduct($id_part_type)
+    {
+        $parts = PartsDAO::getFromContainer($this->id_container);
+
+        foreach ($parts as $i => $part) {
+            $product = $part->getProduct();
+            if ($product->getId_type() == $id_part_type) {
+                return $product;
+            }
+        }
+    }
+
     /**
      * Get the value of id_container
      */ 

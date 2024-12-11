@@ -9,6 +9,10 @@ class Part {
 
     }
 
+    public function getProduct() {
+        return ProductsDAO::get($this->id_product);
+    }
+
     /**
      * Get the value of id_part
      */ 

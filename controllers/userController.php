@@ -20,7 +20,7 @@ class userController {
         $title = "Your Cart";
 
         $categories = CategoriesDAO::getAll();
-        $currentSales = SalesDAO::getAllAvailable();
+        $currentSales = SalesDAO::getAllAvailable(date('Y-m-d'));
 
         include_once("models/coupons/coupon_authentication.php");
         include_once("models/orders/create_order.php");
