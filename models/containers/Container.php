@@ -8,28 +8,30 @@ class Container {
 
     }
 
-    public function getPart($id_part_type)
-    {
+    public function getPart($id_part_type, $get_product = false) {
         $parts = PartsDAO::getFromContainer($this->id_container);
 
         foreach ($parts as $i => $part) {
             $product = $part->getProduct();
             if ($product->getId_type() == $id_part_type) {
-                return $part;
+                if ($get_product) {
+                    return $product;
+                } else {
+                    return $part;
+                }
             }
         }
     }
 
-    public function getPartProduct($id_part_type)
-    {
+    public function getPrice($sales) {
         $parts = PartsDAO::getFromContainer($this->id_container);
+        $total = 0;
 
         foreach ($parts as $i => $part) {
-            $product = $part->getProduct();
-            if ($product->getId_type() == $id_part_type) {
-                return $product;
-            }
+            $total += $part->getPrice($sales);
         }
+
+        return $total;
     }
 
     /**

@@ -27,7 +27,15 @@
                             <?=productsController::getTypeIcon($product->getId_type())?>
                             <?=$product->alcoholIcon($alcoholicProducts)?>
                             <h5 class="card-title"><?=$product->getName()?></h5>
-                            <p class="card-subtitle"><?=$product->getPrice()?> €</p>
+                            <?php $appliedSale = $product->isOnSale($currentSales);
+                            if ($appliedSale) { ?>
+                                <div class="d-flex align-items-end gap-2">
+                                    <p class="card-subtitle crossed-out"><?=$product->getPrice()?> €</p>
+                                    <p class="card-subtitle discounted"><?=$product->getDiscountedPrice($appliedSale)?> €</p>
+                                </div>
+                            <?php } else { ?>
+                                <p class="card-subtitle"><?=$product->getPrice()?> €</p>
+                            <?php } ?>
                         </div>
                     </div>
                 <?php } ?>

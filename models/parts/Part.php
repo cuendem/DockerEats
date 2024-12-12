@@ -13,6 +13,17 @@ class Part {
         return ProductsDAO::get($this->id_product);
     }
 
+    public function getPrice($sales) {
+        $product = $this->getProduct();
+        $appliedSale = $product->isOnSale($sales);
+
+        if ($appliedSale) {
+            return $product->getDiscountedPrice($appliedSale);
+        } else {
+            return $product->getPrice();
+        }
+    }
+
     /**
      * Get the value of id_part
      */ 

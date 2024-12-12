@@ -584,6 +584,16 @@ footer .logo {
     z-index: 2;
 }
 
+.product .card-subtitle.crossed-out {
+    text-decoration: line-through;
+    color: var(--aleph-red2);
+    font-size: 17px;
+}
+
+.product .card-subtitle.discounted {
+    color: var(--ishmael-blue);
+}
+
 .product .typeicon {
     position: absolute;
     fill: var(--pequod-blue);
@@ -1770,4 +1780,9 @@ ORDERS
     font-family: Poppins, sans-serif;
     font-weight: bold;
     font-size: 50px;
+}
+
+.custom-tooltip {
+    --bs-tooltip-bg: var(--queequeg-blue);
+    --bs-tooltip-color: var(--bs-white);
 }

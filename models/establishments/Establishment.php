@@ -10,6 +10,10 @@ class Establishment {
 
     }
 
+    public function getOverview() {
+        return $this->name.'('.$this->address.')';
+    }
+
     /**
      * Get the value of id_establishment
      */ 

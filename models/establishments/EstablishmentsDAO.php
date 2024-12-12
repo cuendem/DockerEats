@@ -20,6 +20,33 @@ class EstablishmentsDAO {
 
         return $establishments;
     }
+
+    public static function get($id) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement with LIKE
+        $stmt = $con->prepare('SELECT * FROM ESTABLISHMENTS WHERE id_establishment LIKE ?');
+
+        // Bind the parameter
+        $stmt->bind_param('i', $id);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $establishments = [];
+        while ($establishment = $result->fetch_object("Establishment")) {
+            $establishments[] = $establishment;
+        }
+
+        $con->close();
+
+        if (count($establishments) > 0) {
+            return $establishments[0];
+        } else {
+            return null;
+        }
+    }
 }
 
 ?>

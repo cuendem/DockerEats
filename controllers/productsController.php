@@ -33,6 +33,7 @@ class productsController {
 
         $categories = CategoriesDAO::getAll();
         $alcoholicProducts = ProductsDAO::getByCat(10);
+        $currentSales = SalesDAO::getAllAvailable(date('Y-m-d'));
 
         include_once("views/main.php");
     }

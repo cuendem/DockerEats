@@ -62,7 +62,12 @@ class CouponsDAO {
     public static function getOrderCoupons($id_order) {
         $con = DataBase::connect();
 
-        $stmt = $con->prepare('SELECT * FROM COUPONS_ORDERS WHERE id_order LIKE ?');
+        $stmt = $con->prepare('
+            SELECT c.*
+            FROM COUPONS_ORDERS co
+            JOIN COUPONS c ON co.id_coupon = c.id_coupon
+            WHERE co.id_order LIKE ?
+        ');
         $stmt->bind_param('i', $id_order);
 
         // Execute the query

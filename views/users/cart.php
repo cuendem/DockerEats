@@ -90,7 +90,7 @@
                                 <label for="establishment">Select an establishment:</label>
                                 <select id="establishment" name="establishment">
                                     <?php foreach (EstablishmentsDAO::getAll() as $i => $establishment) { ?>
-                                        <option value="<?=$establishment->getId_establishment()?>"><?=$establishment->getName()?> (<?=$establishment->getAddress()?>)</option>
+                                        <option value="<?=$establishment->getId_establishment()?>"><?=$establishment->getOverview()?></option>
                                     <?php } ?>
                                 </select>
                                 <input type="text" id="pickup-selected" name="pickup-selected" value="false" hidden>
