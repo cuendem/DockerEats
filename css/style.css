@@ -8,6 +8,7 @@
     /* Secondary */
     --heathcliff-purple: #7D2EFF;
     --ricardo-blue: #0C49C2;
+    --indigo-elder-blue: #1C90EC;
     --stubb-blue: #A2BEF6;
     --pip-blue: #E5F2FC;
     --docker-gradient: linear-gradient(90deg, var(--queequeg-blue), var(--ishmael-blue));
@@ -1671,7 +1672,9 @@ input[type='submit']:hover {
 }
 
 /*
-ORDERS
+======================
+    ORDER LISTING
+======================
 */
 
 #orders #banner {
@@ -1785,4 +1788,31 @@ ORDERS
 .custom-tooltip {
     --bs-tooltip-bg: var(--queequeg-blue);
     --bs-tooltip-color: var(--bs-white);
+}
+
+/*
+======================
+    ADMIN CONSOLE
+======================
+*/
+
+#admin header {
+    background: linear-gradient(90deg, var(--indigo-elder-blue) 0%, var(--ishmael-blue) 100%);
+    border-width: 0px;
+    padding: 22px 12vw;
+}
+
+#admin header img.logo {
+    height: 35px;
+    margin-top: -8px;
+}
+
+#admin header .logo_container span {
+    background-color: var(--pallid-white);
+    padding: 2px 6px;
+    border-radius: 100px;
+    color: var(--ricardo-blue);
+    font-size: 10px;
+    font-family: Roboto, sans-serif;
+    font-weight: 500;
 }

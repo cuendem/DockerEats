@@ -222,7 +222,8 @@
 
                                     // Apply sales
                                     if (count($currentSales) > 0) {
-                                        foreach ($currentSales as $i => $sale) {
+                                        $ordered_sales = salesController::order($currentSales);
+                                        foreach ($ordered_sales as $i => $sale) {
                                             if ($sale -> getScope() == 1) {
                                                 if ($sale -> getDiscount_type() == 2) {
                                                     // Percentage-based sale
@@ -237,6 +238,7 @@
 
                                     // Apply coupons
                                     if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) {
+                                        $ordered_coupons = salesController::order($_SESSION['coupons']);
                                         foreach ($_SESSION['coupons'] as $i => $coupon) {
                                             if ($coupon -> getDiscount_type() == 2) {
                                                 // Percentage-based coupon
