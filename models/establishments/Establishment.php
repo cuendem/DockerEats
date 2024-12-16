@@ -11,7 +11,7 @@ class Establishment {
     }
 
     public function getOverview() {
-        return $this->name.'('.$this->address.')';
+        return $this->name.' ('.$this->address.')';
     }
 
     /**

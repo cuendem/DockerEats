@@ -23,12 +23,12 @@
                             <div class="container-order d-flex flex-column align-items-end position-relative">
                                 <div class="container-order-products d-flex flex-column w-100">
                                     <?php $contPrice = 0;
-                                    foreach (['main', 'branch', 'drink', 'dessert'] as $i => $type) {
+                                    foreach (['main', 'branch', 'drink', 'dessert'] as $j => $type) {
                                         $product = $cart_container[$type]; ?>
                                         <div class="<?=$type?> d-flex p-3 gap-3 w-100">
                                             <img src="/img/products/product<?=$product->getId_product()?>.webp" alt="<?=$product->getName()?>">
                                             <div class="content position-relative flex-grow-1">
-                                                <?=productsController::getTypeIcon($i+1)?>
+                                                <?=productsController::getTypeIcon($j+1)?>
                                                 <span class="product-name"><?=$product->getName()?></span>
                                                 <div class="customs">
                                                     
