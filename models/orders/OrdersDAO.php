@@ -24,6 +24,27 @@ class OrdersDAO {
         return $orders;
     }
 
+    public static function getByUser($id) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare('SELECT * FROM ORDERS WHERE id_user = ? ORDER BY id_order DESC');
+        $stmt->bind_param('i', $id);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $orders = [];
+        while ($order = $result->fetch_object("Order")) {
+            $orders[] = $order;
+        }
+
+        $con->close();
+
+        return $orders;
+    }
+
     public static function store($order) {
         $con = DataBase::connect();
 

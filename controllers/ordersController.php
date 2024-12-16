@@ -5,11 +5,13 @@ include_once("models/parts/PartsDAO.php");
 
 class ordersController {
     public function index() {
+        include_once('models/protection.php');
+
         $pageid = "orders";
         $title = "Orders";
         $view = "views/orders/list.php";
 
-        $orders = OrdersDAO::getAll();
+        $orders = OrdersDAO::getByUser($_SESSION['id_user']);
 
         include_once("views/main.php");
     }

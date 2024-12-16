@@ -1,6 +1,5 @@
 <?php
 
-
 // Include database configuration and models
 include_once("../config/dataBase.php");
 

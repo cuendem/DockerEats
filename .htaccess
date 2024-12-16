@@ -4,7 +4,10 @@
     ErrorDocument 404 /404/
 
     RewriteRule ^account/(.*)$ user/$1 [L]
+
+    RewriteCond %{SCRIPT_FILENAME} !-f
     RewriteRule ^admin/(.*)$ api/$1 [L]
+
     RewriteRule ^build/(.*)$ container/$1 [L]
 
     RewriteRule ^container/(.*)/(.*)/(.*)$ ?controller=container&action=$1&param1=$2&param2=$3 [L]

@@ -4,7 +4,11 @@
     <h1>Orders</h1>
 </section>
 <section id="list" class="wave-separator container-fluid pt-5">
-    <?php foreach ($orders as $i => $order) { ?>
+    <?php if (count($orders) <= 0) { ?>
+        <div class="no-orders d-flex flex-column align-items-center w-100 my-5">
+            <span>You have not made any orders.</span>
+        </div>
+    <?php } else { foreach ($orders as $i => $order) { ?>
         <?php $user = $order->getUser_data();
         $coupons = $order->getCoupons();
         $containers = $order->getContainers();
@@ -101,7 +105,7 @@
                 <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=$total_order_price?> €</span>
             </div>
         </div>
-    <?php } ?>
+    <?php }} ?>
 </section>
 </main>
 <?php include_once('views/footer.php') ?>

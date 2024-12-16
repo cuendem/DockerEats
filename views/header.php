@@ -76,7 +76,7 @@
                             <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/account/edit">Account settings<i class="bi bi-gear-fill"></i></a></li>
                             <?php if ($_SESSION['id_user'] == 1) { ?>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item d-flex justify-content-between align-items-center" href="/admin/">Administration console<i class="bi bi-database-fill-gear"></i></a></li>
+                                <li><a class="dropdown-item admin d-flex justify-content-between align-items-center" href="/admin/">Administration console<i class="bi bi-database-fill-gear"></i></a></li>
                             <?php } ?>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item signout d-flex justify-content-between align-items-center" href="/account/signout">Sign Out<i class="bi bi-box-arrow-right"></i></a></li>
