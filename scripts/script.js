@@ -19,7 +19,7 @@ if (header) {
         }
     
         lastScrollPosition = currentScrollPosition;
-    });
+    }, { passive: true });
 }
 
 // Preview PFP when changing it

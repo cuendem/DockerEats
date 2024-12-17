@@ -76,8 +76,13 @@ class userController {
     public static function editUser($id, $username = null, $password = null) {
         $user = UsersDAO::getById($id);
 
-        if (!is_null($username)) { $user->setUsername($username); }
-        if (!is_null($password)) { $user->setPassword($password); }
+        if (!is_null($username)) {
+            $user->setUsername($username);
+        }
+
+        if (!is_null($password)) {
+            $user->setPassword($password);
+        }
 
         UsersDAO::update($user);
     }

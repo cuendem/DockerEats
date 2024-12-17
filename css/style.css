@@ -1954,6 +1954,8 @@ input[type='submit']:hover {
 #admin .product-card .preview-image {
     width: 120px;
     height: 120px;
+    border-top-left-radius: 4px;
+    object-fit: cover;
 }
 
 #admin .product-card .preview-image-label {
@@ -1980,6 +1982,7 @@ input[type='submit']:hover {
     background: var(--queequeg-blue);
     opacity: .6;
     position: absolute;
+    border-top-left-radius: 4px;
 }
 
 #admin .product-card .preview-image-label svg {
@@ -2002,4 +2005,28 @@ input[type='submit']:hover {
 
 #admin .product-card .data .currency {
     font-size: 20px;
+}
+
+#admin .product-card .update {
+    background-color: var(--ishmael-blue);
+    color: white;
+    border: 0px;
+    border-radius: 100px;
+    transition: 0.3s ease;
+}
+
+#admin .product-card .update:hover {
+    background-color: var(--ricardo-blue);
+}
+
+#admin .product-card .delete {
+    background-color: var(--aleph-red2);
+    color: white;
+    border: 0px;
+    border-radius: 100px;
+    transition: 0.3s ease;
+}
+
+#admin .product-card .delete:hover {
+    background-color: var(--aleph-red);
 }
