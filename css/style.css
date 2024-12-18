@@ -1931,10 +1931,8 @@ input[type='submit']:hover {
 }
 
 #admin .product-card .data input, #admin .product-card .data select {
-    border-radius: 20px;
-    border: 0px;
-    background-color: var(--smee-gray);
-    padding: 5px 10px;
+    border: 1px solid var(--charon-gray);
+    padding: 5px;
     width: 200px;
 }
 
@@ -2029,4 +2027,8 @@ input[type='submit']:hover {
 
 #admin .product-card .delete:hover {
     background-color: var(--aleph-red);
+}
+
+#admin .product-card.deleted {
+    background-color: var(--ahab-gray);
 }
