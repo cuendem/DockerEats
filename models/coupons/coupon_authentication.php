@@ -16,6 +16,8 @@ if(isset($_POST['coupon-code'], $_POST['coupon-button']) && $_POST['coupon-code'
         // Add the coupon only if it's not already in the array
         if (!in_array($coupon, $_SESSION['coupons'])) {
             $_SESSION['coupons'][] = $coupon;
+
+            logsController::log("Used coupon ".$coupon->getCode());
         } else {
             echo "This coupon has already been used.";
         }

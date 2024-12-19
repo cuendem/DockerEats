@@ -1,4 +1,17 @@
+function createSpinner() {
+    // Get target container to add the elements inside
+    const target = document.getElementById('target');
+    target.innerHTML = ''; // Clear existing content
+
+    const spinner = document.createElement('div');
+    spinner.className = 'spinner-border text-primary';
+    spinner.role = 'status';
+    spinner.innerHTML = `<span class="visually-hidden">Loading...</span>`;
+    target.appendChild(spinner);
+}
+
 async function getAll() {
+    createSpinner();
     // Get the products
     console.log("Getting all products");
     createToast("Getting all products...");
@@ -10,11 +23,24 @@ async function getAll() {
 }
 
 async function getByType(type) {
+    createSpinner();
     // Get the products by type
     console.log("Getting all products of type "+type);
     createToast(`Getting all products of type ${type}...`);
 
     let response = await fetch('http://www.dockereats.com/api/getProductsByType&type=' + type);
+    const products = await response.json();
+
+    await listProducts(products);
+}
+
+async function getDeleted(type) {
+    createSpinner();
+    // Get the products by type
+    console.log("Getting all deleted products");
+    createToast(`Getting all deleted products...`);
+
+    let response = await fetch('http://www.dockereats.com/api/getDeletedProducts');
     const products = await response.json();
 
     await listProducts(products);
@@ -55,9 +81,15 @@ async function listProducts(products) {
         response = await fetch('http://www.dockereats.com/api/getCategoriesProducts');
         const categoriesProducts = await response.json();
 
-        // Get target container to add the elements inside, create the product-list container
+        // Get target container to add the elements inside
         const target = document.getElementById('target');
         target.innerHTML = ''; // Clear existing content
+
+        // // Add filter select to target (order by name or price)
+        // const filterSelect = document.createElement('select');
+        // filterSelect.className = 'filter-select';
+        // filterSelect.innerHTML = `<option value="0">Order...</option><option value="1">Name</option><option value="2">Price</option>`;
+        // target.appendChild(filterSelect);
 
         const productList = document.createElement('div');
         productList.className = 'product-list d-flex gap-4 flex-wrap';
@@ -104,7 +136,7 @@ async function listProducts(products) {
                 </div>
                 <div class="data d-flex flex-column p-3 gap-2">
                     <span class="id position-absolute bottom-0 end-0">ID: ${product.id_product}</span>
-                    <input type="text" name="id" id="id${product.id_product}" value="${product.id_product}" hidden>
+                    <input type="number" name="id" id="id${product.id_product}" value="${product.id_product}" hidden>
                     <input type="number" name="deleted" id="deleted${product.id_product}" value="${product.deleted}" hidden>
                     <input type="text" name="name" id="name${product.id_product}" value="${product.name}" placeholder="${product.name}">
                     <div class="d-flex gap-2 align-items-center">
@@ -144,6 +176,7 @@ async function listProducts(products) {
                 const categoriesString = selectedCategories.join(',');
 
                 formData.set('categories', categoriesString);
+                createToast(`Updating ${formData.get('name')}...`);
 
                 try {
                     const response = await fetch('http://www.dockereats.com/api/editProduct', {
@@ -156,7 +189,7 @@ async function listProducts(products) {
                     if (!response.ok) {
                         throw new Error(`${response.status} - ${result['error']}`);
                     } else {
-                        createToast(`Product ${formData.get('name')} updated successfully!`);
+                        createToast(`${formData.get('name')} updated successfully!`);
                     }
                 } catch (error) {
                     console.error(error);
@@ -167,9 +200,15 @@ async function listProducts(products) {
                 const formData = new FormData(event.target);
                 const productId = formData.get('id');
                 const deletedInput = document.getElementById(`deleted${product.id_product}`);
-                const deleted = (deletedInput == 0 ? 1 : 0);
+                const deleted = (deletedInput.value == 0 ? 1 : 0);
 
-                // try {
+                if (deleted == 1) {
+                    createToast(`Marking ${formData.get('name')} as deleted...`);
+                } else {
+                    createToast(`Unmarking ${formData.get('name')} as deleted...`);
+                }
+
+                try {
                     const response = await fetch(`http://www.dockereats.com/api/deleteProduct`, {
                         method: 'POST',
                         body: JSON.stringify({
@@ -184,20 +223,20 @@ async function listProducts(products) {
                     const result = await response.json();
 
                     if (!response.ok) {
-                        // throw new Error(`${response.status} - ${result['error']}`);
+                        throw new Error(`${response.status} - ${result['error']}`);
                     } else {
                         productForm.classList.toggle('deleted');
                         if (deletedInput.value == 1) {
-                            createToast(`Product with ID ${productId} unmarked as deleted!`);
+                            createToast(`${formData.get('name')} unmarked as deleted!`);
                             deletedInput.value = 0;
                         } else {
-                            createToast(`Product with ID ${productId} marked as deleted!`);
+                            createToast(`${formData.get('name')} marked as deleted!`);
                             deletedInput.value = 1;
                         }
                     }
-                // } catch (error) {
-                //     console.error(error);
-                // }
+                } catch (error) {
+                    console.error(error);
+                }
             }
 
             productList.appendChild(productForm);
@@ -290,6 +329,9 @@ async function addProduct() {
         // Append the categories string to the FormData
         formData.set('categories', categoriesString);
 
+        // Notification toast
+        createToast(`Creating ${formData.get('name')}...`);
+
         try {
             const response = await fetch('http://www.dockereats.com/api/addProduct', {
                 method: 'POST',
@@ -328,4 +370,5 @@ document.getElementById('listmains').addEventListener('click', () => getByType(1
 document.getElementById('listbranches').addEventListener('click', () => getByType(2));
 document.getElementById('listdrinks').addEventListener('click', () => getByType(3));
 document.getElementById('listdesserts').addEventListener('click', () => getByType(4));
+document.getElementById('listdeleted').addEventListener('click', () => getDeleted());
 document.getElementById('addproduct').addEventListener('click', () => addProduct());

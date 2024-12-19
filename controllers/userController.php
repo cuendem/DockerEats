@@ -44,6 +44,7 @@ class userController {
     }
 
     public function signout() {
+        logsController::log("Logout");
         session_destroy();
         header('location:/');
     }

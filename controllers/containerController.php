@@ -26,6 +26,8 @@ class containerController {
             $product = ProductsDAO::get($_GET['param2']);
             if (!is_null($product)) {
                 $_SESSION['container'][$_GET['param1']] = $product;
+                $id = $product->getId_product();
+                logsController::log("Added product $id to container");
                 header('Location:/build/');
             } else {
                 header('Location:/');
@@ -43,8 +45,10 @@ class containerController {
 
             if ($type == 'all') {
                 unset($_SESSION['container']);
+                logsController::log("Removed all products from container");
             } else {
                 unset($_SESSION['container'][$type]);
+                logsController::log("Removed $type from container");
             }
 
             header('Location:/build/');
@@ -61,6 +65,8 @@ class containerController {
         $_SESSION['container']['drink'] = ProductsDAO::getRandom(3);
         $_SESSION['container']['dessert'] = ProductsDAO::getRandom(4);
 
+        logsController::log("Generated a lucky container");
+
         header('Location:/build/');
     }
 
@@ -70,6 +76,8 @@ class containerController {
         if (isset($_SESSION['container']['main'], $_SESSION['container']['branch'], $_SESSION['container']['drink'], $_SESSION['container']['dessert'])) {
             $_SESSION['cart'][] = $_SESSION['container'];
             unset($_SESSION['container']);
+
+            logsController::log("Added container to cart");
         }
 
         header('Location:/build/');
@@ -80,6 +88,8 @@ class containerController {
 
         if (isset($_GET['param1'])) {
             unset($_SESSION['cart'][intval($_GET['param1'])]);
+
+            logsController::log("Removed container from cart");
         }
 
         header('Location:/account/cart');

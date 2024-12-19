@@ -74,5 +74,26 @@
             </a>
         </div>
     </div>
+    <div class="admin-panels-header d-flex align-items-center justify-content-between mb-3 mt-5">
+        <h4 class="admin-panels-title">Moderation</h4>
+        <a href="#" class="feedback">Customize panel <i class="bi bi-gear"></i></a>
+    </div>
+    <div class="admin-panels">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+            <a href="/admin/log" class="panel p-3 d-flex flex-column justify-content-between">
+                <div class="d-flex flex-column gap-3">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M3 10C3 6.22876 3 4.34315 4.17157 3.17157C5.34315 2 7.22876 2 11 2H13C16.7712 2 18.6569 2 19.8284 3.17157C21 4.34315 21 6.22876 21 10V14C21 17.7712 21 19.6569 19.8284 20.8284C18.6569 22 16.7712 22 13 22H11C7.22876 22 5.34315 22 4.17157 20.8284C3 19.6569 3 17.7712 3 14V10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path d="M8 12H16" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path d="M8 8H16" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path d="M8 16H13" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
+                    <div class="panel-info d-flex flex-column">
+                        <span class="panel-title">Logs</span>
+                    </div>
+                    <span class="panel-description">View the log table of all actions happening on the website, filter by user, and analyze the data.</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="link-text">Open the Logs panel</span>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="arrow"><path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                </div>
+            </a>
+        </div>
+    </div>
 </section>
 <?php include_once('admin/views/footer.html') ?>

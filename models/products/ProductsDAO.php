@@ -8,7 +8,7 @@ class ProductsDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_product LIKE ? AND deleted = 0');
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_product LIKE ?');
 
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('s', $id);
@@ -35,7 +35,7 @@ class ProductsDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? AND deleted = 0 ORDER BY id_type, name');
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
 
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('s', $type);
@@ -58,7 +58,7 @@ class ProductsDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? AND deleted = 0 ORDER BY id_type, name');
+        $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
 
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('s', $type);

@@ -78,7 +78,9 @@ class ordersController {
         $newOrder->setCvc($cvc);
         $newOrder->setCard_holder($cardHolder);
 
-        return OrdersDAO::store($newOrder);
+        $id = OrdersDAO::store($newOrder);
+        logsController::log("Created order $id");
+        return $id;
     }
 
     public static function addContainer($order, $container) {

@@ -16,6 +16,8 @@ if(isset($_POST['email'], $_POST['password'])) {
             $_SESSION['username'] = $user->getUsername();
             $_SESSION['email'] = $user->getEmail();
 
+            logsController::log("Login");
+
             header('location:/');
         } else {
             $passworderror = "error";
