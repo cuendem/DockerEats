@@ -17,9 +17,11 @@ async function getAll() {
     createToast("Getting all products...");
 
     let response = await fetch('http://www.dockereats.com/api/getProducts');
-    const products = await response.json();
 
-    await listProducts(products);
+    if (response.ok) {
+        const products = await response.json();
+        await listProducts(products);
+    }
 }
 
 async function getByType(type) {
@@ -29,9 +31,11 @@ async function getByType(type) {
     createToast(`Getting all products of type ${type}...`);
 
     let response = await fetch('http://www.dockereats.com/api/getProductsByType&type=' + type);
-    const products = await response.json();
 
-    await listProducts(products);
+    if (response.ok) {
+        const products = await response.json();
+        await listProducts(products);
+    }
 }
 
 async function getDeleted(type) {
@@ -41,9 +45,14 @@ async function getDeleted(type) {
     createToast(`Getting all deleted products...`);
 
     let response = await fetch('http://www.dockereats.com/api/getDeletedProducts');
-    const products = await response.json();
 
-    await listProducts(products);
+    if (response.ok) {
+        const products = await response.json();
+        await listProducts(products);
+    } else {
+        const target = document.getElementById('target');
+        target.innerHTML = 'No products found';
+    }
 }
 
 // Function to preview images when changing them

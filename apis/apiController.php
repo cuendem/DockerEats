@@ -1,20 +1,34 @@
 <?php
 
+include_once("config/DataBase.php");
+include_once("controllers/logsController.php");
+
 class apiController {
     private static function getHeaders() {
-        // CORS Headers
-        header("Access-Control-Allow-Origin: *");
+        $allowedOrigin = "http://dockereats.com";
+        header("Access-Control-Allow-Origin: $allowedOrigin");
+
+        // General headers
         header("Content-Type: application/json; charset=UTF-8");
+
+        // Allowed HTTP methods
         header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
-        header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+        // Allowed headers for requests
+        header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+
+        // Allow credentials (if required, e.g., for cookies/sessions)
+        header("Access-Control-Allow-Credentials: true");
     }
 
     private static function protection() {
         // Check if the user is authenticated
-        if (!isset($_SESSION['username']) || $_SESSION['id_user'] != 1) {
+        if (isset($_SESSION['username']) && $_SESSION['id_user'] == 1) {
+            return true;
+        } else {
             http_response_code(403); // Forbidden
             echo json_encode(['error' => 'Unauthorized access']);
-            return;
+            return false;
         }
     }
 
@@ -90,9 +104,24 @@ class apiController {
         include_once("views/main.php");
     }
 
+    public function logs() {
+        if (!isset($_SESSION['username']) || $_SESSION['id_user'] != 1) {
+            header('Location:/');
+        }
+
+        $pageid = "admin";
+        $title = "Logs";
+        $view = "admin/views/logs.php";
+
+        include_once("views/main.php");
+    }
+
     public static function getProduct() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'id' parameter is provided in the GET request
@@ -125,7 +154,10 @@ class apiController {
 
     public static function getProducts() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM PRODUCTS");
@@ -151,7 +183,10 @@ class apiController {
 
     public static function getDeletedProducts() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM PRODUCTS WHERE deleted = 1");
@@ -177,7 +212,10 @@ class apiController {
 
     public static function getProductsByType() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if a 'type' parameter is provided in the GET request
@@ -210,7 +248,10 @@ class apiController {
 
     public static function editProduct() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Collect and validate input parameters
@@ -308,6 +349,8 @@ class apiController {
                 }
             }
 
+            logsController::log("Updated product $id");
+
             http_response_code(200);
             echo json_encode(['success' => 'Product updated successfully']);
         } catch (Exception $e) {
@@ -320,7 +363,10 @@ class apiController {
 
     public static function addProduct() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Collect and validate input parameters
@@ -376,34 +422,34 @@ class apiController {
                         die("Unsupported image format!");  // Handle unsupported formats
                 }
 
-                if ($image) {
-                    // Get original dimensions
-                    $originalW = imagesx($image);
-                    $originalH = imagesy($image);
+                // Get original dimensions
+                $originalW = imagesx($image);
+                $originalH = imagesy($image);
 
-                    // Determine square crop dimensions
-                    $size = min($originalW, $originalH);
-                    $x = ($originalW > $originalH) ? ($originalW - $originalH) / 2 : 0;
-                    $y = ($originalH > $originalW) ? ($originalH - $originalW) / 2 : 0;
+                // Determine square crop dimensions
+                $size = min($originalW, $originalH);
+                $x = ($originalW > $originalH) ? ($originalW - $originalH) / 2 : 0;
+                $y = ($originalH > $originalW) ? ($originalH - $originalW) / 2 : 0;
 
-                    // Create a square crop
-                    $croppedImage = imagecrop($image, ['x' => $x, 'y' => $y, 'width' => $size, 'height' => $size]);
-                    if ($croppedImage === false) {
-                        die("Failed to crop image.");
-                    }
-
-                    // Resize the cropped image to 250x250
-                    $resizedImage = imagescale($croppedImage, 250, 250);
-
-                    // Save the image as WebP
-                    imagewebp($resizedImage, $path, 80);  // 80 is the quality level
-
-                    // Free up memory
-                    imagedestroy($image);
-                    imagedestroy($croppedImage);
-                    imagedestroy($resizedImage);
+                // Create a square crop
+                $croppedImage = imagecrop($image, ['x' => $x, 'y' => $y, 'width' => $size, 'height' => $size]);
+                if ($croppedImage === false) {
+                    die("Failed to crop image.");
                 }
+
+                // Resize the cropped image to 250x250
+                $resizedImage = imagescale($croppedImage, 250, 250);
+
+                // Save the image as WebP
+                imagewebp($resizedImage, $path, 80);  // 80 is the quality level
+
+                // Free up memory
+                imagedestroy($image);
+                imagedestroy($croppedImage);
+                imagedestroy($resizedImage);
             }
+
+            logsController::log("Created product $id");
 
             http_response_code(200);
             echo json_encode(['success' => 'Product created successfully']);
@@ -417,7 +463,10 @@ class apiController {
 
     public static function deleteProduct() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Read and decode the JSON input
@@ -464,6 +513,12 @@ class apiController {
             $stmt->bind_param('ii', $deleted, $id);
             $stmt->execute();
 
+            if ($deleted == 1) {
+                logsController::log("Marked product $id as deleted");
+            } else {
+                logsController::log("Unmarked product $id as deleted");
+            }
+
             http_response_code(200);
             echo json_encode(['success' => 'Product disabled successfully']);
         } catch (Exception $e) {
@@ -476,7 +531,10 @@ class apiController {
 
     public static function getCategories() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM CATEGORIES ORDER BY name");
@@ -502,7 +560,10 @@ class apiController {
 
     public static function getCategoriesproducts() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM CATEGORIES_PRODUCTS");
@@ -528,7 +589,10 @@ class apiController {
 
     public static function getUser() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'id' parameter is provided in the GET request
@@ -561,7 +625,10 @@ class apiController {
 
     public static function getUsers() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM USERS");
@@ -588,7 +655,10 @@ class apiController {
     // Get all orders
     public static function getOrders() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         $stmt = $con->prepare("SELECT * FROM ORDERS");
@@ -615,7 +685,10 @@ class apiController {
     // Get orders by user
     public static function getOrdersByUser() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if a 'user' parameter is provided in the GET request
@@ -648,7 +721,10 @@ class apiController {
 
     public function getOrderCoupons() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'order' parameter is provided in the GET request
@@ -681,7 +757,10 @@ class apiController {
 
     public function getOrderContainers() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'order' parameter is provided in the GET request
@@ -714,7 +793,10 @@ class apiController {
 
     public function getSales() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Fetch a specific record by the dynamic ID column
@@ -741,7 +823,10 @@ class apiController {
 
     public function getEstablishment() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'id' parameter is provided in the GET request
@@ -774,7 +859,10 @@ class apiController {
 
     public function getContainerPart() {
         apiController::getHeaders();
-        self::protection();
+        if (!apiController::protection()) {
+            return;
+        }
+
         $con = DataBase::connect();
 
         // Check if an 'id' parameter is provided in the GET request
