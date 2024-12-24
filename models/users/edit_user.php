@@ -5,6 +5,11 @@ include_once('UsersDAO.php');
 if(isset($_POST['username'])) {
     userController::editUser($_SESSION['id_user'], username:$_POST['username']);
 
+    // If the username is different
+    if ($_SESSION['username'] != $_POST['username']) {
+        logsController::log("Changed username from ".$_SESSION['username']." to ".$_POST['username']);
+    }
+
     $_SESSION['username'] = $_POST['username'];
 }
 
@@ -54,6 +59,8 @@ if (isset($_FILES['pfp']) && $_FILES['pfp']['name'] != '') {
 
         // Save the image as WebP
         imagewebp($resizedImage, $path, 80);  // 80 is the quality level
+
+        logsController::log("Changed profile picture");
 
         // Free up memory
         imagedestroy($image);

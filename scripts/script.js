@@ -1,45 +1,6 @@
-// Toasts
-function createToast(text) {
-    // Create the toast container if it doesn't already exist
-    let toastContainer = document.querySelector('.toast-container');
-    if (!toastContainer) {
-        toastContainer = document.createElement('div');
-        toastContainer.className = 'toast-container position-fixed bottom-0 end-0 p-3';
-        document.body.appendChild(toastContainer);
-    }
-
-    // Create a new toast element
-    const toastElement = document.createElement('div');
-    toastElement.className = 'toast align-items-center';
-    toastElement.setAttribute('role', 'alert');
-    toastElement.setAttribute('aria-live', 'assertive');
-    toastElement.setAttribute('aria-atomic', 'true');
-
-    toastElement.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                ${text}
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-    `;
-
-    // Append the new toast to the container
-    toastContainer.appendChild(toastElement);
-
-    // Initialize and show the toast using Bootstrap's Toast class
-    const toastBootstrap = new bootstrap.Toast(toastElement);
-    toastBootstrap.show();
-
-    // Remove the toast from the DOM after it hides
-    toastElement.addEventListener('hidden.bs.toast', () => {
-        toastElement.remove();
-    });
-}
-
 // Tooltips
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
 // Hide header when scrolling
 let lastScrollPosition = 0;
@@ -172,10 +133,10 @@ function toggleSelection(isDelivery) {
 
     // Fields to make required for delivery
     const addressField = document.getElementById('address');
-    const floorField = document.getElementById('floor');
     const townField = document.getElementById('town');
-    const cityField = document.getElementById('city');
     const postalcodeField = document.getElementById('postalcode');
+    const cityField = document.getElementById('city');
+    const countryField = document.getElementById('country');
 
     if ((isDelivery && deliveryInput.value !== 'true') || (!isDelivery && pickupInput.value !== 'true')) {
         totalPrice.innerHTML = Math.round((parseFloat(totalPrice.innerHTML) + (isDelivery ? 2.99 : -2.99)) * 100) / 100 + " €";
@@ -201,7 +162,7 @@ function toggleSelection(isDelivery) {
     deliveryFee.classList.toggle('hidden', !isDelivery);
 
     // Toggle required attribute for delivery fields
-    [addressField, floorField, townField, cityField, postalcodeField].forEach((field) => {
+    [addressField, townField, postalcodeField, cityField, countryField].forEach((field) => {
         if (isDelivery) {
             field.setAttribute('required', 'required');
         } else {

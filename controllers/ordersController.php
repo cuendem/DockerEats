@@ -82,17 +82,6 @@ class ordersController {
         logsController::log("Created order $id");
         return $id;
     }
-
-    public static function addContainer($order, $container) {
-        $container_id = ContainersDAO::store($order);
-
-        foreach ($container as $i => $id) {
-            $part = new Part();
-            $part->setId_container($container_id);
-            $part->setId_product($id->getId_product());
-            PartsDAO::store($part);
-        }
-    }
 }
 
 ?>

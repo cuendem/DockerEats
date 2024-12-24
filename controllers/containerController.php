@@ -94,6 +94,10 @@ class containerController {
 
         header('Location:/account/cart');
     }
+
+    public static function addContainer($order, $container) {
+        return ContainersDAO::store($order);
+    }
 }
 
 ?>

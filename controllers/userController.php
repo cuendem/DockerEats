@@ -71,7 +71,7 @@ class userController {
         $newUser->setPassword(password_hash($password, PASSWORD_DEFAULT));
         $newUser->setEmail($email);
 
-        UsersDAO::store($newUser);
+        return UsersDAO::store($newUser);
     }
 
     public static function editUser($id, $username = null, $password = null) {

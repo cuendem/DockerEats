@@ -3,13 +3,13 @@
 <h1 class="mt-2 mb-0">Manage orders</h1>
 <section id="buttons" class="d-flex justify-content-center align-items-center my-5">
     <button id="listorders" class="mx-2 btn btn-normal">Get ALL</button>
-    <form id="filter-user" action="" class="filter-user-selector d-flex align-items-center">
-        <input type="submit" class="btn btn-normal" value="Get by user">
-        <select name="user" id="user-filter" class="text-center"></select>
-    </form>
+    <div class="filter-user-selector d-flex align-items-center">
+        <button id="filter-user" type="submit" class="btn btn-normal">Get by user</button>
+        <select name="user" id="user-filter"></select>
+    </div>
 </section>
-<section id="target" class="d-flex justify-content-center align-items-center flex-column gap-4">
+<section id="target" class="container-fluid">
     
 </section>
 <?php include_once('admin/views/footer.html') ?>
-<script src="scripts/orders.js"></script>
+<script type="module" src="scripts/orders.js"></script>

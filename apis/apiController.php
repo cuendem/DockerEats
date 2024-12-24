@@ -104,7 +104,7 @@ class apiController {
         include_once("views/main.php");
     }
 
-    public function logs() {
+    public function log() {
         if (!isset($_SESSION['username']) || $_SESSION['id_user'] != 1) {
             header('Location:/');
         }
@@ -288,7 +288,9 @@ class apiController {
             $stmt->execute();
 
             // Handle updating categories
-            $con->query("DELETE FROM CATEGORIES_PRODUCTS WHERE id_product = $id");
+            $stmt = $con->prepare("DELETE FROM CATEGORIES_PRODUCTS WHERE id_product = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
             $categoryIds = explode(',', $categories);
             foreach ($categoryIds as $categoryId) {
                 $stmt = $con->prepare("INSERT INTO CATEGORIES_PRODUCTS (id_product, id_category) VALUES (?, ?)");
@@ -661,7 +663,24 @@ class apiController {
 
         $con = DataBase::connect();
 
-        $stmt = $con->prepare("SELECT * FROM ORDERS");
+        $stmt = $con->prepare("SELECT
+            o.id_order,
+            o.date_order,
+            o.delivery_address,
+            o.payment_type,
+            o.card_number,
+            o.expiration_date,
+            o.cvc,
+            o.card_holder,
+            u.id_user,
+            u.username,
+            e.id_establishment,
+            e.name AS establishment_name
+        FROM
+            ORDERS o
+        LEFT JOIN USERS u ON o.id_user = u.id_user
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        ORDER BY o.id_order DESC");
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -696,7 +715,25 @@ class apiController {
 
         if ($user) {
             // Fetch a specific record by the dynamic ID column
-            $stmt = $con->prepare("SELECT * FROM ORDERS WHERE id_user = ?");
+            $stmt = $con->prepare("SELECT
+                o.id_order,
+                o.date_order,
+                o.delivery_address,
+                o.payment_type,
+                o.card_number,
+                o.expiration_date,
+                o.cvc,
+                o.card_holder,
+                u.id_user,
+                u.username,
+                e.id_establishment,
+                e.name AS establishment_name
+            FROM
+                ORDERS o
+            LEFT JOIN USERS u ON o.id_user = u.id_user
+            LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+            WHERE u.id_user = ?
+            ORDER BY o.id_order DESC");
             $stmt->bind_param('i', $user);
         }
 
@@ -719,7 +756,7 @@ class apiController {
         }
     }
 
-    public function getOrderCoupons() {
+    public static function getOrderCoupons() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -732,7 +769,12 @@ class apiController {
 
         if ($order) {
             // Fetch a specific record by the dynamic ID column
-            $stmt = $con->prepare("SELECT * FROM COUPONS_ORDERS WHERE id_order = ?");
+            $stmt = $con->prepare('
+            SELECT c.*
+            FROM COUPONS_ORDERS co
+            JOIN COUPONS c ON co.id_coupon = c.id_coupon
+            WHERE co.id_order LIKE ?
+        ');
             $stmt->bind_param('i', $order);
         }
 
@@ -755,7 +797,7 @@ class apiController {
         }
     }
 
-    public function getOrderContainers() {
+    public static function getOrderContainers() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -766,32 +808,66 @@ class apiController {
         // Check if an 'order' parameter is provided in the GET request
         $order = $_GET['order'] ?? null;
 
-        if ($order) {
-            // Fetch a specific record by the dynamic ID column
-            $stmt = $con->prepare("SELECT * FROM CONTAINERS WHERE id_order = ?");
-            $stmt->bind_param('i', $order);
+        if (!$order) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Order ID is required']);
+            return;
         }
 
+        // Fetch containers and their parts for the specified order
+        $stmt = $con->prepare("
+            SELECT 
+                c.id_container,
+                cp.id_part,
+                cp.id_product,
+                p.name AS product_name,
+                p.price AS product_price,
+                p.id_type AS product_type
+            FROM CONTAINERS c
+            LEFT JOIN CONTAINER_PARTS cp ON c.id_container = cp.id_container
+            LEFT JOIN PRODUCTS p ON cp.id_product = p.id_product
+            WHERE c.id_order = ?
+        ");
+        $stmt->bind_param('i', $order);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        $data = [];
+        // Group results by container
+        $containers = [];
         while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+            $containerId = $row['id_container'];
+            if (!isset($containers[$containerId])) {
+                $containers[$containerId] = [
+                    'id_container' => $containerId,
+                    'parts' => []
+                ];
+            }
+
+            // Add the part to the container's parts array
+            $containers[$containerId]['parts'][] = [
+                'id_part' => $row['id_part'],
+                'id_product' => $row['id_product'],
+                'product_name' => $row['product_name'],
+                'product_price' => $row['product_price'],
+                'product_type' => $row['product_type']
+            ];
         }
 
         $con->close();
 
-        if ($order && count($data) === 0) {
+        // Convert the grouped containers to a regular array
+        $containers = array_values($containers);
+
+        if (empty($containers)) {
             http_response_code(404);
-            echo json_encode(['error' => 'Record not found']);
+            echo json_encode(['error' => 'No containers found for the specified order']);
         } else {
             // Return the data
-            echo json_encode($data);
+            echo json_encode($containers);
         }
-    }
+    }   
 
-    public function getSales() {
+    public static function getSales() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -821,7 +897,80 @@ class apiController {
         }
     }
 
-    public function getEstablishment() {
+    public static function getSalesByPart() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if a 'part' parameter is provided in the GET request
+        $part = $_GET['part'] ?? null;
+
+        if (!$part) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Part ID is required']);
+            return;
+        }
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare('SELECT s.* FROM SALES as s JOIN SALES_CONTAINER_PARTS as scp ON s.id_sale = scp.id_sale WHERE scp.id_part = ?');
+        $stmt->bind_param('i', $part);
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        // Return the data
+        echo json_encode($data);
+    }
+
+    public static function getProductCategories() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if a 'product' parameter is provided in the GET request
+        $product = $_GET['product'] ?? null;
+
+        if (!$product) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Product ID is required']);
+            return;
+        }
+
+        $stmt = $con->prepare('SELECT id_category FROM CATEGORIES_PRODUCTS WHERE id_product LIKE ?');
+        $stmt->bind_param('i', $product);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $categories = [];
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row['id_category'];
+        }
+
+        $con->close();
+
+        if (count($categories) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($categories);
+        }
+    }
+
+    public static function getEstablishment() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -857,7 +1006,7 @@ class apiController {
         }
     }
 
-    public function getContainerPart() {
+    public static function getContainerPart() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -891,6 +1040,245 @@ class apiController {
         } else {
             // Return the data
             echo json_encode($data[0]);
+        }
+    }
+
+    public static function getLogs() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare("SELECT *
+        FROM LOGS AS L
+        JOIN USERS AS U ON L.id_user = U.id_user
+        ORDER BY id_log DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getLogsButAdmin() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare("SELECT *
+        FROM LOGS AS L
+        JOIN USERS AS U ON L.id_user = U.id_user
+        WHERE U.id_user != 1
+        ORDER BY id_log DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getLogsByUser() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if a 'user' parameter is provided in the GET request
+        $user = $_GET['user'] ?? null;
+
+        if ($user) {
+            // Fetch a specific record by the dynamic ID column
+            $stmt = $con->prepare("SELECT *
+            FROM LOGS AS L
+            JOIN USERS AS U ON L.id_user = U.id_user
+            WHERE L.id_user = ?
+            ORDER BY id_log DESC");
+            $stmt->bind_param('i', $user);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if ($user && count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getSalesByOrder() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if an 'order' parameter is provided in the GET request
+        $order = $_GET['order'] ?? null;
+
+        if ($order) {
+            // Fetch a specific record by the dynamic ID column
+            $stmt = $con->prepare('SELECT s.* FROM SALES as s JOIN SALES_ORDERS as so ON s.id_sale = so.id_sale WHERE so.id_order = ?');
+            $stmt->bind_param('i', $order);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if ($order && count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function deleteOrder() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+        $inputData = json_decode(file_get_contents('php://input'), true);
+
+        $id = $inputData['id'] ?? null;
+
+        if (!isset($id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the order exists before deleting
+            $checkStmt = $con->prepare("SELECT id_order FROM ORDERS WHERE id_order = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // Order with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No order found with the given ID']);
+                return;
+            }
+
+            // Delete order
+            $stmt = $con->prepare("DELETE FROM ORDERS WHERE id_order = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+
+            logsController::log("Deleted order $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Order deleted successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function deleteContainer() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+        $inputData = json_decode(file_get_contents('php://input'), true);
+
+        $id = $inputData['id'] ?? null;
+
+        if (!isset($id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the container exists before deleting
+            $checkStmt = $con->prepare("SELECT id_container FROM CONTAINERS WHERE id_container = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // Container with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No container found with the given ID']);
+                return;
+            }
+
+            // Delete container
+            $stmt = $con->prepare("DELETE FROM CONTAINERS WHERE id_container = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+
+            logsController::log("Deleted container $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Container deleted successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
         }
     }
 }

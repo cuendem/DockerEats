@@ -15,11 +15,13 @@
     <link rel="stylesheet" href="/css/style.css?ver=1"> <!-- ?ver=1 to avoid cacheing the CSS for testing -->
 </head>
 <body id="<?=$pageid?>">
-    <!-- PAGE -->
-    <?php include_once($view); ?>
     <!-- BOOTSTRAP -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <!-- HELPERS -->
+    <!-- HELPER FUNCTIONS -->
+    <script src="/scripts/helpers.js"></script>
+    <!-- PAGE -->
+    <?php include_once($view); ?>
+    <!-- SCRIPTS -->
     <script src="/scripts/script.js"></script>
 </body>
 </html>

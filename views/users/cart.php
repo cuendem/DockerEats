@@ -239,7 +239,7 @@
                                     // Apply coupons
                                     if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) {
                                         $ordered_coupons = salesController::order($_SESSION['coupons']);
-                                        foreach ($_SESSION['coupons'] as $i => $coupon) {
+                                        foreach ($ordered_coupons as $i => $coupon) {
                                             if ($coupon -> getDiscount_type() == 2) {
                                                 // Percentage-based coupon
                                                 $totalContPrice = round($totalContPrice*(1 - ($coupon->getDiscount() / 100)), 2);
@@ -250,7 +250,7 @@
                                         }
                                     }
 
-                                    echo $totalContPrice;
+                                    echo number_format($totalContPrice, 2);
                                 ?> €</span>
                             </div>
                             <hr class="my-3">

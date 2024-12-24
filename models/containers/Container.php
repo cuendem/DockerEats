@@ -23,12 +23,12 @@ class Container {
         }
     }
 
-    public function getPrice($sales) {
+    public function getPrice() {
         $parts = PartsDAO::getFromContainer($this->id_container);
         $total = 0;
 
         foreach ($parts as $i => $part) {
-            $total += $part->getPrice($sales);
+            $total += $part->getPrice();
         }
 
         return $total;

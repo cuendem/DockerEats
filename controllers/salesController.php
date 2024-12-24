@@ -22,6 +22,14 @@ class salesController {
 
         return $sales;
     }
+
+    public static function addSaleOrderRelation($order_id, $sale_id) {
+        SalesDAO::addSaleOrderRelation($order_id, $sale_id);
+    }
+
+    public static function addSalePartRelation($part_id, $sale_id) {
+        SalesDAO::addSalePartRelation($part_id, $sale_id);
+    }
 }
 
 ?>

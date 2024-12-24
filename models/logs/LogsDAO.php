@@ -27,15 +27,15 @@ class LogsDAO {
     public static function store($log) {
         $con = DataBase::connect();
 
-        $datetime = $log->getDatetime();
-        $user = $log->getUser();
+        $timestamp = $log->getTimestamp();
+        $id_user = $log->getId_user();
         $action = $log->getAction();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('INSERT INTO LOGS (datetime, user, action) VALUES (?, ?, ?)');
+        $stmt = $con->prepare('INSERT INTO LOGS (timestamp, id_user, action) VALUES (?, ?, ?)');
 
         // Bind the parameters
-        $stmt->bind_param('sis', $datetime, $user, $action);
+        $stmt->bind_param('sis', $timestamp, $id_user, $action);
 
         // Execute the query
         $stmt->execute();

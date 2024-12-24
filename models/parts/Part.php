@@ -13,12 +13,12 @@ class Part {
         return ProductsDAO::get($this->id_product);
     }
 
-    public function getPrice($sales) {
+    public function getPrice() {
         $product = $this->getProduct();
-        $appliedSale = $product->isOnSale($sales);
+        $sales = SalesDAO::getByPart($this->id_part);
 
-        if ($appliedSale) {
-            return $product->getDiscountedPrice($appliedSale);
+        if (count($sales) > 0) {
+            return $product->getDiscountedPrice($sales[0]);
         } else {
             return $product->getPrice();
         }

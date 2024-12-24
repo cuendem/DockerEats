@@ -1543,6 +1543,7 @@ input[type='submit']:hover {
 
 #cart #order input:not([type='submit']), #cart #order select {
     border: 2px solid white;
+    transition: 0.3s ease;
 }
 
 #cart #order input:not([type='submit']):focus, #cart #order select:focus {
@@ -1755,9 +1756,13 @@ input[type='submit']:hover {
 .order .ordercontainer {
     border: 6px solid var(--pequod-blue);
     border-radius: 15px;
-    overflow: hidden;
     min-width: 150px;
     max-width: 150px;
+}
+
+.order .ordercontainer .row {
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 .order .ordercontainer .dessert {
@@ -2033,7 +2038,7 @@ input[type='submit']:hover {
     background-color: var(--charon-gray);
 }
 
-#admin #filter-user input, #admin #filter-user select {
+#admin .filter-user-selector button, #admin .filter-user-selector select {
     color: var(--starbuck-black);
     background-color: white;
     border-width: 2px;
@@ -2043,18 +2048,44 @@ input[type='submit']:hover {
     height: 50px;
 }
 
-#admin #filter-user input {
+#admin .filter-user-selector button {
     border-radius: 5px 0px 0px 5px;
     border-right: 0px;
 }
 
-#admin #filter-user select {
+#admin .filter-user-selector select {
     border-radius: 0px 5px 5px 0px;
     border-left: 0px;
+    transition: 0.3s ease;
 }
 
-#admin #filter-user input:hover, #admin #filter-user select:hover {
+#admin .filter-user-selector button:hover, #admin .filter-user-selector select:hover {
     border-color: var(--charon-gray);
     background-color: var(--smee-gray);
     color: var(--starbuck-black);
+}
+
+.order .delete {
+    color: var(--ishmael-blue);
+    font-size: 30px;
+    transform: translate(-45%, -55%);
+    transition: 0.3s ease;
+    padding: 0px;
+    border-width: 0px;
+    background-color: transparent;
+}
+
+.order .delete.order-delete {
+    transform: translate(-50%, -45%);
+    font-size: 40px;
+}
+
+.order .delete:hover {
+    color: var(--aleph-red2);
+    transform: translate(-45%, -55%) scale(120%);
+}
+
+.order .delete.order-delete:hover {
+    color: var(--aleph-red2);
+    transform: translate(-50%, -45%) scale(120%);
 }

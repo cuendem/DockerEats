@@ -51,7 +51,7 @@
                         $branch = $container->getPart(2, true);
                         $drink = $container->getPart(3, true);
                         $dessert = $container->getPart(4, true) ?>
-                        <div class="ordercontainer container m-0" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="Total: <?=$container_price?> €">
+                        <div class="ordercontainer container m-0" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-custom-class="custom-tooltip" data-bs-title="Total: <?=number_format($container_price, 2)?> €">
                             <div class="row row-cols-2">
                                 <img class="dessert col p-0" src="/img/products/product<?=$dessert->getId_product()?>.webp" alt="<?=$dessert->getName()?>">
                                 <img class="drink col p-0" src="/img/products/product<?=$drink->getId_product()?>.webp" alt="<?=$drink->getName()?>">
@@ -102,7 +102,7 @@
                         }
                     }
                 ?>
-                <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=$total_order_price?> €</span>
+                <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format($total_order_price, 2)?> €</span>
             </div>
         </div>
     <?php }} ?>

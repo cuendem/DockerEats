@@ -39,15 +39,12 @@ class Order {
         switch ($this->payment_type) {
             case 'Card':
                 return [$this->payment_type, '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12C22 15.7712 22 17.6569 20.8284 18.8284C19.6569 20 17.7712 20 14 20H10C6.22876 20 4.34315 20 3.17157 18.8284C2 17.6569 2 15.7712 2 12Z" stroke="#1D63ED" stroke-width="1.5"></path><path opacity="0.5" d="M10 16H6" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path><path opacity="0.5" d="M14 16H12.5" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path><path opacity="0.5" d="M2 10L22 10" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path></svg>'];
-                break;
 
             case 'PayPal':
                 return [$this->payment_type, '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3H7.76556C6.75692 3 5.90612 3.75107 5.78101 4.75193L4.12403 18.0077C4.05817 18.5346 4.46901 19 5 19H6.30575C7.28342 19 8.1178 18.2932 8.27853 17.3288L8.8356 13.9864C8.93047 13.4172 9.42294 13 10 13H13C19 13 19 3 13 3Z" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path><path d="M7.32317 18.7378L7.14142 20.0101C7.06678 20.5326 7.47221 21 8 21H9.43845C10.3562 21 11.1561 20.3754 11.3787 19.4851L11.7575 17.9702C11.9 17.4 12.4123 17 13 17H16C21.393 17 21.9386 8.92103 17.6368 7.28638" stroke="#1D63ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>'];
-                break;
 
             case 'Cash':
                 return [$this->payment_type, '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 10C2 7.17157 2 5.75736 2.87868 4.87868C3.75736 4 5.17157 4 8 4H13C15.8284 4 17.2426 4 18.1213 4.87868C19 5.75736 19 7.17157 19 10C19 12.8284 19 14.2426 18.1213 15.1213C17.2426 16 15.8284 16 13 16H8C5.17157 16 3.75736 16 2.87868 15.1213C2 14.2426 2 12.8284 2 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M19.0003 7.07617C19.9754 7.17208 20.6317 7.38885 21.1216 7.87873C22.0003 8.75741 22.0003 10.1716 22.0003 13.0001C22.0003 15.8285 22.0003 17.2427 21.1216 18.1214C20.2429 19.0001 18.8287 19.0001 16.0003 19.0001H11.0003C8.17187 19.0001 6.75766 19.0001 5.87898 18.1214C5.38909 17.6315 5.17233 16.9751 5.07642 16" stroke="#1D63ED" stroke-width="1.5"></path> <path d="M13 10C13 11.3807 11.8807 12.5 10.5 12.5C9.11929 12.5 8 11.3807 8 10C8 8.61929 9.11929 7.5 10.5 7.5C11.8807 7.5 13 8.61929 13 10Z" stroke="#1D63ED" stroke-width="1.5"></path> <path opacity="0.5" d="M16 12L16 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> <path opacity="0.5" d="M5 12L5 8" stroke="#1D63ED" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>'];
-                break;
         }
     }
 
@@ -59,14 +56,8 @@ class Order {
         return ContainersDAO::getOrderContainers($this->id_order);
     }
 
-    public function getTotalPrice() {
-        $sales = SalesDAO::getAllAvailable($this->date_order);
-
-        return (rand(1, 10000) / 100);
-    }
-
     public function getSales() {
-        return SalesDAO::getAllAvailable($this->date_order);
+        return SalesDAO::getByOrder($this->id_order);
     }
 
     /**

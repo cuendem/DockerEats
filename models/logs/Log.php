@@ -2,8 +2,8 @@
 
 class Log {
     private $id_log;
-    private $datetime;
-    private $user;
+    private $timestamp;
+    private $id_user;
     private $action;
 
     public function __construct() {
@@ -31,46 +31,6 @@ class Log {
     }
 
     /**
-     * Get the value of datetime
-     */ 
-    public function getDatetime()
-    {
-        return $this->datetime;
-    }
-
-    /**
-     * Set the value of datetime
-     *
-     * @return  self
-     */ 
-    public function setDatetime($datetime)
-    {
-        $this->datetime = $datetime;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of user
-     */ 
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-    /**
-     * Set the value of user
-     *
-     * @return  self
-     */ 
-    public function setUser($user)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
      * Get the value of action
      */ 
     public function getAction()
@@ -86,6 +46,46 @@ class Log {
     public function setAction($action)
     {
         $this->action = $action;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of timestamp
+     */ 
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * Set the value of timestamp
+     *
+     * @return  self
+     */ 
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_user
+     */ 
+    public function getId_user()
+    {
+        return $this->id_user;
+    }
+
+    /**
+     * Set the value of id_user
+     *
+     * @return  self
+     */ 
+    public function setId_user($id_user)
+    {
+        $this->id_user = $id_user;
 
         return $this;
     }

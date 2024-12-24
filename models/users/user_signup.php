@@ -14,7 +14,7 @@ if(isset($_POST['username'], $_POST['email'], $_POST['password'], $_POST['repeat
         if ($_POST['password'] !== $_POST['repeatpassword']) {
             $passworderror = "error";
         } else {
-            userController::addUser($_POST['username'], $_POST['password'], $_POST['email']);
+            $id = userController::addUser($_POST['username'], $_POST['password'], $_POST['email']);
             header('location:/account/signin');
         }
     }

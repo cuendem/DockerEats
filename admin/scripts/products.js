@@ -21,6 +21,9 @@ async function getAll() {
     if (response.ok) {
         const products = await response.json();
         await listProducts(products);
+    } else {
+        const target = document.getElementById('target');
+        target.innerHTML = 'No products found';
     }
 }
 
@@ -35,6 +38,9 @@ async function getByType(type) {
     if (response.ok) {
         const products = await response.json();
         await listProducts(products);
+    } else {
+        const target = document.getElementById('target');
+        target.innerHTML = 'No products found';
     }
 }
 

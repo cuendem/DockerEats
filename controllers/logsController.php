@@ -7,8 +7,8 @@ class logsController {
         if (isset($_SESSION['id_user'])) {
             $log = new Log();
             $log->setAction($action);
-            $log->setUser($_SESSION['id_user']);
-            $log->setDatetime(date("Y-m-d H:i:s"));
+            $log->setId_user($_SESSION['id_user']);
+            $log->setTimestamp(date("Y-m-d H:i:s"));
             LogsDAO::store($log);
         }
     }
