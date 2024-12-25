@@ -72,6 +72,43 @@ types.forEach(type => {
     }
 });
 
+// Search function in products page
+document.querySelectorAll('input[name="dishnamelist"]').forEach(input => {
+    // Add to all 4 inputs
+    input.addEventListener('input', (event) => {
+        // When being typed
+        const searchValue = event.target.value.toLowerCase();
+        const list = document.getElementById('list');
+        const categories = list.querySelectorAll('.categoryRow'); // Select all product containers
+
+        categories.forEach(category => {
+            const products = category.querySelectorAll('.card.product');
+            let hasVisibleProducts = false;
+
+            products.forEach(product => {
+                const productName = product.querySelector('.card-title').textContent.toLowerCase();
+                if (productName.includes(searchValue)) {
+                    product.style.display = ''; // Show matching product
+                    hasVisibleProducts = true; // At least one product is visible in this category
+                } else {
+                    product.style.display = 'none'; // Hide non-matching product
+                }
+            });
+
+            // Toggle visibility of the category based on product visibility
+            if (hasVisibleProducts) {
+                category.style.display = ''; // Show category
+                category.style.padding = '';
+                category.style.margin = '';
+            } else {
+                category.style.display = 'none'; // Hide category
+                category.style.padding = '0px';
+                category.style.margin = '0px';
+            }
+        });
+    });
+});
+
 // Search function in the popup overlays
 document.querySelectorAll('input[name="dishname"]').forEach(input => {
     // Add to all 4 inputs

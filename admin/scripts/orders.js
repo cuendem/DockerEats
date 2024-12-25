@@ -217,9 +217,9 @@ async function listOrders(ordersJson) {
                         const result = await response.json();
     
                         if (!response.ok) {
-                            throw new Error(`${response.status} - ${result['error']}`);
+                            createToast(`Error: ${result['error']}`, 'error');
                         } else {
-                            createToast(`Container ${container.idContainer} deleted!`);
+                            createToast(`Container ${container.idContainer} deleted!`, 'success');
                             orderBottomDiv.removeChild(containerDiv);
                         }
                     }
@@ -287,9 +287,9 @@ async function listOrders(ordersJson) {
                     const result = await response.json();
 
                     if (!response.ok) {
-                        throw new Error(`${response.status} - ${result['error']}`);
+                        createToast(`Error: ${result['error']}`, 'error');
                     } else {
-                        createToast(`Order ${order.idOrder} deleted!`);
+                        createToast(`Order ${order.idOrder} deleted!`, 'success');
                         target.removeChild(orderRow);
                     }
                 }

@@ -202,9 +202,9 @@ async function listProducts(products) {
                     const result = await response.json();
 
                     if (!response.ok) {
-                        throw new Error(`${response.status} - ${result['error']}`);
+                        createToast(`Error: ${result['error']}`, 'error');
                     } else {
-                        createToast(`${formData.get('name')} updated successfully!`);
+                        createToast(`${formData.get('name')} updated successfully!`, 'success');
                     }
                 } catch (error) {
                     console.error(error);
@@ -238,14 +238,14 @@ async function listProducts(products) {
                     const result = await response.json();
 
                     if (!response.ok) {
-                        throw new Error(`${response.status} - ${result['error']}`);
+                        createToast(`Error: ${result['error']}`, 'error');
                     } else {
                         productForm.classList.toggle('deleted');
                         if (deletedInput.value == 1) {
-                            createToast(`${formData.get('name')} unmarked as deleted!`);
+                            createToast(`${formData.get('name')} unmarked as deleted!`, 'success');
                             deletedInput.value = 0;
                         } else {
-                            createToast(`${formData.get('name')} marked as deleted!`);
+                            createToast(`${formData.get('name')} marked as deleted!`, 'success');
                             deletedInput.value = 1;
                         }
                     }
@@ -353,19 +353,13 @@ async function addProduct() {
                 body: formData, // Send the form data
             });
 
-            for (let [key, value] of formData.entries()) {
-                console.log(key, value);
-            }
-
             const result = await response.json();
 
             if (!response.ok) {
-                throw new Error(`${response.status} - ${result['error']}`);
+                createToast(`Error: ${result['error']}`, 'error');
             } else {
-                console.log(result);
-
                 // Create confirmation toast
-                createToast(`Product ${formData.get('name')} created succesfully!`);
+                createToast(`Product ${formData.get('name')} created succesfully!`, 'success');
             }
         } catch (error) {
             console.error(error);

@@ -1205,12 +1205,12 @@ class apiController {
 
         try {
             // Check if the order exists before deleting
-            $checkStmt = $con->prepare("SELECT id_order FROM ORDERS WHERE id_order = ?");
-            $checkStmt->bind_param('i', $id);
-            $checkStmt->execute();
-            $checkResult = $checkStmt->get_result();
+            $stmt = $con->prepare("SELECT id_order FROM ORDERS WHERE id_order = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-            if ($checkResult->num_rows === 0) {
+            if ($result->num_rows === 0) {
                 // Order with the given ID does not exist
                 http_response_code(404);
                 echo json_encode(['error' => 'No order found with the given ID']);
@@ -1253,7 +1253,7 @@ class apiController {
 
         try {
             // Check if the container exists before deleting
-            $checkStmt = $con->prepare("SELECT id_container FROM CONTAINERS WHERE id_container = ?");
+            $checkStmt = $con->prepare("SELECT id_container, id_order FROM CONTAINERS WHERE id_container = ?");
             $checkStmt->bind_param('i', $id);
             $checkStmt->execute();
             $checkResult = $checkStmt->get_result();
@@ -1262,6 +1262,23 @@ class apiController {
                 // Container with the given ID does not exist
                 http_response_code(404);
                 echo json_encode(['error' => 'No container found with the given ID']);
+                return;
+            }
+
+            $container = $checkResult->fetch_assoc();
+            $orderId = $container['id_order'];
+
+            // Check if the order has more than one container
+            $orderCheckStmt = $con->prepare("SELECT COUNT(*) as container_count FROM CONTAINERS WHERE id_order = ?");
+            $orderCheckStmt->bind_param('i', $orderId);
+            $orderCheckStmt->execute();
+            $orderCheckResult = $orderCheckStmt->get_result();
+            $orderData = $orderCheckResult->fetch_assoc();
+
+            if ($orderData['container_count'] <= 1) {
+                // Order has only one container, cannot delete
+                http_response_code(400);
+                echo json_encode(['error' => 'Cannot delete the last container of an order']);
                 return;
             }
 

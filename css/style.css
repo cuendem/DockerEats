@@ -814,6 +814,32 @@ footer .logo {
     transform: scale(115%);
 }
 
+#productlist .listButtons form {
+    border-radius: 100px;
+    border-width: 0px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, .25);
+    color: var(--starbuck-black);
+    background-color: white;
+    padding: .6rem 1.2rem;
+}
+
+#productlist .listButtons form svg {
+    stroke: var(--ishmael-blue);
+    width: 30px;
+}
+
+#productlist .listButtons form input {
+    background-color: transparent;
+    padding: 0px;
+    border: 0px;
+    color: var(--starbuck-black);
+    width: 100%;
+}
+
+#productlist .listButtons form input:focus {
+    outline: none;
+}
+
 /*
 ======================
     SIGN IN PAGE
@@ -2088,4 +2114,22 @@ input[type='submit']:hover {
 .order .delete.order-delete:hover {
     color: var(--aleph-red2);
     transform: translate(-50%, -45%) scale(120%);
+}
+
+/*
+======================
+    TOASTS
+======================
+*/
+
+.toast-header .success {
+    color: var(--zayin-green2);
+}
+
+.toast-header .error {
+    color: var(--aleph-red2);
+}
+
+.toast-header .info {
+    color: var(--ishmael-blue);
 }

@@ -1,5 +1,5 @@
 // Toasts
-function createToast(text) {
+function createToast(text, type = 'info') {
     // Create the toast container if it doesn't already exist
     let toastContainer = document.querySelector('.toast-container');
     if (!toastContainer) {
@@ -10,17 +10,35 @@ function createToast(text) {
 
     // Create a new toast element
     const toastElement = document.createElement('div');
-    toastElement.className = 'toast align-items-center';
+    toastElement.className = 'toast';
     toastElement.setAttribute('role', 'alert');
     toastElement.setAttribute('aria-live', 'assertive');
     toastElement.setAttribute('aria-atomic', 'true');
 
+    icon = '';
+
+    switch (type) {
+        case 'success':
+            icon = 'bi-check-circle-fill';
+            break;
+        case 'error':
+            icon = 'bi-x-circle-fill';
+            break;
+        case 'info':
+            icon = 'bi-info-circle-fill';
+            break;
+        default:
+            break;
+    }
+
     toastElement.innerHTML = `
-        <div class="d-flex">
-            <div class="toast-body">
-                ${text}
-            </div>
-            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        <div class="toast-header">
+            <i class="bi ${icon} ${type} me-2"></i>
+            <strong class="me-auto">DockerEats</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            ${text}
         </div>
     `;
 
