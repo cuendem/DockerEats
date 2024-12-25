@@ -54,4 +54,3 @@ function createToast(text, type = 'info') {
         toastElement.remove();
     });
 }
-

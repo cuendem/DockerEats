@@ -1203,6 +1203,12 @@ input[type='submit']:hover {
     max-width: 120px;
     border-radius: 25px;
     box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+#build #container-graph .selected-product:hover {
+    transform: scale(105%);
 }
 
 #build #container-graph .selected-product-remove {

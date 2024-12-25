@@ -8,7 +8,7 @@ if(isset($_POST['buy-button'])) {
         // Order created
         // Create the containers and link their parts to them
         foreach ($_SESSION['cart'] as $i => $container) {
-            $id_container = containerController::addContainer($order_id, $container);
+            $id_container = containerController::addContainer($order_id);
 
             foreach ($container as $i => $product) {
                 $partId = partsController::addPart($id_container, $product);
@@ -43,7 +43,11 @@ if(isset($_POST['buy-button'])) {
         unset($_SESSION['coupons']);
     } else {
         // Something went wrong
-        echo "Could not create order: $order_id";
+        ?>
+        <script>
+            bufferedToast = {"text": "Error: <?=$order_id?>", "type": "error"};
+        </script>
+        <?php
     }
 }
 ?>

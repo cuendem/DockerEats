@@ -95,7 +95,7 @@ class containerController {
         header('Location:/account/cart');
     }
 
-    public static function addContainer($order, $container) {
+    public static function addContainer($order) {
         return ContainersDAO::store($order);
     }
 }

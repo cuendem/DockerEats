@@ -22,7 +22,7 @@
                 <div id="container-dessert" class="col-8 d-flex justify-content-center align-items-center">
                     <?php if (isset($_SESSION['container']['dessert'])) { ?>
                         <div class="position-relative">
-                            <img class="selected-product" src="/img/products/product<?=$_SESSION['container']['dessert']->getId_product()?>.webp" alt="<?=$_SESSION['container']['dessert']->getName()?>">
+                            <img id="build-dessert" class="selected-product" src="/img/products/product<?=$_SESSION['container']['dessert']->getId_product()?>.webp" alt="<?=$_SESSION['container']['dessert']->getName()?>">
                             <a href="/build/remove/dessert" class="selected-product-remove bi bi-x-circle-fill position-absolute top-0 start-100"></a>
                         </div>
                     <?php } ?>
@@ -31,7 +31,7 @@
                 <div id="container-drink" class="col-4 d-flex justify-content-center align-items-center">
                     <?php if (isset($_SESSION['container']['drink'])) { ?>
                         <div class="position-relative">
-                            <img class="selected-product" src="/img/products/product<?=$_SESSION['container']['drink']->getId_product()?>.webp" alt="<?=$_SESSION['container']['drink']->getName()?>">
+                            <img id="build-drink" class="selected-product" src="/img/products/product<?=$_SESSION['container']['drink']->getId_product()?>.webp" alt="<?=$_SESSION['container']['drink']->getName()?>">
                             <a href="/build/remove/drink" class="selected-product-remove bi bi-x-circle-fill position-absolute top-0 start-100"></a>
                         </div>
                     <?php } ?>
@@ -42,7 +42,7 @@
                 <div id="container-main" class="col-8 d-flex justify-content-center align-items-center">
                     <?php if (isset($_SESSION['container']['main'])) { ?>
                         <div class="position-relative">
-                            <img class="selected-product" src="/img/products/product<?=$_SESSION['container']['main']->getId_product()?>.webp" alt="<?=$_SESSION['container']['main']->getName()?>">
+                            <img id="build-main" class="selected-product" src="/img/products/product<?=$_SESSION['container']['main']->getId_product()?>.webp" alt="<?=$_SESSION['container']['main']->getName()?>">
                             <a href="/build/remove/main" class="selected-product-remove bi bi-x-circle-fill position-absolute top-0 start-100"></a>
                         </div>
                     <?php } ?>
@@ -51,7 +51,7 @@
                 <div id="container-branch" class="col-4 d-flex justify-content-center align-items-center">
                     <?php if (isset($_SESSION['container']['branch'])) { ?>
                         <div class="position-relative">
-                            <img class="selected-product" src="/img/products/product<?=$_SESSION['container']['branch']->getId_product()?>.webp" alt="<?=$_SESSION['container']['branch']->getName()?>">
+                            <img id="build-branch" class="selected-product" src="/img/products/product<?=$_SESSION['container']['branch']->getId_product()?>.webp" alt="<?=$_SESSION['container']['branch']->getName()?>">
                             <a href="/build/remove/branch" class="selected-product-remove bi bi-x-circle-fill position-absolute top-0 start-100"></a>
                         </div>
                     <?php } ?>

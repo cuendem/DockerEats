@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="bottom-tag d-flex align-items-center">
                                     <span class="total px-4 py-2"><?=$contPrice?> €</span>
-                                    <a href="/build/removefromcart/<?=$i?>" class="container-remove px-3 py-2 bi bi-trash-fill"></a>
+                                    <a href="/build/removefromcart/<?=$i?>" class="container-remove px-3 py-2 bi bi-trash-fill d-flex align-items-center h-100"></a>
                                 </div>
                             </div>
                         <?php } ?>
