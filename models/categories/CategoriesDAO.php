@@ -4,6 +4,21 @@ include_once("models/categories/Category.php");
 include_once("config/dataBase.php");
 
 class CategoriesDAO {
+    public static function get($id) {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('SELECT * FROM CATEGORIES WHERE id_category = ?');
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $category = $result->fetch_object("Category");
+
+        $con->close();
+
+        return $category;
+    }
+
     public static function getAll() {
         $con = DataBase::connect();
 

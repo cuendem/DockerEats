@@ -5,7 +5,7 @@
 </section>
 <section id="list" class="wave-separator container-fluid pt-5">
     <?php if (count($orders) <= 0) { ?>
-        <div class="no-orders d-flex flex-column align-items-center w-100 my-5">
+        <div class="no-results d-flex flex-column align-items-center w-100 my-5">
             <span>You have not made any orders.</span>
         </div>
     <?php } else { foreach ($orders as $i => $order) { ?>

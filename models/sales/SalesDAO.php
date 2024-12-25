@@ -8,7 +8,7 @@ class SalesDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM SALES');
+        $stmt = $con->prepare('SELECT * FROM SALES ORDER BY date_start, id_sale DESC');
 
         // Execute the query
         $stmt->execute();

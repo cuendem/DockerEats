@@ -45,11 +45,11 @@ class ContainersDAO {
         return $containers;
     }
 
-    public static function store($container) {
+    public static function store($order) {
         $con = DataBase::connect();
 
         $stmt = $con->prepare('INSERT INTO CONTAINERS (id_order) VALUES (?)');
-        $stmt->bind_param('i', $container);
+        $stmt->bind_param('i', $order);
 
         $stmt->execute();
 

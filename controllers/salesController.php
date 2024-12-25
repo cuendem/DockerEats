@@ -4,6 +4,14 @@ include_once("models/sales/SalesDAO.php");
 include_once("models/sales/Sale.php");
 
 class salesController {
+    public function index() {
+        $pageid = "sales";
+        $view = "views/sales/list.php";
+        $title = "Sales";
+        $sales = SalesDAO::getAllAvailable(date('Y-m-d'));
+        include_once("views/main.php");
+    }
+
     public static function order($sales) {
         // Sort the sales using usort with a custom function
         usort($sales, function($a, $b) {
