@@ -6,7 +6,7 @@
     <button id="butadmin" class="mx-2 btn btn-normal">Exclude Admin</button>
     <div class="filter-user-selector d-flex align-items-center">
         <button id="filter-user" type="submit" class="btn btn-normal">Get by user</button>
-        <select name="user" id="user-filter" class="text-center"></select>
+        <select name="user" id="user-filter"></select>
     </div>
 </section>
 <section id="target" class="d-flex justify-content-center align-items-center flex-column gap-4">

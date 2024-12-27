@@ -11,6 +11,7 @@ class Sale {
     protected $product_type;
     protected $category_affected;
     protected $scope;
+    protected $category_name;
 
     public function __construct() {
 
@@ -27,8 +28,32 @@ class Sale {
     }
 
     public function getScopeName() {
-        if ($this->scope == 2 && $this->category_affected != 0) {
-            return CategoriesDAO::get($this->category_affected)->getName();
+        if ($this->scope == 2) {
+            $type = 'Any';
+            $category = 'Any';
+
+            if ($this->product_type != 0) {
+                switch ($this->product_type) {
+                    case 1:
+                        $type = 'Main';
+                        break;
+                    case 2:
+                        $type = 'Branch';
+                        break;
+                    case 3:
+                        $type = 'Drink';
+                        break;
+                    case 4:
+                        $type = 'Dessert';
+                        break;
+                }
+            }
+
+            if ($this->category_affected != 0) {
+                $category = $this->category_name;
+            }
+
+            return "$type $category";
         } else if ($this->scope == 1) {
             return 'Order';
         } else {

@@ -8,7 +8,7 @@ class CouponsDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM COUPONS');
+        $stmt = $con->prepare('SELECT * FROM COUPONS ORDER BY date_start DESC, id_coupon DESC');
 
         // Execute the query
         $stmt->execute();
@@ -28,7 +28,7 @@ class CouponsDAO {
         $con = DataBase::connect();
     
         // Prepare the SQL statement with LIKE and date validity checks
-        $stmt = $con->prepare('SELECT * FROM COUPONS WHERE code LIKE ? AND date_start <= CURDATE() AND (date_end IS NULL OR date_end >= CURDATE())');
+        $stmt = $con->prepare('SELECT * FROM COUPONS WHERE code LIKE ? AND date_start <= CURDATE() AND (date_end IS NULL OR date_end >= CURDATE()) ORDER BY date_start DESC, id_coupon DESC');
     
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('s', $code);
@@ -67,6 +67,7 @@ class CouponsDAO {
             FROM COUPONS_ORDERS co
             JOIN COUPONS c ON co.id_coupon = c.id_coupon
             WHERE co.id_order LIKE ?
+            ORDER BY c.date_start DESC, c.id_coupon DESC
         ');
         $stmt->bind_param('i', $id_order);
 

@@ -2031,18 +2031,22 @@ input[type='submit']:hover {
     display: none;
 }
 
-#admin .product-card .data .id {
+#admin .id {
     font-family: Poppins, sans-serif;
     color: var(--ahab-gray);
     font-size: 12px;
     transform: translateX(-5px);
 }
 
+#admin .id.white {
+    color: white;
+}
+
 #admin .product-card .data .currency {
     font-size: 20px;
 }
 
-#admin .product-card .update {
+#admin form .update {
     background-color: var(--ishmael-blue);
     color: white;
     border: 0px;
@@ -2050,11 +2054,11 @@ input[type='submit']:hover {
     transition: 0.3s ease;
 }
 
-#admin .product-card .update:hover {
+#admin form .update:hover {
     background-color: var(--ricardo-blue);
 }
 
-#admin .product-card .delete {
+#admin form .delete {
     background-color: var(--aleph-red2);
     color: white;
     border: 0px;
@@ -2062,7 +2066,7 @@ input[type='submit']:hover {
     transition: 0.3s ease;
 }
 
-#admin .product-card .delete:hover {
+#admin form .delete:hover {
     background-color: var(--aleph-red);
 }
 
@@ -2146,10 +2150,13 @@ input[type='submit']:hover {
 ======================
 */
 
-.sale {
+.sale, .coupon {
     background: linear-gradient(90deg, var(--stubb-blue), var(--pip-blue));
     border-radius: 30px;
     box-shadow: 0 1px 5px 0 var(--ahab-gray-50);
+}
+
+.sale {
     min-height: 200px;
 }
 
@@ -2168,4 +2175,25 @@ input[type='submit']:hover {
 
 .sale .sale-description {
     font-size: 16px;
+}
+
+#admin .sale, #admin .coupon {
+    border-radius: 4px;
+    transition: 0.3s ease;
+}
+
+#admin .sale input:not([type="submit"]), #admin .sale textarea, #admin .sale select, #admin .coupon input:not([type="submit"]), #admin .coupon select {
+    border-radius: 100px;
+    border: 1px solid var(--stubb-blue);
+    padding: 5px 10px;
+}
+
+#admin .sale textarea {
+    padding: 5px 15px;
+    font-size: 12px;
+    height: 80px;
+}
+
+#admin .sale input[type="number"], #admin .coupon input[type="number"] {
+    width: 115px;
 }

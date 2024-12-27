@@ -363,7 +363,7 @@ class apiController {
         }
     }
 
-    public static function addProduct() {
+    public static function createProduct() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -770,11 +770,12 @@ class apiController {
         if ($order) {
             // Fetch a specific record by the dynamic ID column
             $stmt = $con->prepare('
-            SELECT c.*
-            FROM COUPONS_ORDERS co
-            JOIN COUPONS c ON co.id_coupon = c.id_coupon
-            WHERE co.id_order LIKE ?
-        ');
+                SELECT c.*
+                FROM COUPONS_ORDERS co
+                JOIN COUPONS c ON co.id_coupon = c.id_coupon
+                WHERE co.id_order LIKE ?
+                ORDER BY c.date_start DESC, c.id_coupon DESC
+            ');
             $stmt->bind_param('i', $order);
         }
 
@@ -876,7 +877,9 @@ class apiController {
         $con = DataBase::connect();
 
         // Fetch a specific record by the dynamic ID column
-        $stmt = $con->prepare("SELECT * FROM SALES");
+        $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        ORDER BY s.date_start DESC, s.id_sale DESC");
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -894,6 +897,513 @@ class apiController {
         } else {
             // Return the data
             echo json_encode($data);
+        }
+    }
+
+    public static function getCurrentSales() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        WHERE s.date_start <= NOW() AND (s.date_end IS NULL OR s.date_end >= NOW())
+        ORDER BY s.date_start DESC, s.id_sale DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getFutureSales() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        WHERE date_start > NOW()
+        ORDER BY s.date_start DESC, s.id_sale DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getEndedSales() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Fetch a specific record by the dynamic ID column
+        $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        WHERE date_end < NOW()
+        ORDER BY s.date_start DESC, s.id_sale DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function editSale() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Collect and validate input parameters
+        $id = $_POST['id'] ?? null;
+        $name = $_POST['name'] ?? null;
+        $description = $_POST['description'] ?? null;
+        $datestart = $_POST['datestart'] ?? null;
+        $dateend = $_POST['dateend'] != '' ? $_POST['dateend'] : null;
+        $producttype = $_POST['producttype'] ?? null;
+        $categoryaffected = $_POST['categoryaffected'] ?? null;
+        $scope = $_POST['scope'] ?? null;
+        $discount = $_POST['discount'] ?? null;
+        $discounttype = $_POST['discounttype'] ?? null;
+
+        if (!isset($id) || !isset($name) || !isset($datestart) || !isset($producttype) || !isset($categoryaffected) || !isset($scope) || !isset($discount) || !isset($discounttype)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the sale exists before updating
+            $checkStmt = $con->prepare("SELECT id_sale FROM SALES WHERE id_sale = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // Sale with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No sale found with the given ID']);
+                return;
+            }
+
+            // Update product information
+            $stmt = $con->prepare("UPDATE SALES SET name = ?, description = ?, date_start = ?, date_end = ?, product_type = ?, category_affected = ?, scope = ?, discount = ?, discount_type = ? WHERE id_sale = ?");
+            $stmt->bind_param('ssssiiiiii', $name, $description, $datestart, $dateend, $producttype, $categoryaffected, $scope, $discount, $discounttype, $id);
+            $stmt->execute();
+
+            logsController::log("Updated sale $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Sale updated successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function createSale() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Collect and validate input parameters
+        $name = $_POST['name'] ?? null;
+        $description = $_POST['description'] ?? null;
+        $datestart = $_POST['datestart'] ?? null;
+        $dateend = $_POST['dateend'] != '' ? $_POST['dateend'] : null;
+        $producttype = $_POST['producttype'] ?? null;
+        $categoryaffected = $_POST['categoryaffected'] ?? null;
+        $scope = $_POST['scope'] ?? null;
+        $discount = $_POST['discount'] ?? null;
+        $discounttype = $_POST['discounttype'] ?? null;
+
+        if (!isset($name) || !isset($datestart) || !isset($producttype) || !isset($categoryaffected) || !isset($scope) || !isset($discount) || !isset($discounttype)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Update product information
+            $stmt = $con->prepare("INSERT INTO SALES (name, description, date_start, date_end, product_type, category_affected, scope, discount, discount_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('ssssiiiii', $name, $description, $datestart, $dateend, $producttype, $categoryaffected, $scope, $discount, $discounttype);
+            $stmt->execute();
+
+            $id = $con->insert_id;
+
+            logsController::log("Created sale $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Sale created successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function deleteSale() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+        $inputData = json_decode(file_get_contents('php://input'), true);
+
+        $id = $inputData['id'] ?? null;
+
+        if (!isset($id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the sale exists before deleting
+            $stmt = $con->prepare("SELECT id_sale FROM SALES WHERE id_sale = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows === 0) {
+                // Sale with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No sale found with the given ID']);
+                return;
+            }
+
+            // Delete sale
+            $stmt = $con->prepare("DELETE FROM SALES WHERE id_sale = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+
+            logsController::log("Deleted sale $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Sale deleted successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function getCoupons() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM COUPONS ORDER BY date_start DESC, id_coupon DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getCurrentCoupons() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_start <= NOW() AND (date_end IS NULL OR date_end >= NOW()) ORDER BY date_start DESC, id_coupon DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getFutureCoupons() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_start > NOW() ORDER BY date_start DESC, id_coupon DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getExpiredCoupons() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_end < NOW() ORDER BY date_start DESC, id_coupon DESC");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function editCoupon() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Collect and validate input parameters
+        $id = $_POST['id'] ?? null;
+        $code = $_POST['code'] ?? null;
+        $datestart = $_POST['datestart'] ?? null;
+        $dateend = $_POST['dateend'] != '' ? $_POST['dateend'] : null;
+        $discount = $_POST['discount'] ?? null;
+        $discounttype = $_POST['discounttype'] ?? null;
+
+        if (!isset($id) || !isset($code) || !isset($datestart) || !isset($discount) || !isset($discounttype)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the coupon exists before updating
+            $checkStmt = $con->prepare("SELECT id_coupon FROM COUPONS WHERE id_coupon = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // Coupon with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No coupon found with the given ID']);
+                return;
+            }
+
+            // Update product information
+            $stmt = $con->prepare("UPDATE COUPONS SET code = ?, date_start = ?, date_end = ?, discount = ?, discount_type = ? WHERE id_coupon = ?");
+            $stmt->bind_param('sssiii', $code, $datestart, $dateend, $discount, $discounttype, $id);
+            $stmt->execute();
+
+            logsController::log("Updated coupon $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Coupon updated successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function createCoupon() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Collect and validate input parameters
+        $code = $_POST['code'] ?? null;
+        $datestart = $_POST['datestart'] ?? null;
+        $dateend = $_POST['dateend'] != '' ? $_POST['dateend'] : null;
+        $discount = $_POST['discount'] ?? null;
+        $discounttype = $_POST['discounttype'] ?? null;
+
+        if (!isset($code) || !isset($datestart) || !isset($discount) || !isset($discounttype)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Update product information
+            $stmt = $con->prepare("INSERT INTO COUPONS (code, date_start, date_end, discount, discount_type) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param('ssssi', $code, $datestart, $dateend, $discount, $discounttype);
+            $stmt->execute();
+
+            $id = $con->insert_id;
+
+            logsController::log("Created coupon $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Coupon created successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function deleteCoupon() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+        $inputData = json_decode(file_get_contents('php://input'), true);
+
+        $id = $inputData['id'] ?? null;
+
+        if (!isset($id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the coupon exists before deleting
+            $stmt = $con->prepare("SELECT id_coupon FROM COUPONS WHERE id_coupon = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($result->num_rows === 0) {
+                // Coupon with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No coupon found with the given ID']);
+                return;
+            }
+
+            // Delete coupon
+            $stmt = $con->prepare("DELETE FROM COUPONS WHERE id_coupon = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+
+            logsController::log("Deleted coupon $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'Coupon deleted successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
         }
     }
 

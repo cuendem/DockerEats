@@ -89,7 +89,7 @@ function previewImage(event) {
 async function listProducts(products) {
     try {
         // Get the categories
-        response = await fetch('http://www.dockereats.com/api/getCategories');
+        let response = await fetch('http://www.dockereats.com/api/getCategories');
         const categories = await response.json();
 
         // Get the product / categories links
@@ -107,7 +107,7 @@ async function listProducts(products) {
         // target.appendChild(filterSelect);
 
         const productList = document.createElement('div');
-        productList.className = 'product-list d-flex gap-4 flex-wrap';
+        productList.className = 'product-list d-flex gap-4 flex-wrap justify-content-center';
         target.appendChild(productList); // Add product-list to target
 
         // Iterate through each product
@@ -144,7 +144,7 @@ async function listProducts(products) {
                         </label>
                         <input type="file" name="image" id="image${product.id_product}" accept="image/*" data-preview-target="preview-image${product.id_product}">
                     </div>
-                    <div class="d-flex flex-column align-items-center gap-1 py-3 h-100">
+                    <div class="d-flex flex-column align-items-center justify-content-around py-3 h-100">
                         <input type="submit" id="update${product.id_product}" class="update" value="Update">
                         <input type="submit" id="delete${product.id_product}" class="delete" value="Delete">
                     </div>
@@ -266,7 +266,7 @@ async function listProducts(products) {
     }
 }
 
-async function addProduct() {
+async function createProduct() {
     // Get the categories
     response = await fetch('http://www.dockereats.com/api/getCategories');
     const categories = await response.json();
@@ -348,7 +348,7 @@ async function addProduct() {
         createToast(`Creating ${formData.get('name')}...`);
 
         try {
-            const response = await fetch('http://www.dockereats.com/api/addProduct', {
+            const response = await fetch('http://www.dockereats.com/api/createProduct', {
                 method: 'POST',
                 body: formData, // Send the form data
             });
@@ -360,6 +360,7 @@ async function addProduct() {
             } else {
                 // Create confirmation toast
                 createToast(`Product ${formData.get('name')} created succesfully!`, 'success');
+                getAll(); // Refresh the list of products
             }
         } catch (error) {
             console.error(error);
@@ -380,4 +381,4 @@ document.getElementById('listbranches').addEventListener('click', () => getByTyp
 document.getElementById('listdrinks').addEventListener('click', () => getByType(3));
 document.getElementById('listdesserts').addEventListener('click', () => getByType(4));
 document.getElementById('listdeleted').addEventListener('click', () => getDeleted());
-document.getElementById('addproduct').addEventListener('click', () => addProduct());
+document.getElementById('createproduct').addEventListener('click', () => createProduct());

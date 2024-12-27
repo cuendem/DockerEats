@@ -10,7 +10,7 @@
         </div>
     <?php } else { foreach ($sales as $i => $sale) { ?>
         <div class="row mb-5">
-            <div class="sale p-3 col-md-12 col-lg-8 col-xl-6 mx-auto position-relative d-flex justify-content-between">
+            <div class="sale p-3 col-md-12 col-lg-10 col-xl-8 mx-auto position-relative d-flex justify-content-between">
                 <div class="d-flex flex-column justify-content-between">
                     <div class="d-flex flex-column align-items-start">
                         <span class="sale-name"><?=$sale->getName()?></span>

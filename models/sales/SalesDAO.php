@@ -8,7 +8,10 @@ class SalesDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE
-        $stmt = $con->prepare('SELECT * FROM SALES ORDER BY date_start, id_sale DESC');
+        $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        ORDER BY s.date_start DESC, s.id_sale DESC');
+        
 
         // Execute the query
         $stmt->execute();
@@ -28,7 +31,10 @@ class SalesDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement with LIKE and date validity checks
-        $stmt = $con->prepare('SELECT * FROM SALES WHERE date_start <= ? AND (date_end IS NULL OR date_end >= ?) AND scope LIKE ?');
+        $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        WHERE date_start <= ? AND (date_end IS NULL OR date_end >= ?) AND scope LIKE ?
+        ORDER BY s.date_start DESC, s.id_sale DESC');
 
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('sss', $date, $date, $scope);
@@ -82,7 +88,10 @@ class SalesDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('SELECT s.* FROM SALES as s JOIN SALES_ORDERS as so ON s.id_sale = so.id_sale WHERE so.id_order = ?');
+        $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        JOIN SALES_ORDERS as so ON s.id_sale = so.id_sale WHERE so.id_order = ?
+        ORDER BY s.date_start DESC, s.id_sale DESC');
 
         // Bind the parameter
         $stmt->bind_param('i', $order_id);
@@ -105,7 +114,10 @@ class SalesDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('SELECT s.* FROM SALES as s JOIN SALES_CONTAINER_PARTS as scp ON s.id_sale = scp.id_sale WHERE scp.id_part = ?');
+        $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
+        LEFT JOIN CATEGORIES c ON s.category_affected = c.id_category
+        JOIN SALES_CONTAINER_PARTS as scp ON s.id_sale = scp.id_sale WHERE scp.id_part = ?
+        ORDER BY s.date_start DESC, s.id_sale DESC');
 
         // Bind the parameter
         $stmt->bind_param('i', $part_id);

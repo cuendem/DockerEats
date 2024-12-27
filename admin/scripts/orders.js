@@ -108,12 +108,24 @@ async function listOrders(ordersJson) {
             dateSpan.className = 'date';
             dateSpan.textContent = order.dateOrder;
 
+            const usernameOrderData = document.createElement('div');
+            usernameOrderData.className = 'd-flex gap-2 align-items-center';
+
             const usernameSpan = document.createElement('span');
             usernameSpan.className = 'username';
             usernameSpan.textContent = order.username;
 
+            const idSpan = document.createElement('span');
+            idSpan.className = 'id';
+            idSpan.textContent = `ID: ${order.idOrder}`;
+
+            orderDiv.appendChild(idSpan);
+
+            usernameOrderData.appendChild(usernameSpan);
+            usernameOrderData.appendChild(idSpan);
+
             userDataText.appendChild(dateSpan);
-            userDataText.appendChild(usernameSpan);
+            userDataText.appendChild(usernameOrderData);
             userDataDiv.appendChild(userImg);
             userDataDiv.appendChild(userDataText);
             orderDiv.appendChild(userDataDiv);

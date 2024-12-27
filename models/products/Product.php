@@ -42,10 +42,10 @@ class Product {
     {
         if ($sale->getDiscount_type() == 1) {
             # Base
-            return $this->price - $sale->getDiscount();
+            return number_format($this->price - $sale->getDiscount(), 2);
         } else {
             # Percentage
-            return round($this->price*(1 - ($sale->getDiscount() / 100)), 2);
+            return number_format(round($this->price*(1 - ($sale->getDiscount() / 100)), 2), 2);
         }
     }
 

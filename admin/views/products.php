@@ -13,7 +13,7 @@
     <button id="listdrinks" class="mx-2 btn btn-normal">Get Drinks</button>
     <button id="listdesserts" class="mx-2 btn btn-normal">Get Desserts</button>
     <button id="listdeleted" class="mx-2 btn btn-normal">Get Deleted</button>
-    <button id="addproduct" class="mx-2 btn btn-normal">Add new product</button>
+    <button id="createproduct" class="mx-2 btn btn-normal">Create new product</button>
 </section>
 <section id="target" class="d-flex justify-content-center align-items-center flex-column gap-4">
     
