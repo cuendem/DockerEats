@@ -654,6 +654,166 @@ class apiController {
         }
     }
 
+    public static function editUser() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Collect and validate input parameters
+        $id = $_POST['id'] ?? null;
+        $username = $_POST['username'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $password = $_POST['password'] != '' ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
+        $image = $_FILES['image'] ?? null;
+
+        if (!isset($id) || !isset($username) || !isset($email)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the user exists before updating
+            $checkStmt = $con->prepare("SELECT id_user FROM USERS WHERE id_user = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // User with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No user found with the given ID']);
+                return;
+            }
+
+            // Update user information
+            if ($password) {
+                $stmt = $con->prepare("UPDATE USERS SET username = ?, email = ?, password = ? WHERE id_user = ?");
+                $stmt->bind_param('sssi', $username, $email, $password, $id);
+            } else {
+                $stmt = $con->prepare("UPDATE USERS SET username = ?, email = ? WHERE id_user = ?");
+                $stmt->bind_param('ssi', $username, $email, $id);
+            }
+            $stmt->execute();
+
+            if ($image && $image['name'] != '') {
+                $originalExtension = strtolower(pathinfo($image['name'], PATHINFO_EXTENSION));
+                $imgName = 'user'.$id.'.webp';
+                $path = 'img/users/'.$imgName;
+
+                // Load the image based on its original type
+                switch ($originalExtension) {
+                    case 'jpeg':
+                    case 'jpg':
+                        $image = imagecreatefromjpeg($image['tmp_name']);
+                        break;
+                    case 'png':
+                        $image = imagecreatefrompng($image['tmp_name']);
+                        break;
+                    case 'gif':
+                        $image = imagecreatefromgif($image['tmp_name']);
+                        break;
+                    case 'webp':
+                        $image = imagecreatefromwebp($image['tmp_name']);
+                        break;
+                    default:
+                        die("Unsupported image format!");  // Handle unsupported formats
+                }
+
+                if ($image) {
+                    // Get original dimensions
+                    $originalW = imagesx($image);
+                    $originalH = imagesy($image);
+
+                    // Determine square crop dimensions
+                    $size = min($originalW, $originalH);
+                    $x = ($originalW > $originalH) ? ($originalW - $originalH) / 2 : 0;
+                    $y = ($originalH > $originalW) ? ($originalH - $originalW) / 2 : 0;
+
+                    // Create a square crop
+                    $croppedImage = imagecrop($image, ['x' => $x, 'y' => $y, 'width' => $size, 'height' => $size]);
+                    if ($croppedImage === false) {
+                        die("Failed to crop image.");
+                    }
+
+                    // Resize the cropped image to 250x250
+                    $resizedImage = imagescale($croppedImage, 250, 250);
+
+                    // Save the image as WebP
+                    imagewebp($resizedImage, $path, 80);  // 80 is the quality level
+
+                    // Free up memory
+                    imagedestroy($image);
+                    imagedestroy($croppedImage);
+                    imagedestroy($resizedImage);
+                }
+            }
+
+            logsController::log("Updated user $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'User updated successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
+    public static function deleteUser() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Read and decode the JSON input
+        $inputData = json_decode(file_get_contents('php://input'), true);
+
+        $id = $inputData['id'] ?? null;
+
+        if (!isset($id)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Missing required parameters']);
+            return;
+        }
+
+        try {
+            // Check if the user exists before updating
+            $checkStmt = $con->prepare("SELECT id_user FROM USERS WHERE id_user = ?");
+            $checkStmt->bind_param('i', $id);
+            $checkStmt->execute();
+            $checkResult = $checkStmt->get_result();
+
+            if ($checkResult->num_rows === 0) {
+                // User with the given ID does not exist
+                http_response_code(404);
+                echo json_encode(['error' => 'No user found with the given ID']);
+                return;
+            }
+
+            // Update user information
+            $stmt = $con->prepare("DELETE FROM USERS WHERE id_user = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+
+            logsController::log("Deleted user $id");
+
+            http_response_code(200);
+            echo json_encode(['success' => 'User deleted successfully']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
+        } finally {
+            $con->close();
+        }
+    }
+
     // Get all orders
     public static function getOrders() {
         apiController::getHeaders();

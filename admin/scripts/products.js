@@ -114,7 +114,7 @@ async function listProducts(products) {
         products.forEach((product, index) => {
             // Initialize the product's container form
             const productForm = document.createElement('form');
-            productForm.className = 'product-card d-flex position-relative';
+            productForm.className = 'list-card d-flex position-relative';
             productForm.enctype = "multipart/form-data";
             productForm.method = "POST";
             productForm.accept = "image/*";
@@ -285,7 +285,7 @@ async function createProduct() {
 
     // Initialize the product's container form
     const productForm = document.createElement('form');
-    productForm.className = 'product-card d-flex position-relative';
+    productForm.className = 'list-card d-flex position-relative';
     productForm.enctype = "multipart/form-data";
     productForm.method = "POST";
     productForm.accept = "image/*";
