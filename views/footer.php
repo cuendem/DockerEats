@@ -1,7 +1,7 @@
 <footer class="wave-separator">
     <div class="row">
         <div class="col-xl-4 mb-5">
-            <img src="/img/logos/DockerEatsLogo.png" class="logo undraggable" alt="">
+            <img src="/svg/DockerEatsLogo.svg" class="logo undraggable" alt="">
         </div>
         <div class="col-xl-8 row footerUpper d-flex justify-content-between gap-5">
             <ul>
