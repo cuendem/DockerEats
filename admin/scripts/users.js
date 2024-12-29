@@ -12,7 +12,15 @@ function createSpinner() {
     target.appendChild(spinner);
 }
 
-async function getAll() {
+window.onload = async () => {
+    try {
+        await get();
+    } catch (error) {
+        console.error('Error on page load:', error);
+    }
+};
+
+async function get() {
     createSpinner();
     // Get the users
     console.log("Getting all users");
@@ -177,4 +185,4 @@ async function listUsers(usersJson) {
     }
 }
 
-document.getElementById('listusers').addEventListener('click', getAll);
+document.getElementById('listusers').addEventListener('click', get);

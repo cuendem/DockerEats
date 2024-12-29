@@ -2074,7 +2074,7 @@ input[type='submit']:hover {
     background-color: var(--charon-gray);
 }
 
-#admin .filter-user-selector button, #admin .filter-user-selector select {
+#admin .filter-selector button, #admin .filter-selector select {
     color: var(--starbuck-black);
     background-color: white;
     border-width: 2px;
@@ -2082,23 +2082,30 @@ input[type='submit']:hover {
     font-weight: 600;
     font-size: 18px;
     height: 50px;
-}
-
-#admin .filter-user-selector button {
-    border-radius: 5px 0px 0px 5px;
-    border-right: 0px;
-}
-
-#admin .filter-user-selector select {
-    border-radius: 0px 5px 5px 0px;
-    border-left: 0px;
     transition: 0.3s ease;
+    border-radius: 0px;
 }
 
-#admin .filter-user-selector button:hover, #admin .filter-user-selector select:hover {
+#admin .filter-selector button:hover, #admin .filter-selector select:hover {
     border-color: var(--charon-gray);
     background-color: var(--smee-gray);
     color: var(--starbuck-black);
+}
+
+#admin .filter-selector .selector-start {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 0px;
+}
+
+#admin .filter-selector .selector-end {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 0px;
+}
+
+#admin .filter-selector .bordered {
+    border-radius: 5px;
 }
 
 .order .delete {

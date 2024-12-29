@@ -15,6 +15,7 @@ async function addUsersToFilter() {
 window.onload = async () => {
     try {
         await addUsersToFilter();
+        await get();
     } catch (error) {
         console.error('Error on page load:', error);
     }
@@ -37,13 +38,19 @@ function createSpinner() {
     target.appendChild(spinnerContainer);
 }
 
-async function getAll() {
+async function get(order = null) {
     createSpinner();
     // Get the orders
     console.log("Getting all orders");
     createToast("Getting all orders...");
 
-    let response = await fetch('http://www.dockereats.com/api/getOrders');
+    let url = 'http://www.dockereats.com/api/getOrders';
+
+    if (order) {
+        url += '&order=' + order;
+    }
+
+    let response = await fetch(url);
 
     if (response.ok) {
         const orders = await response.json();
@@ -183,22 +190,22 @@ async function listOrders(ordersJson) {
                 const dessertImg = document.createElement('img');
                 dessertImg.className = 'dessert col p-0';
                 dessertImg.src = `/img/products/product${container.dessert.idProduct}.webp`;
-                dessertImg.alt = container.dessert.productName;
+                dessertImg.alt = container.dessert.name;
 
                 const drinkImg = document.createElement('img');
                 drinkImg.className = 'drink col p-0';
                 drinkImg.src = `/img/products/product${container.drink.idProduct}.webp`;
-                drinkImg.alt = container.drink.productName;
+                drinkImg.alt = container.drink.name;
 
                 const mainImg = document.createElement('img');
                 mainImg.className = 'main col p-0';
                 mainImg.src = `/img/products/product${container.main.idProduct}.webp`;
-                mainImg.alt = container.main.productName;
+                mainImg.alt = container.main.name;
 
                 const branchImg = document.createElement('img');
                 branchImg.className = 'branch col p-0';
                 branchImg.src = `/img/products/product${container.branch.idProduct}.webp`;
-                branchImg.alt = container.branch.productName;
+                branchImg.alt = container.branch.name;
 
                 rowDiv.appendChild(dessertImg);
                 rowDiv.appendChild(drinkImg);
@@ -209,7 +216,13 @@ async function listOrders(ordersJson) {
 
                 containerDiv.setAttribute('data-bs-title', `Total: ${containerPrice.toFixed(2)} €`);
 
+                const containerPriceInput = document.createElement('input');
+                containerPriceInput.className = 'container-euro-price';
+                containerPriceInput.type = 'hidden';
+                containerPriceInput.value = containerPrice;
+
                 containerDiv.appendChild(rowDiv);
+                containerDiv.appendChild(containerPriceInput);
 
                 const deleteButton = document.createElement('button');
                 deleteButton.className = 'delete bi bi-x-circle-fill position-absolute top-0 start-100 z-2';
@@ -276,7 +289,13 @@ async function listOrders(ordersJson) {
             priceSpan.className = 'price position-absolute bottom-0 end-0 py-2 px-3';
             priceSpan.textContent = `${totalOrderPrice.toFixed(2)} €`;
 
+            const euroPriceInput = document.createElement('input');
+            euroPriceInput.className = 'euro-price';
+            euroPriceInput.type = 'hidden';
+            euroPriceInput.value = totalOrderPrice;
+
             orderDiv.appendChild(priceSpan);
+            orderDiv.appendChild(euroPriceInput);
 
             const deleteButton = document.createElement('button');
             deleteButton.className = 'delete order-delete bi bi-x-circle-fill position-absolute top-0 start-100 z-2';
@@ -308,6 +327,17 @@ async function listOrders(ordersJson) {
             });
         }
 
+        if (document.getElementById('currency-filter').selectedIndex != 0) {
+            // Price is not Euro, convert to selected currency
+            const currency = document.getElementById('currency-filter');
+            const selectedOption = currency.options[currency.selectedIndex];
+            const selectedValue = selectedOption.value; // Gets the value attribute of the option
+            const selectedText = selectedOption.text;  // Gets the visible text of the option
+
+            // Call the appropriate function with both value and text
+            changeCurrency(selectedValue, selectedText);
+        }
+
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     } catch (error) {
@@ -315,5 +345,90 @@ async function listOrders(ordersJson) {
     }
 }
 
-document.getElementById('listorders').addEventListener('click', getAll);
+function orderByPrice(order) {
+    const target = document.getElementById('target');
+    const orders = Array.from(target.getElementsByClassName('order'));
+
+    // Extract the prices and sort the orders
+    const sortedOrders = orders.sort((a, b) => {
+        const priceA = parseFloat(a.querySelector('.price').textContent.replace('€', '').trim());
+        const priceB = parseFloat(b.querySelector('.price').textContent.replace('€', '').trim());
+        return order === 'price-ASC' ? priceA - priceB : priceB - priceA;
+    });
+
+    // Clear the current target content
+    target.innerHTML = '';
+
+    // Append sorted orders back to the DOM
+    sortedOrders.forEach(orderDiv => {
+        const orderRow = document.createElement('div');
+        orderRow.className = 'row mb-5';
+        target.appendChild(orderRow);
+        orderRow.appendChild(orderDiv);
+    });
+}
+
+async function changeCurrency(currency, iconText) {
+    const currencies = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json').then(response => response.json());
+    const target = document.getElementById('target');
+    const orders = Array.from(target.getElementsByClassName('order'));
+    const icon = iconText.split(' ')[0];
+
+    for (const order of orders) {
+        const containers = Array.from(order.getElementsByClassName('ordercontainer'));
+        for (const container of containers) {
+            const euroPriceInput = container.querySelector('.container-euro-price');
+            const euroPrice = parseFloat(euroPriceInput.value);
+
+            let newPrice = euroPrice * currencies.eur[currency];
+            newPrice = Math.round(newPrice * 100) / 100;
+
+            container.setAttribute('data-bs-title', `Total: ${newPrice.toFixed(2)} ${icon}`);
+        }
+
+        const priceSpan = order.querySelector('.price');
+        const euroPriceInput = order.querySelector('.euro-price');
+        const euroPrice = parseFloat(euroPriceInput.value);
+
+        let newPrice = euroPrice * currencies.eur[currency];
+        newPrice = Math.round(newPrice * 100) / 100;
+
+        priceSpan.textContent = `${newPrice.toFixed(2)} ${icon}`;
+
+        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    }
+}
+
+document.getElementById('listorders').addEventListener('click', () => get());
+
 document.getElementById('filter-user').addEventListener('click', getByUser);
+
+// Add event listener to the select element
+document.getElementById('order-filter').addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+
+    // Call the appropriate function based on the selected value
+    switch (selectedValue) {
+        case 'date_order-ASC':
+        case 'date_order-DESC':
+            get(selectedValue);
+            break;
+        case 'price-ASC':
+        case 'price-DESC':
+            orderByPrice(selectedValue);
+            break;
+        default:
+            console.warn('Unknown option selected');
+    }
+});
+
+// Add event listener to the select element
+document.getElementById('currency-filter').addEventListener('change', (event) => {
+    const selectedOption = event.target.options[event.target.selectedIndex];
+    const selectedValue = selectedOption.value; // Gets the value attribute of the option
+    const selectedText = selectedOption.text;  // Gets the visible text of the option
+
+    // Call the appropriate function with both value and text
+    changeCurrency(selectedValue, selectedText);
+});

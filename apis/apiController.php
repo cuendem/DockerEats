@@ -152,35 +152,6 @@ class apiController {
         }
     }
 
-    public static function getProducts() {
-        apiController::getHeaders();
-        if (!apiController::protection()) {
-            return;
-        }
-
-        $con = DataBase::connect();
-
-        $stmt = $con->prepare("SELECT * FROM PRODUCTS");
-
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $data = [];
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-
-        $con->close();
-
-        if (count($data) === 0) {
-            http_response_code(404);
-            echo json_encode(['error' => 'Record not found']);
-        } else {
-            // Return the data
-            echo json_encode($data);
-        }
-    }
-
     public static function getDeletedProducts() {
         apiController::getHeaders();
         if (!apiController::protection()) {
@@ -188,8 +159,31 @@ class apiController {
         }
 
         $con = DataBase::connect();
+    
+        // Check if 'type' and 'order' parameters are provided in the GET request
+        $order = $_GET['order'] ?? null;
+    
+        // Validate and sanitize the 'order' parameter
+        $validColumns = ['name', 'price']; // Define allowed columns
+        $validDirections = ['ASC', 'DESC']; // Define allowed directions
+        $orderClause = '';
+    
+        if ($order) {
+            $orderParts = explode('-', $order);
+            if (count($orderParts) === 2) {
+                [$column, $direction] = $orderParts;
+                if (in_array($column, $validColumns) && in_array(strtoupper($direction), $validDirections)) {
+                    $orderClause = "ORDER BY $column " . strtoupper($direction);
+                }
+            }
+        }
 
-        $stmt = $con->prepare("SELECT * FROM PRODUCTS WHERE deleted = 1");
+        // Fetch all records with optional ordering
+        $query = "SELECT * FROM PRODUCTS WHERE deleted = 1";
+        if ($orderClause) {
+            $query .= " $orderClause";
+        }
+        $stmt = $con->prepare($query);
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -210,33 +204,60 @@ class apiController {
         }
     }
 
-    public static function getProductsByType() {
+    public static function getProducts() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
         }
-
+    
         $con = DataBase::connect();
-
-        // Check if a 'type' parameter is provided in the GET request
+    
+        // Check if 'type' and 'order' parameters are provided in the GET request
         $type = $_GET['type'] ?? null;
-
-        if ($type) {
-            // Fetch a specific record by the dynamic ID column
-            $stmt = $con->prepare("SELECT * FROM PRODUCTS WHERE id_type = ?");
-            $stmt->bind_param('i', $type);
+        $order = $_GET['order'] ?? null;
+    
+        // Validate and sanitize the 'order' parameter
+        $validColumns = ['name', 'price']; // Define allowed columns
+        $validDirections = ['ASC', 'DESC']; // Define allowed directions
+        $orderClause = '';
+    
+        if ($order) {
+            $orderParts = explode('-', $order);
+            if (count($orderParts) === 2) {
+                [$column, $direction] = $orderParts;
+                if (in_array($column, $validColumns) && in_array(strtoupper($direction), $validDirections)) {
+                    $orderClause = "ORDER BY $column " . strtoupper($direction);
+                }
+            }
         }
-
+    
+        if ($type) {
+            // Fetch records by type with optional ordering
+            $query = "SELECT * FROM PRODUCTS WHERE id_type = ?";
+            if ($orderClause) {
+                $query .= " $orderClause";
+            }
+            $stmt = $con->prepare($query);
+            $stmt->bind_param('i', $type);
+        } else {
+            // Fetch all records with optional ordering
+            $query = "SELECT * FROM PRODUCTS";
+            if ($orderClause) {
+                $query .= " $orderClause";
+            }
+            $stmt = $con->prepare($query);
+        }
+    
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         $data = [];
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
+    
         $con->close();
-
+    
         if ($type && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -560,7 +581,7 @@ class apiController {
         }
     }
 
-    public static function getCategoriesproducts() {
+    public static function getCategoriesProducts() {
         apiController::getHeaders();
         if (!apiController::protection()) {
             return;
@@ -586,6 +607,44 @@ class apiController {
         } else {
             // Return the data
             echo json_encode($data);
+        }
+    }
+
+    public static function getProductCategories() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if a 'product' parameter is provided in the GET request
+        $product = $_GET['product'] ?? null;
+
+        if (!$product) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Product ID is required']);
+            return;
+        }
+
+        $stmt = $con->prepare('SELECT cp.id_category, c.name FROM CATEGORIES_PRODUCTS cp JOIN CATEGORIES c ON cp.id_category = c.id_category WHERE cp.id_product = ?');
+        $stmt->bind_param('i', $product);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $categories = [];
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row['id_category'];
+        }
+
+        $con->close();
+
+        if (count($categories) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($categories);
         }
     }
 
@@ -823,7 +882,26 @@ class apiController {
 
         $con = DataBase::connect();
 
-        $stmt = $con->prepare("SELECT
+        // Check if 'order' parameters are provided in the GET request
+        $order = $_GET['order'] ?? null;
+    
+        // Validate and sanitize the 'order' parameter
+        $validColumns = ['date_order']; // Define allowed columns
+        $validDirections = ['ASC', 'DESC']; // Define allowed directions
+        $orderClause = '';
+    
+        if ($order) {
+            $orderParts = explode('-', $order);
+            if (count($orderParts) === 2) {
+                [$column, $direction] = $orderParts;
+                if (in_array($column, $validColumns) && in_array(strtoupper($direction), $validDirections)) {
+                    $orderClause = "ORDER BY $column " . strtoupper($direction);
+                }
+            }
+        }
+
+        // Fetch all records with optional ordering
+        $query = "SELECT
             o.id_order,
             o.date_order,
             o.delivery_address,
@@ -839,8 +917,13 @@ class apiController {
         FROM
             ORDERS o
         LEFT JOIN USERS u ON o.id_user = u.id_user
-        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
-        ORDER BY o.id_order DESC");
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment";
+        if ($orderClause) {
+            $query .= " $orderClause, o.id_order DESC";
+        } else {
+            $query .= " ORDER BY o.id_order DESC";
+        }
+        $stmt = $con->prepare($query);
 
         $stmt->execute();
         $result = $stmt->get_result();
@@ -981,9 +1064,9 @@ class apiController {
                 c.id_container,
                 cp.id_part,
                 cp.id_product,
-                p.name AS product_name,
-                p.price AS product_price,
-                p.id_type AS product_type
+                p.name,
+                p.price,
+                p.id_type
             FROM CONTAINERS c
             LEFT JOIN CONTAINER_PARTS cp ON c.id_container = cp.id_container
             LEFT JOIN PRODUCTS p ON cp.id_product = p.id_product
@@ -1008,9 +1091,9 @@ class apiController {
             $containers[$containerId]['parts'][] = [
                 'id_part' => $row['id_part'],
                 'id_product' => $row['id_product'],
-                'product_name' => $row['product_name'],
-                'product_price' => $row['product_price'],
-                'product_type' => $row['product_type']
+                'name' => $row['name'],
+                'price' => $row['price'],
+                'id_type' => $row['id_type']
             ];
         }
 
@@ -1600,44 +1683,6 @@ class apiController {
 
         // Return the data
         echo json_encode($data);
-    }
-
-    public static function getProductCategories() {
-        apiController::getHeaders();
-        if (!apiController::protection()) {
-            return;
-        }
-
-        $con = DataBase::connect();
-
-        // Check if a 'product' parameter is provided in the GET request
-        $product = $_GET['product'] ?? null;
-
-        if (!$product) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Product ID is required']);
-            return;
-        }
-
-        $stmt = $con->prepare('SELECT id_category FROM CATEGORIES_PRODUCTS WHERE id_product LIKE ?');
-        $stmt->bind_param('i', $product);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $categories = [];
-        while ($row = $result->fetch_assoc()) {
-            $categories[] = $row['id_category'];
-        }
-
-        $con->close();
-
-        if (count($categories) === 0) {
-            http_response_code(404);
-            echo json_encode(['error' => 'Record not found']);
-        } else {
-            // Return the data
-            echo json_encode($categories);
-        }
     }
 
     public static function getEstablishment() {

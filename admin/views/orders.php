@@ -3,9 +3,33 @@
 <h1 class="mt-2 mb-0">Manage orders</h1>
 <section id="buttons" class="d-flex justify-content-center align-items-center my-5">
     <button id="listorders" class="mx-2 btn btn-normal">Get ALL</button>
-    <div class="filter-user-selector d-flex align-items-center">
-        <button id="filter-user" type="submit" class="btn btn-normal">Get by user</button>
-        <select name="user" id="user-filter"></select>
+    <div class="filter-selector d-flex align-items-center mx-2">
+        <button id="filter-user" type="submit" class="btn selector-start">Get by user</button>
+        <select name="user" id="user-filter" class="selector-end"></select>
+    </div>
+    <div class="filter-selector d-flex align-items-center mx-2">
+        <select class="bordered text-center" name="type" id="order-filter">
+            <option value="none">Order...</option>
+            <option value="date_order-ASC">Date 🠇</option>
+            <option value="date_order-DESC">Date 🠅</option>
+            <option value="price-ASC">Price 🠇</option>
+            <option value="price-DESC">Price 🠅</option>
+        </select>
+    </div>
+    <div class="filter-selector d-flex align-items-center mx-2">
+        <select class="bordered" name="type" id="currency-filter">
+            <option value="eur">€ - Euro</option>
+            <option value="usd">$ - US Dollar</option>
+            <option value="gbp">£ - British Pound</option>
+            <option value="jpy">¥ - Japanese Yen</option>
+            <option value="cny">¥ - Chinese Yuan</option>
+            <option value="krw">₩ - South Korean Won</option>
+            <option value="rub">₽ - Russian Ruble</option>
+            <option value="chf">CHF - Swiss Franc</option>
+            <option value="czk">Kč - Czech Koruna</option>
+            <option value="inr">₹ - Indian Rupee</option>
+            <option value="btc">₿ - Bitcoin</option>
+        </select>
     </div>
 </section>
 <section id="target" class="container-fluid">
