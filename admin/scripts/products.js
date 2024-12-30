@@ -110,6 +110,14 @@ async function listProducts(productsJson) {
         response = await fetch('http://www.dockereats.com/api/getCategoriesProducts');
         const categoriesProducts = await response.json();
 
+        // Get the allergens
+        response = await fetch('http://www.dockereats.com/api/getAllergens');
+        const allergens = await response.json();
+
+        // Get the product / allergens links
+        response = await fetch('http://www.dockereats.com/api/getAllergensProducts');
+        const allergensProducts = await response.json();
+
         const products = productsJson.map(productJson => new Product(productJson));
 
         // Get target container to add the elements inside
@@ -148,6 +156,15 @@ async function listProducts(productsJson) {
                 return `<option value="${category.id_category}" ${isSelected}>${category.name}</option>`;
             }).join('');
 
+            // Filter and map the allergens to only get the ones where the product is
+            const belongedAl = allergensProducts.filter(alpro => alpro.id_product === product.idProduct).map(alpro => alpro.id_allergen);
+
+            // Generate allergen options
+            let allergenOptions = allergens.map(allergen => {
+                const isSelected = belongedAl && belongedAl.includes(allergen.id_allergen) ? 'selected' : '';
+                return `<option value="${allergen.id_allergen}" ${isSelected}>${allergen.name}</option>`;
+            }).join('');
+
             productForm.innerHTML = `
                 <div class="d-flex flex-column align-items-center">
                     <div id="preview-image-container${product.idProduct}" class="preview-image-container position-relative">
@@ -184,6 +201,9 @@ async function listProducts(productsJson) {
                     <select data-placeholder="Add some categories..." name="categories" id="categories${product.idProduct}" multiple class="chosen-select">
                         ${categoryOptions}
                     </select>
+                    <select data-placeholder="Add some allergens..." name="allergens" id="allergens${product.idProduct}" multiple class="chosen-select">
+                        ${allergenOptions}
+                    </select>
                 </div>
             `;
 
@@ -208,6 +228,15 @@ async function listProducts(productsJson) {
                 const categoriesString = selectedCategories.join(',');
 
                 formData.set('categories', categoriesString);
+
+                // Get the allergens multi-select element
+                const allergensSelect = document.getElementById(`allergens${product.idProduct}`);
+                const selectedAllergens = Array.from(allergensSelect.selectedOptions).map(option => option.value);
+                const allergensString = selectedAllergens.join(',');
+
+                // Append the allergens string to the FormData
+                formData.set('allergens', allergensString);
+
                 createToast(`Updating ${formData.get('name')}...`);
 
                 try {
@@ -296,8 +325,12 @@ async function listProducts(productsJson) {
 
 async function createProduct() {
     // Get the categories
-    const response = await fetch('http://www.dockereats.com/api/getCategories');
+    let response = await fetch('http://www.dockereats.com/api/getCategories');
     const categories = await response.json();
+
+    // Get the allergens
+    response = await fetch('http://www.dockereats.com/api/getAllergens');
+    const allergens = await response.json();
 
     // Get target container to add the elements inside, create the product-list container
     const target = document.getElementById('target');
@@ -317,6 +350,11 @@ async function createProduct() {
     // Generate category options
     let categoryOptions = categories.map(category => {
         return `<option value="${category.id_category}">${category.name}</option>`;
+    }).join('');
+
+    // Generate allergen options
+    let allergenOptions = allergens.map(allergen => {
+        return `<option value="${allergen.id_allergen}">${allergens.name}</option>`;
     }).join('');
 
     productForm.innerHTML = `
@@ -350,6 +388,9 @@ async function createProduct() {
             <select data-placeholder="Add some categories..." name="categories" id="categories" multiple class="chosen-select">
                 ${categoryOptions}
             </select>
+            <select data-placeholder="Add some allergens..." name="allergens" id="allergens" multiple class="chosen-select">
+                ${allergenOptions}
+            </select>
         </div>
     `;
 
@@ -367,6 +408,14 @@ async function createProduct() {
 
         // Append the categories string to the FormData
         formData.set('categories', categoriesString);
+
+        // Get the allergens multi-select element
+        const allergensSelect = document.getElementById(`allergens`);
+        const selectedAllergens = Array.from(allergensSelect.selectedOptions).map(option => option.value);
+        const allergensString = selectedAllergens.join(',');
+
+        // Append the allergens string to the FormData
+        formData.set('allergens', allergensString);
 
         // Notification toast
         createToast(`Creating ${formData.get('name')}...`);

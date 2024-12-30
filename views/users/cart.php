@@ -161,21 +161,21 @@
                                             }
 
                                             $contPrice += $finalProductPrice;
-                                            echo $finalProductPrice;
+                                            echo number_format($finalProductPrice, 2);
                                             ?> €</span>
                                     </div>
                                 <?php } ?>
                                 <div class="d-flex justify-content-between align-items-center gap-3">
                                     <span class="container-data d-flex align-items-center">Total</span>
                                     <hr class="flex-grow-1">
-                                    <span class="container-data d-flex align-items-center"><?=$contPrice?> €</span>
+                                    <span class="container-data d-flex align-items-center"><?=number_format($contPrice, 2)?> €</span>
                                 </div>
                             <?php $totalContPrice += $contPrice; } ?>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between align-items-center gap-3">
                                 <span class="container-data d-flex align-items-center">All containers</span>
                                 <hr class="flex-grow-1">
-                                <span class="total-container-price"><?=$totalContPrice?> €</span>
+                                <span class="total-container-price"><?=number_format($totalContPrice, 2)?> €</span>
                             </div>
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Taxes</span>
@@ -231,19 +231,19 @@
                                 <hr class="flex-grow-1">
                                 <span id="total-price" class="total-price align-self-end"><?php
                                     // Apply taxes
-                                    $totalContPrice = round($totalContPrice*1.08, 2);
+                                    $totalContPrice = $totalContPrice*1.08;
 
                                     // Delivery fee
                                     $totalContPrice += 2.99;
 
                                     // Apply sales
-                                    if (count($currentSales) > 0) {
-                                        $ordered_sales = Discount::order($currentSales);
+                                    if (count($usedSales) > 0) {
+                                        $ordered_sales = Discount::order($usedSales);
                                         foreach ($ordered_sales as $i => $sale) {
                                             if ($sale -> getScope() == 1) {
                                                 if ($sale -> getDiscount_type() == 2) {
                                                     // Percentage-based sale
-                                                    $totalContPrice = round($totalContPrice*(1 - ($sale->getDiscount() / 100)), 2);
+                                                    $totalContPrice = $totalContPrice*(1 - ($sale->getDiscount() / 100));
                                                 } else {
                                                     // Base-based sale
                                                     $totalContPrice -= $sale->getDiscount();
@@ -258,7 +258,7 @@
                                         foreach ($ordered_coupons as $i => $coupon) {
                                             if ($coupon -> getDiscount_type() == 2) {
                                                 // Percentage-based coupon
-                                                $totalContPrice = round($totalContPrice*(1 - ($coupon->getDiscount() / 100)), 2);
+                                                $totalContPrice = $totalContPrice*(1 - ($coupon->getDiscount() / 100));
                                             } else {
                                                 // Base-based coupon
                                                 $totalContPrice -= $coupon->getDiscount();
@@ -266,7 +266,7 @@
                                         }
                                     }
 
-                                    echo number_format($totalContPrice, 2);
+                                    echo number_format(round($totalContPrice * 100) / 100, 2);
                                 ?> €</span>
                             </div>
                             <hr class="my-3">

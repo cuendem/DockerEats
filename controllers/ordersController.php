@@ -16,6 +16,24 @@ class ordersController {
         include_once("views/main.php");
     }
 
+    public function recover() {
+        $order = OrdersDAO::get($_GET['order']);
+        $containers = $order->getContainers();
+
+        unset($_SESSION['cart']);
+
+        foreach ($containers as $i => $container) {
+            $containerArray = [];
+            $containerArray['main'] = $container->getPart(1, true);
+            $containerArray['branch'] = $container->getPart(2, true);
+            $containerArray['drink'] = $container->getPart(3, true);
+            $containerArray['dessert'] = $container->getPart(4, true);
+            $_SESSION['cart'][] = $containerArray;
+        }
+
+        header('Location:/account/cart');
+    }
+
     public static function createOrder($data) {
         // Delivery type
         if ($data['delivery-selected'] == 'true') {

@@ -21,7 +21,7 @@
                         <span class="username"><?=$order->getUsername()?></span>
                     </div>
                 </div>
-                <div class="orderpills p-3 d-flex gap-3 position-absolute top-0 end-0">
+                <div class="orderpills p-3 d-flex gap-3 position-absolute top-0 end-0 d-none d-xl-flex">
                     <div class="orderpill d-flex align-items-center gap-1 px-3 py-2" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-placement="bottom" data-bs-title="<?=$order->getDeliveryData()[2]?>">
                         <?=$order->getDeliveryData()[1]?>
                         <span class="flex-grow-1"><?=$order->getDeliveryData()[0]?></span>
@@ -64,7 +64,7 @@
                 <?php
                     // Calculate total price with sales and coupons
                     // Apply taxes
-                    $total_order_price = round($total_order_price*1.08, 2);
+                    $total_order_price = $total_order_price*1.08;
 
                     // Delivery fee
                     if (!is_null($order->getDelivery_address())) {
@@ -78,7 +78,7 @@
                             if ($sale -> getScope() == 1) {
                                 if ($sale -> getDiscount_type() == 2) {
                                     // Percentage-based sale
-                                    $total_order_price = round($total_order_price*(1 - ($sale->getDiscount() / 100)), 2);
+                                    $total_order_price = $total_order_price*(1 - ($sale->getDiscount() / 100));
                                 } else {
                                     // Base-based sale
                                     $total_order_price -= $sale->getDiscount();
@@ -93,7 +93,7 @@
                         foreach ($ordered_coupons as $i => $coupon) {
                             if ($coupon -> getDiscount_type() == 2) {
                                 // Percentage-based coupon
-                                $total_order_price = round($total_order_price*(1 - ($coupon->getDiscount() / 100)), 2);
+                                $total_order_price = $total_order_price*(1 - ($coupon->getDiscount() / 100));
                             } else {
                                 // Base-based coupon
                                 $total_order_price -= $coupon->getDiscount();
@@ -101,7 +101,8 @@
                         }
                     }
                 ?>
-                <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format($total_order_price, 2)?> €</span>
+                <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format(round($total_order_price * 100, 2) / 100, 2)?> €</span>
+                <a href="/orders/recover/<?=$order->getId_order()?>" class="copy position-absolute bottom-0 end-0 bi bi-copy" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Copy this order to cart"></a>
             </div>
         </div>
     <?php }} ?>

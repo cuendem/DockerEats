@@ -24,6 +24,10 @@ class Product {
         return CategoriesDAO::getIDsByProduct($this->id_product);
     }
 
+    public function getAllergens() {
+        return AllergensDAO::getByProduct($this->id_product);
+    }
+
     public function isOnSale($currentSales) {
         if (!is_null($currentSales)) {
             foreach ($currentSales as $i => $sale) {

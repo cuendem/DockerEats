@@ -41,6 +41,41 @@ class OrdersDAO {
         return $orders;
     }
 
+    public static function get($id) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare("SELECT
+            o.id_order,
+            o.date_order,
+            o.delivery_address,
+            o.payment_type,
+            o.card_number,
+            o.expiration_date,
+            o.cvc,
+            o.card_holder,
+            o.id_user,
+            u.username,
+            e.id_establishment,
+            e.name AS establishment_name
+        FROM
+            ORDERS o
+        LEFT JOIN USERS u ON o.id_user = u.id_user
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        WHERE o.id_order = ?");
+        $stmt->bind_param('i', $id);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $order = $result->fetch_object("Order");
+
+        $con->close();
+
+        return $order;
+    }
+
     public static function getByUser($id) {
         $con = DataBase::connect();
 
@@ -64,6 +99,46 @@ class OrdersDAO {
         LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
         WHERE o.id_user = ?
         ORDER BY o.id_order DESC");
+        $stmt->bind_param('i', $id);
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $orders = [];
+        while ($order = $result->fetch_object("Order")) {
+            $orders[] = $order;
+        }
+
+        $con->close();
+
+        return $orders;
+    }
+
+    public static function getLastByUser($id) {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare("SELECT
+            o.id_order,
+            o.date_order,
+            o.delivery_address,
+            o.payment_type,
+            o.card_number,
+            o.expiration_date,
+            o.cvc,
+            o.card_holder,
+            o.id_user,
+            u.username,
+            e.id_establishment,
+            e.name AS establishment_name
+        FROM
+            ORDERS o
+        LEFT JOIN USERS u ON o.id_user = u.id_user
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        WHERE o.id_user = ?
+        ORDER BY o.id_order DESC
+        LIMIT 1");
         $stmt->bind_param('i', $id);
 
         // Execute the query

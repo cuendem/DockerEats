@@ -15,6 +15,7 @@ export class Product {
         this.price = parseFloat(price);
         this.idType = id_type;
         this.categories = fetch(`http://www.dockereats.com/api/getProductCategories&product=${this.idProduct}`).then(res => res.json());
+        this.allergens = fetch(`http://www.dockereats.com/api/getProductAllergens&product=${this.idProduct}`).then(res => res.json());
         this.sales = fetch(`http://www.dockereats.com/api/getSalesByPart&part=${this.idPart}`).then(res => res.json()).then(salesJson => {
             this.sales = salesJson.map(saleJson => new Sale(saleJson));
             return this.sales;

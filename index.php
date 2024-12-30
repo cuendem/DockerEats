@@ -8,6 +8,7 @@ include_once("controllers/establishmentsController.php");
 include_once("controllers/couponsController.php");
 include_once("controllers/salesController.php");
 include_once("controllers/ordersController.php");
+include_once("controllers/allergensController.php");
 include_once("controllers/logsController.php");
 include_once("apis/apiController.php");
 

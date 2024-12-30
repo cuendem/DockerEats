@@ -1,4 +1,4 @@
-<header id="header" class="position-sticky top-0 z-3">
+<header id="header" class="position-sticky top-0">
     <nav class="navbar navbar-expand-lg">
         <div class="container-fluid px-5 py-2">
             <a class="navbar-brand" href="/">

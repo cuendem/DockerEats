@@ -9,6 +9,10 @@ class userController {
         $pageid = "account";
         $view = "views/users/show.php";
         $title = $_SESSION['username'];
+
+        $order = OrdersDAO::getLastByUser($_SESSION['id_user']);
+        $categories = CategoriesDAO::getAll();
+
         include_once("views/main.php");
     }
 

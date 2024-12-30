@@ -259,7 +259,7 @@ async function listOrders(ordersJson) {
 
             orderDiv.appendChild(orderBottomDiv);
 
-            totalOrderPrice = Math.round(totalOrderPrice * 1.08 * 100) / 100;
+            totalOrderPrice = totalOrderPrice * 1.08;
 
             if (order.deliveryAddress) {
                 totalOrderPrice += 2.99;

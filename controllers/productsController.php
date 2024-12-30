@@ -69,19 +69,6 @@ class productsController {
     public function edit() {
         include_once("views/products/edit.php");
     }
-
-    public function store() {
-        $nombre = $_POST['nombre'];
-        $talla = $_POST['talla'];
-        $precio = $_POST['precio'];
-
-        $producto = new Camiseta();
-        $producto->setNombre($nombre);
-        $producto->setTalla($talla);
-        $producto->setPrecio($precio);
-
-        CamisetaDAO::store($producto);
-    }
 }
 
 ?>

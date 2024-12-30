@@ -14,7 +14,7 @@ export class Discount {
 
     applyDiscount(n) {
         if (this.discountType === 2) { // Percentage-based discount
-            return Math.round(n * (1 - (this.discount / 100)) * 100) / 100;
+            return n * (1 - (this.discount / 100));
         } else { // Fixed amount discount
             return n - this.discount;
         }

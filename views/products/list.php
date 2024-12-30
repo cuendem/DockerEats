@@ -22,10 +22,21 @@
             <div class="categoryRow pb-4 <?php if ($i > 1) { echo 'wave-separator pt-4 '; } if ($i % 2 == 0) { echo 'grayed'; } ?>">
                 <h2 class="categoryName"><?=$category->getName()?></h2>
                 <div class="productsCategory d-flex pt-3 pb-5 flex-wrap gap-3">
-                <?php foreach ($products as $product) { ?>
+                <?php foreach ($products as $product) {
+                    $allergens = $product->getAllergens() ?>
                     <div class="card product">
-                        <div class="overflow-hidden">
+                        <div class="overflow-hidden position-relative">
                             <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
+                            <div class="allergens-overlay d-flex justify-content-center align-content-center gap-2 flex-wrap position-absolute z-3 top-0 w-100 h-100">
+                                <div class="allergens-overlay-bg w-100 h-100 position-absolute"></div>
+                                <?php if (count($allergens) > 0) {
+                                        foreach ($allergens as $allergen) { ?>
+                                            <img class="allergen-icon z-2" src="/svg/allergens/allergen<?=$allergen->getId_allergen()?>.svg" alt="<?=$allergen->getName()?>" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip-2" data-bs-title="<?=$allergen->getName()?>">
+                                        <?php }
+                                    } else { ?>
+                                        <span class="no-allergens d-flex align-items-center z-2">No allergens</span>
+                                    <?php } ?>
+                            </div>
                         </div>
                         <div class="card-body d-flex flex-column justify-content-between">
                             <?=productsController::getTypeIcon($product->getId_type())?>

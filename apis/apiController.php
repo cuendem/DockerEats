@@ -281,6 +281,7 @@ class apiController {
         $price = $_POST['price'] ?? null;
         $type = $_POST['type'] ?? null;
         $categories = $_POST['categories'] ?? null;
+        $allergens = $_POST['allergens'] ?? null;
         $image = $_FILES['image'] ?? null;
 
         if (!$id || !$name || !$price || !$type || !$categories) {
@@ -316,6 +317,17 @@ class apiController {
             foreach ($categoryIds as $categoryId) {
                 $stmt = $con->prepare("INSERT INTO CATEGORIES_PRODUCTS (id_product, id_category) VALUES (?, ?)");
                 $stmt->bind_param('ii', $id, $categoryId);
+                $stmt->execute();
+            }
+
+            // Handle updating allergens
+            $stmt = $con->prepare("DELETE FROM ALLERGENS_PRODUCTS WHERE id_product = ?");
+            $stmt->bind_param('i', $id);
+            $stmt->execute();
+            $allergenIds = explode(',', $allergens);
+            foreach ($allergenIds as $allergenId) {
+                $stmt = $con->prepare("INSERT INTO ALLERGENS_PRODUCTS (id_product, id_allergen) VALUES (?, ?)");
+                $stmt->bind_param('ii', $id, $allergenId);
                 $stmt->execute();
             }
 
@@ -397,6 +409,7 @@ class apiController {
         $price = $_POST['price'] ?? null;
         $type = $_POST['type'] ?? null;
         $categories = $_POST['categories'] ?? null;
+        $allergens = $_POST['allergens'] ?? null;
         $image = $_FILES['image'] ?? null;
 
         if (!$name || !$price || !$type || !$categories) {
@@ -418,6 +431,14 @@ class apiController {
             foreach ($categoryIds as $categoryId) {
                 $stmt = $con->prepare("INSERT INTO CATEGORIES_PRODUCTS (id_product, id_category) VALUES (?, ?)");
                 $stmt->bind_param('ii', $id, $categoryId);
+                $stmt->execute();
+            }
+
+            // Handle updating allergens
+            $allergenIds = explode(',', $allergens);
+            foreach ($allergenIds as $allergenId) {
+                $stmt = $con->prepare("INSERT INTO ALLERGENS_PRODUCTS (id_product, id_allergen) VALUES (?, ?)");
+                $stmt->bind_param('ii', $id, $allergenId);
                 $stmt->execute();
             }
 
@@ -610,6 +631,64 @@ class apiController {
         }
     }
 
+    public static function getAllergens() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM ALLERGENS ORDER BY name");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
+    public static function getAllergensProducts() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare("SELECT * FROM ALLERGENS_PRODUCTS");
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+
+        $con->close();
+
+        if (count($data) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($data);
+        }
+    }
+
     public static function getProductCategories() {
         apiController::getHeaders();
         if (!apiController::protection()) {
@@ -635,6 +714,44 @@ class apiController {
         $categories = [];
         while ($row = $result->fetch_assoc()) {
             $categories[] = $row['id_category'];
+        }
+
+        $con->close();
+
+        if (count($categories) === 0) {
+            http_response_code(404);
+            echo json_encode(['error' => 'Record not found']);
+        } else {
+            // Return the data
+            echo json_encode($categories);
+        }
+    }
+
+    public static function getProductAllergens() {
+        apiController::getHeaders();
+        if (!apiController::protection()) {
+            return;
+        }
+
+        $con = DataBase::connect();
+
+        // Check if a 'product' parameter is provided in the GET request
+        $product = $_GET['product'] ?? null;
+
+        if (!$product) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Product ID is required']);
+            return;
+        }
+
+        $stmt = $con->prepare('SELECT ap.id_allergen, a.name FROM ALLERGENS_PRODUCTS ap JOIN ALLERGENS a ON ap.id_allergen = a.id_allergen WHERE ap.id_product = ?');
+        $stmt->bind_param('i', $product);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $categories = [];
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = $row['id_allergen'];
         }
 
         $con->close();

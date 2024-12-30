@@ -118,9 +118,20 @@
                                 <h5 class="category-name"><?=$category->getName()?></h5>
                                 <hr>
                                 <div class="category-products d-flex gap-3 p-1 flex-wrap">
-                                    <?php foreach ($products as $product) { ?>
+                                    <?php foreach ($products as $product) {
+                                        $allergens = $product->getAllergens() ?>
                                         <a href="/build/add/<?=$type?>/<?=$product->getId_product()?>" class="card product">
                                             <img src="/img/products/product<?=$product->getId_product()?>.webp" class="card-img-top undraggable" alt="<?=$product->getName()?>">
+                                            <div class="allergens-overlay d-flex justify-content-center align-content-center gap-2 flex-wrap position-absolute z-3 top-0 card-img-top">
+                                                <div class="allergens-overlay-bg w-100 h-100 position-absolute"></div>
+                                                <?php if (count($allergens) > 0) {
+                                                        foreach ($allergens as $allergen) { ?>
+                                                            <img class="allergen-icon z-2" src="/svg/allergens/allergen<?=$allergen->getId_allergen()?>.svg" alt="<?=$allergen->getName()?>" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip-2" data-bs-title="<?=$allergen->getName()?>">
+                                                        <?php }
+                                                    } else { ?>
+                                                        <span class="no-allergens d-flex align-items-center z-2">No allergens</span>
+                                                    <?php } ?>
+                                            </div>
                                             <div class="card-body d-flex flex-column justify-content-between">
                                                 <?=$product->alcoholIcon($alcoholicProducts)?>
                                                 <h5 class="card-title"><?=$product->getName()?></h5>

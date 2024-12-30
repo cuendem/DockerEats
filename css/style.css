@@ -244,6 +244,7 @@ header {
     border-bottom: 2px solid var(--charon-gray);
     background-color: white;
     transition: 0.3s ease;
+    z-index: 999;
 }
 
 header.hidden {
@@ -570,8 +571,29 @@ footer .logo {
     overflow: hidden;
 }
 
-.product img {
+.product img:not(.allergen-icon) {
     border-radius: 15px 15px 0px 0px;
+}
+
+.product .allergens-overlay {
+    transition: 0.3s ease;
+    opacity: 0;
+}
+
+.product .allergens-overlay-bg {
+    background-color: var(--queequeg-blue);
+    opacity: 0.8;
+}
+
+.product .allergen-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.product .no-allergens {
+    color: white;
+    font-size: 22px;
+    font-family: Poppins, sans-serif;
 }
 
 .product .card-title {
@@ -806,12 +828,16 @@ footer .logo {
     border-top: 1px solid var(--charon-gray);
 }
 
-#productlist #list .productsCategory .product img {
+#productlist #list .productsCategory .product img:not(.allergen-icon) {
     transition: 0.3s ease;
 }
 
-#productlist #list .productsCategory .product:hover img {
+#productlist #list .productsCategory .product:hover img:not(.allergen-icon) {
     transform: scale(115%);
+}
+
+#productlist #list .productsCategory .product:hover .allergens-overlay {
+    opacity: 1;
 }
 
 #productlist .listButtons form {
@@ -1061,6 +1087,11 @@ input[type='submit']:hover {
 
 #account .option:hover {
     box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),0px 4px 5px 0px rgba(0,0,0,0.14),0px 1px 10px 0px rgba(0,0,0,0.12);
+}
+
+#account #last-order {
+    padding-left: 10vw;
+    padding-right: 10vw;
 }
 
 #edituser #banner {
@@ -1356,6 +1387,20 @@ input[type='submit']:hover {
 
 #build .overlay .product:hover {
     transform: scale(105%);
+}
+
+#build .overlay .product .allergens-overlay {
+    height: 150px;
+    width: 150px;
+}
+
+#build .overlay .product .allergens-overlay img {
+    height: 35px;
+    width: 35px;
+}
+
+#build .overlay .product:hover .allergens-overlay {
+    opacity: 1;
 }
 
 #build .overlay .product .card-title {
@@ -1839,6 +1884,11 @@ input[type='submit']:hover {
     --bs-tooltip-color: var(--bs-white);
 }
 
+.custom-tooltip-2 {
+    --bs-tooltip-bg: var(--ishmael-blue);
+    --bs-tooltip-color: var(--bs-white);
+}
+
 /*
 ======================
     ADMIN CONSOLE
@@ -2142,6 +2192,11 @@ input[type='submit']:hover {
 .order .delete.order-delete:hover {
     color: var(--aleph-red2);
     transform: translate(-50%, -45%) scale(120%);
+}
+
+.order .copy {
+    font-size: 30px;
+    transform: translate(-10px, -95px);
 }
 
 /*
