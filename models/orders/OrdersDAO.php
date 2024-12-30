@@ -8,7 +8,24 @@ class OrdersDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('SELECT * FROM ORDERS ORDER BY id_order DESC');
+        $stmt = $con->prepare("SELECT
+            o.id_order,
+            o.date_order,
+            o.delivery_address,
+            o.payment_type,
+            o.card_number,
+            o.expiration_date,
+            o.cvc,
+            o.card_holder,
+            o.id_user,
+            u.username,
+            e.id_establishment,
+            e.name AS establishment_name
+        FROM
+            ORDERS o
+        LEFT JOIN USERS u ON o.id_user = u.id_user
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        ORDER BY o.id_order DESC");
 
         // Execute the query
         $stmt->execute();
@@ -28,7 +45,25 @@ class OrdersDAO {
         $con = DataBase::connect();
 
         // Prepare the SQL statement
-        $stmt = $con->prepare('SELECT * FROM ORDERS WHERE id_user = ? ORDER BY id_order DESC');
+        $stmt = $con->prepare("SELECT
+            o.id_order,
+            o.date_order,
+            o.delivery_address,
+            o.payment_type,
+            o.card_number,
+            o.expiration_date,
+            o.cvc,
+            o.card_holder,
+            o.id_user,
+            u.username,
+            e.id_establishment,
+            e.name AS establishment_name
+        FROM
+            ORDERS o
+        LEFT JOIN USERS u ON o.id_user = u.id_user
+        LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        WHERE o.id_user = ?
+        ORDER BY o.id_order DESC");
         $stmt->bind_param('i', $id);
 
         // Execute the query

@@ -910,7 +910,7 @@ class apiController {
             o.expiration_date,
             o.cvc,
             o.card_holder,
-            u.id_user,
+            o.id_user,
             u.username,
             e.id_establishment,
             e.name AS establishment_name
@@ -967,7 +967,7 @@ class apiController {
                 o.expiration_date,
                 o.cvc,
                 o.card_holder,
-                u.id_user,
+                o.id_user,
                 u.username,
                 e.id_establishment,
                 e.name AS establishment_name

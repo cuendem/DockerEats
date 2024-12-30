@@ -84,7 +84,7 @@ class SalesDAO {
         $con->close();
     }
 
-    public static function getByOrder($order_id) {
+    public static function getOrderSales($order_id) {
         $con = DataBase::connect();
 
         // Prepare the SQL statement

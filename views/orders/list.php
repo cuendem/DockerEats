@@ -8,18 +8,17 @@
         <div class="no-results d-flex flex-column align-items-center w-100 my-5">
             <span>You have not made any orders.</span>
         </div>
-    <?php } else { foreach ($orders as $i => $order) { ?>
-        <?php $user = $order->getUser_data();
+    <?php } else { foreach ($orders as $i => $order) {
         $coupons = $order->getCoupons();
         $containers = $order->getContainers();
         $order_sales = $order->getSales(); ?>
         <div class="row mb-5">
             <div class="order p-3 col-12 position-relative">
                 <div class="userdata d-flex position-absolute top-0 start-0">
-                    <img src="<?=userController::getPfp($order->getId_user())?>" alt="<?=$user->getUsername()?>">
+                    <img src="<?=userController::getPfp($order->getId_user())?>" alt="<?=$order->getUsername()?>">
                     <div class="userdatatext d-flex flex-column">
                         <span class="date"><?=$order->getDate()?></span>
-                        <span class="username"><?=$user->getUsername()?></span>
+                        <span class="username"><?=$order->getUsername()?></span>
                     </div>
                 </div>
                 <div class="orderpills p-3 d-flex gap-3 position-absolute top-0 end-0">
