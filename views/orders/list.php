@@ -74,7 +74,7 @@
 
                     // Apply sales
                     if (count($order_sales) > 0) {
-                        $ordered_sales = salesController::order($order_sales);
+                        $ordered_sales = Discount::order($order_sales);
                         foreach ($ordered_sales as $i => $sale) {
                             if ($sale -> getScope() == 1) {
                                 if ($sale -> getDiscount_type() == 2) {
@@ -90,7 +90,7 @@
 
                     // Apply coupons
                     if (count($coupons) > 0) {
-                        $ordered_coupons = salesController::order($coupons);
+                        $ordered_coupons = Discount::order($coupons);
                         foreach ($ordered_coupons as $i => $coupon) {
                             if ($coupon -> getDiscount_type() == 2) {
                                 // Percentage-based coupon

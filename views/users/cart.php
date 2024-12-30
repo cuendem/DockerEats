@@ -19,7 +19,8 @@
                         <h2>Containers</h2>
                     </div>
                     <div class="containers-list d-flex justify-content-center flex-wrap gap-4">
-                        <?php foreach ($_SESSION['cart'] as $i => $cart_container) { ?>
+                        <?php $usedSales = [];
+                        foreach ($_SESSION['cart'] as $i => $cart_container) { ?>
                             <div class="container-order d-flex flex-column align-items-end position-relative">
                                 <div class="container-order-products d-flex flex-column w-100">
                                     <?php $contPrice = 0;
@@ -37,23 +38,37 @@
                                                 if ($appliedSale) {
                                                     $finalProductPrice = $product->getDiscountedPrice($appliedSale); ?>
                                                     <div class="d-flex align-items-end gap-2 position-absolute bottom-0 end-0">
-                                                        <span class="price crossed-out"><?=$product->getPrice()?> €</span>
-                                                        <span class="price discounted"><?=$finalProductPrice?> €</span>
+                                                        <span class="price crossed-out"><?=number_format($product->getPrice(), 2)?> €</span>
+                                                        <span class="price discounted"><?=number_format($finalProductPrice, 2)?> €</span>
                                                     </div>
+                                                    <?php
+                                                    // Add the sale to the list of used sales in the order
+                                                    if (!in_array($appliedSale, $usedSales)) {
+                                                        array_push($usedSales, $appliedSale);
+                                                    }
+                                                    ?>
                                                 <?php } else {
                                                     $finalProductPrice = $product->getPrice(); ?>
-                                                    <span class="price position-absolute bottom-0 end-0"><?=$finalProductPrice?> €</span>
+                                                    <span class="price position-absolute bottom-0 end-0"><?=number_format($finalProductPrice, 2)?> €</span>
                                                 <?php } $contPrice += $finalProductPrice; ?>
                                             </div>
                                         </div>
                                     <?php } ?>
                                 </div>
                                 <div class="bottom-tag d-flex align-items-center">
-                                    <span class="total px-4 py-2"><?=$contPrice?> €</span>
+                                    <span class="total px-4 py-2"><?=number_format($contPrice, 2)?> €</span>
                                     <a href="/build/removefromcart/<?=$i?>" class="container-remove px-3 py-2 bi bi-trash-fill d-flex align-items-center h-100"></a>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php 
+                        }
+                        // Add order sales to used sales
+                        foreach ($currentSales as $sale) {
+                            if ($sale->getScope() == 1 && !in_array($sale, $usedSales)) {
+                                array_push($usedSales, $sale);
+                            }
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="delivery">
@@ -112,6 +127,7 @@
                         <div>
                             <input type="text" id="coupon-code" name="coupon-code" placeholder="Coupon...">
                             <input type="submit" name="coupon-button" value="Redeem">
+                            <input type="submit" class="red" name="clear-coupons-button" value="Clear all coupons">
                         </div>
                     </div>
                 </div>
@@ -174,14 +190,14 @@
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Sales</span>
                                 <hr class="flex-grow-1">
-                                <?php if (count($currentSales) > 0) { ?>
-                                    <span class="added-extras d-flex align-items-center"><?=$currentSales[0]->getSummary()?></span>
+                                <?php if (count($usedSales) > 0) { ?>
+                                    <span class="added-extras d-flex align-items-center"><?=$usedSales[0]->getSummary()?></span>
                                 <?php } else { ?>
                                     <span class="added-extras d-flex align-items-center grayed">No sales applied</span>
                                 <?php } ?>
                             </div>
-                            <?php if (count($currentSales) > 1) {
-                                foreach ($currentSales as $i => $sale) {
+                            <?php if (count($usedSales) > 1) {
+                                foreach ($usedSales as $i => $sale) {
                                     if ($i != 0) { ?>
                                         <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                             <div></div>
@@ -222,7 +238,7 @@
 
                                     // Apply sales
                                     if (count($currentSales) > 0) {
-                                        $ordered_sales = salesController::order($currentSales);
+                                        $ordered_sales = Discount::order($currentSales);
                                         foreach ($ordered_sales as $i => $sale) {
                                             if ($sale -> getScope() == 1) {
                                                 if ($sale -> getDiscount_type() == 2) {
@@ -238,7 +254,7 @@
 
                                     // Apply coupons
                                     if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) {
-                                        $ordered_coupons = salesController::order($_SESSION['coupons']);
+                                        $ordered_coupons = Discount::order($_SESSION['coupons']);
                                         foreach ($ordered_coupons as $i => $coupon) {
                                             if ($coupon -> getDiscount_type() == 2) {
                                                 // Percentage-based coupon

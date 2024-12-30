@@ -1,4 +1,7 @@
-export class Sale {
+import { Discount } from '/admin/classes/Discount.js';
+
+// Sale class extending Discount
+export class Sale extends Discount {
     constructor({
         id_sale,
         name,
@@ -12,33 +15,22 @@ export class Sale {
         scope,
         category_name
     }) {
+        super({ discount, discount_type, date_start, date_end }); // Call parent constructor
         this.idSale = id_sale;
         this.name = name;
         this.description = description;
-        this.discount = discount;
-        this.dateStart = date_start;
-        this.dateEnd = date_end;
-        this.discountType = discount_type;
         this.productType = product_type;
         this.categoryAffected = category_affected;
         this.scope = scope;
         this.categoryName = category_name;
     }
 
-    applyDiscount(n) {
-        if (this.discountType === 2) {
-            return Math.round(n * (1 - (this.discount / 100)) * 100) / 100;
-        } else {
-            return n - this.discount;
-        }
-    }
-
     getScopeName() {
-        if (this.scope == 2) {
+        if (this.scope === 2) {
             let type = 'Any';
             let category = 'Any';
 
-            if (this.productType != 0) {
+            if (this.productType !== 0) {
                 switch (this.productType) {
                     case 1:
                         type = 'Main';
@@ -55,12 +47,12 @@ export class Sale {
                 }
             }
 
-            if (this.categoryAffected != 0) {
+            if (this.categoryAffected !== 0) {
                 category = this.categoryName;
             }
 
             return `${type} ${category}`;
-        } else if (this.scope == 1) {
+        } else if (this.scope === 1) {
             return 'Order';
         } else {
             return 'Error';

@@ -44,5 +44,13 @@ if(isset($_POST['coupon-code'], $_POST['coupon-button']) && $_POST['coupon-code'
             <?php
         }
     }
+} elseif (isset($_POST['clear-coupons-button'])) {
+    // Reset coupons session array
+    unset($_SESSION['coupons']);
+    ?>
+    <script>
+        bufferedToast = {"text": "All coupons cleared.", "type": "success"};
+    </script>
+    <?php
 }
 ?>
