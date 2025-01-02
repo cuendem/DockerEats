@@ -17,6 +17,14 @@ function createSpinner() {
     target.appendChild(spinnerContainer);
 }
 
+window.onload = async () => {
+    try {
+        await getAll();
+    } catch (error) {
+        console.error('Error on page load:', error);
+    }
+};
+
 async function getAll() {
     createSpinner();
     // Get the coupons

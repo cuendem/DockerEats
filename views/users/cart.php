@@ -182,11 +182,6 @@
                                 <hr class="flex-grow-1">
                                 <span class="added-extras d-flex align-items-center">8%</span>
                             </div>
-                            <div id="delivery-fee" class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
-                                <span class="added-extras d-flex align-items-center">Delivery Fee</span>
-                                <hr class="flex-grow-1">
-                                <span class="added-extras d-flex align-items-center">2.99 €</span>
-                            </div>
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Sales</span>
                                 <hr class="flex-grow-1">
@@ -225,6 +220,11 @@
                                     <?php }
                                 }
                             } ?>
+                            <div id="delivery-fee" class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
+                                <span class="added-extras d-flex align-items-center">Delivery Fee</span>
+                                <hr class="flex-grow-1">
+                                <span class="added-extras d-flex align-items-center">2.99 €</span>
+                            </div>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between align-items-center gap-3">
                                 <span class="total-price d-flex align-items-center">TOTAL</span>
@@ -232,9 +232,6 @@
                                 <span id="total-price" class="total-price align-self-end"><?php
                                     // Apply taxes
                                     $totalContPrice = $totalContPrice*1.08;
-
-                                    // Delivery fee
-                                    $totalContPrice += 2.99;
 
                                     // Apply sales
                                     if (count($usedSales) > 0) {
@@ -265,6 +262,9 @@
                                             }
                                         }
                                     }
+
+                                    // Delivery fee
+                                    $totalContPrice += 2.99;
 
                                     echo number_format(round($totalContPrice * 100) / 100, 2);
                                 ?> €</span>

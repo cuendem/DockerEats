@@ -66,11 +66,6 @@
                     // Apply taxes
                     $total_order_price = $total_order_price*1.08;
 
-                    // Delivery fee
-                    if (!is_null($order->getDelivery_address())) {
-                        $total_order_price += 2.99;
-                    }
-
                     // Apply sales
                     if (count($order_sales) > 0) {
                         $ordered_sales = Discount::order($order_sales);
@@ -99,6 +94,11 @@
                                 $total_order_price -= $coupon->getDiscount();
                             }
                         }
+                    }
+
+                    // Delivery fee
+                    if (!is_null($order->getDelivery_address())) {
+                        $total_order_price += 2.99;
                     }
                 ?>
                 <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format(round($total_order_price * 100, 2) / 100, 2)?> €</span>

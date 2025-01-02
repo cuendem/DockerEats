@@ -261,10 +261,6 @@ async function listOrders(ordersJson) {
 
             totalOrderPrice = totalOrderPrice * 1.08;
 
-            if (order.deliveryAddress) {
-                totalOrderPrice += 2.99;
-            }
-
             // Order sales to get discount type 2 first, then the other ones (apply percentage based discounts before flat discounts for highest savings)
             let orderedSales = sales.sort((b, a) => a.discountType - b.discountType);
 
@@ -281,6 +277,10 @@ async function listOrders(ordersJson) {
             orderedCoupons.forEach(coupon => {
                 totalOrderPrice = coupon.applyDiscount(totalOrderPrice);
             });
+
+            if (order.deliveryAddress) {
+                totalOrderPrice += 2.99;
+            }
 
             // Round to 2 decimal places
             totalOrderPrice = Math.round(totalOrderPrice * 100) / 100;
