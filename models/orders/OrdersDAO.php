@@ -179,6 +179,21 @@ class OrdersDAO {
 
         return $lastID;
     }
+
+    public static function getAmount() {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare("SELECT COUNT(*) AS amount FROM ORDERS");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $amount = $result->fetch_assoc()['amount'];
+
+        $con->close();
+
+        return $amount;
+    }
 }
 
 ?>

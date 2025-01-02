@@ -18,6 +18,11 @@ if (!isset($_GET['controller'])) {
     $title = "Home";
     $view = "views/homepage.php";
     $pageid = "home";
+
+    $customers = usersDAO::getAmount();
+    $monthlyorders = ordersDAO::getAmount();
+    $containersbuilt = containersDAO::getAmount();
+
     include_once("views/main.php");
 } else {
     $controller_name = $_GET['controller']."Controller";

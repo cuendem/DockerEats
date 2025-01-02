@@ -200,11 +200,6 @@ p {
 
 .btn svg {
     width: 25px;
-    fill: var(--ishmael-blue);
-}
-
-.btn-selected svg {
-    fill: white;
 }
 
 .undraggable {
@@ -553,6 +548,7 @@ footer .logo {
 
 .review .card-text {
     color: var(--queequeg-blue);
+    text-wrap: wrap;
 }
 
 /*
@@ -838,6 +834,14 @@ footer .logo {
 
 #productlist #list .productsCategory .product:hover .allergens-overlay {
     opacity: 1;
+}
+
+#productlist .listButtons .btn svg {
+    fill: var(--ishmael-blue);
+}
+
+#productlist .listButtons  .btn-selected svg {
+    fill: white;
 }
 
 #productlist .listButtons form {
@@ -1271,9 +1275,6 @@ input[type='submit']:hover {
 }
 
 #build #building svg {
-    fill: var(--ishmael-blue);
-    stroke: var(--ishmael-blue);
-    stroke-width: 0px;
     width: 40px;
 }
 
@@ -2280,4 +2281,58 @@ input[type='submit']:hover {
 #admin .user-card .preview-image-container, #admin .user-card .preview-image {
     width: 160px;
     height: 160px;
+}
+
+/*
+======================
+    SLIDER HOMEPAGE
+======================
+*/
+
+.container-slider {
+    overflow: hidden;
+    .slider {
+        animation: slidein 30s linear infinite;
+        white-space: nowrap;
+        .logos {
+            width: 100%;
+            display: inline-block;
+            .fab {
+                width: calc(100% / 3.5);
+                animation: fade-in 0.5s 
+                    cubic-bezier(0.455, 0.03, 0.515, 0.955) forwards;
+            }
+        }
+    }
+}
+
+.container-slider.second .slider {
+    animation: slidein-second 30s linear infinite;
+}
+
+@keyframes slidein {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(-100%, 0, 0);
+    }
+}
+
+@keyframes slidein-second {
+    from {
+        transform: translate3d(-17%, 0, 0); /* Start slightly to the right */
+    }
+    to {
+        transform: translate3d(-117%, 0, 0);
+    }
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }

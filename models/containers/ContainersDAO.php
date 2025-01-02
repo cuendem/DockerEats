@@ -59,6 +59,23 @@ class ContainersDAO {
 
         return $lastID;
     }
+
+    public static function getAmount() {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare("SELECT COUNT(*) AS amount FROM CONTAINERS");
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $amount = $result->fetch_object()->amount;
+
+        $con->close();
+
+        return $amount;
+    }
 }
 
 ?>
