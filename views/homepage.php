@@ -63,7 +63,7 @@
 </section>
 
 <section id="whyorder" class="container-fluid wave-separator">
-    <div class="row">
+    <div class="row mb-5">
         <div class="col-lg-8 text-center mx-auto">
             <h2>Why order DockerEats?</h2>
             <h3>Already trusted by developers.<br>Now trusted by consumers.</h3>
@@ -71,202 +71,52 @@
             <a href="#" class="arrow">Read our reviews ➜</a>
         </div>
     </div>
-    <div class="row my-4 mx-5 d-flex gy-5 gx-0">
-        <div class="container container-slider d-none d-xl-block">
-            <div class="slider">
-                <div class="logos">
-                    <div class="d-flex w-100 justify-content-around py-1">
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser1.webp" class="img-fluid" alt="Jeremy Elbertson">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Jeremy Elbertson</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Ever since I tried DockerEats, I never eat anywhere else. Not even my home.</p>
+    <?php for ($l = 0; $l < 2; $l++) { ?>
+        <div class="row my-3 mx-5 d-flex gy-5 gx-0">
+            <div class="container container-slider <?=$l > 0 ? 'second' : ''?> d-none d-xl-block">
+                <div class="slider">
+                    <?php for ($i = 0; $i < 2; $i++) { ?>
+                        <div class="logos">
+                            <div class="d-flex w-100 justify-content-around py-1">
+                                <?php for ($j = 0; $j < 3; $j++) { $review = $reviews[$j+($l*3)] ?>
+                                    <div class="fab card review">
+                                        <div class="row g-0">
+                                            <div class="col-3 p-3 rounded">
+                                                <img src="<?=userController::getPfp($review['id_user'])?>" class="img-fluid" alt="<?=$review['username']?>">
+                                            </div>
+                                            <div class="col-9 d-flex align-items-center">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><?=$review['username']?></h5>
+
+                                                    <?php
+                                                    $stars = $review['stars']; // Star value (0 to 5, with 0.5 increments)
+
+                                                    // Calculate the number of full stars, half stars, and empty stars
+                                                    $fullStars = floor($stars); // Number of full stars
+                                                    $halfStar = ($stars - $fullStars >= 0.5) ? 1 : 0; // Check if there's a half star
+                                                    $emptyStars = 5 - $fullStars - $halfStar; // Remaining empty stars
+
+                                                    // Display the stars
+                                                    echo '<h6 class="card-subtitle mb-2 text-body-secondary">';
+                                                    echo str_repeat('<i class="bi bi-star-fill"></i>', $fullStars); // Full stars
+                                                    echo str_repeat('<i class="bi bi-star-half"></i>', $halfStar); // Half star
+                                                    echo str_repeat('<i class="bi bi-star"></i>', $emptyStars); // Empty stars
+                                                    echo '</h6>';
+                                                    ?>
+
+                                                    <p class="card-text"><?=$review['comment']?></p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                <?php } ?>
                             </div>
                         </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser2.webp" class="img-fluid" alt="Food Andy">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Food Andy</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Just perfect. The degree of customization is amazing. You are in control of everything.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser3.webp" class="img-fluid" alt="José Alberto Olivares">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">José Alberto Olivares</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></h6>
-                                        <p class="card-text">Containers are useful even after having finished your food. They can store things.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="logos">
-                    <div class="d-flex w-100 justify-content-around py-1">
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser1.webp" class="img-fluid" alt="Jeremy Elbertson">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Jeremy Elbertson</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Ever since I tried DockerEats, I never eat anywhere else. Not even my home.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser2.webp" class="img-fluid" alt="Food Andy">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Food Andy</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Just perfect. The degree of customization is amazing. You are in control of everything.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser3.webp" class="img-fluid" alt="José Alberto Olivares">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">José Alberto Olivares</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></h6>
-                                        <p class="card-text">Containers are useful even after having finished your food. They can store things.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row mt-1 mx-5 gy-5 gx-0">
-        <div class="container container-slider second d-none d-xl-block">
-            <div class="slider">
-                <div class="logos">
-                    <div class="d-flex w-100 justify-content-around py-1">
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser4.webp" class="img-fluid" alt="John Desayuna">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">John Desayuna</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></h6>
-                                        <p class="card-text">Amazing! Always reliable and with a great menu selection. Missing some breakfast.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser5.webp" class="img-fluid" alt="Ryan Gosling">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Ryan Gosling</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">A little pricey, but the quality of food is worth it.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser6.webp" class="img-fluid" alt="Peter Griffin">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Peter Griffin</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Food was great, containers are big enough to feed all my family.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="logos">
-                    <div class="d-flex w-100 justify-content-around py-1">
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser4.webp" class="img-fluid" alt="John Desayuna">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">John Desayuna</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i></h6>
-                                        <p class="card-text">Amazing! Always reliable and with a great menu selection. Missing some breakfast.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser5.webp" class="img-fluid" alt="Ryan Gosling">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Ryan Gosling</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">A little pricey, but the quality of food is worth it.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="fab card review">
-                            <div class="row g-0">
-                                <div class="col-3 p-3 rounded">
-                                    <img src="/img/users/fakeuser6.webp" class="img-fluid" alt="Peter Griffin">
-                                </div>
-                                <div class="col-9 d-flex align-items-center">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Peter Griffin</h5>
-                                        <h6 class="card-subtitle mb-2 text-body-secondary"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-half"></i><i class="bi bi-star"></i></h6>
-                                        <p class="card-text">Food was great, containers are big enough to feed all my family.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php } ?>
 
     <div class="siteNumbers row text-center mt-1 g-4">
         <div class="col-md-4">

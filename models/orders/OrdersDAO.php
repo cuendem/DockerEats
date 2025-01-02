@@ -20,11 +20,17 @@ class OrdersDAO {
             o.id_user,
             u.username,
             e.id_establishment,
-            e.name AS establishment_name
+            e.name AS establishment_name,
+            r.id_review,
+            r.id_user AS review_id_user,
+            r.comment,
+            r.stars,
+            r.published_date
         FROM
             ORDERS o
         LEFT JOIN USERS u ON o.id_user = u.id_user
         LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        LEFT JOIN REVIEWS r ON o.id_order = r.id_order
         ORDER BY o.id_order DESC");
 
         // Execute the query
@@ -57,11 +63,17 @@ class OrdersDAO {
             o.id_user,
             u.username,
             e.id_establishment,
-            e.name AS establishment_name
+            e.name AS establishment_name,
+            r.id_review,
+            r.id_user AS review_id_user,
+            r.comment,
+            r.stars,
+            r.published_date
         FROM
             ORDERS o
         LEFT JOIN USERS u ON o.id_user = u.id_user
         LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        LEFT JOIN REVIEWS r ON o.id_order = r.id_order
         WHERE o.id_order = ?");
         $stmt->bind_param('i', $id);
 
@@ -92,11 +104,17 @@ class OrdersDAO {
             o.id_user,
             u.username,
             e.id_establishment,
-            e.name AS establishment_name
+            e.name AS establishment_name,
+            r.id_review,
+            r.id_user AS review_id_user,
+            r.comment,
+            r.stars,
+            r.published_date
         FROM
             ORDERS o
         LEFT JOIN USERS u ON o.id_user = u.id_user
         LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        LEFT JOIN REVIEWS r ON o.id_order = r.id_order
         WHERE o.id_user = ?
         ORDER BY o.id_order DESC");
         $stmt->bind_param('i', $id);
@@ -131,11 +149,17 @@ class OrdersDAO {
             o.id_user,
             u.username,
             e.id_establishment,
-            e.name AS establishment_name
+            e.name AS establishment_name,
+            r.id_review,
+            r.id_user AS review_id_user,
+            r.comment,
+            r.stars,
+            r.published_date
         FROM
             ORDERS o
         LEFT JOIN USERS u ON o.id_user = u.id_user
         LEFT JOIN ESTABLISHMENTS e ON o.id_establishment = e.id_establishment
+        LEFT JOIN REVIEWS r ON o.id_order = r.id_order
         WHERE o.id_user = ?
         ORDER BY o.id_order DESC
         LIMIT 1");
@@ -193,6 +217,70 @@ class OrdersDAO {
         $con->close();
 
         return $amount;
+    }
+
+    public static function storeReview($id_user, $id_order, $comment, $stars, $published_date) {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('INSERT INTO REVIEWS (id_user, id_order, comment, stars, published_date) VALUES (?, ?, ?, ?, ?)');
+        $stmt->bind_param('iisds', $id_user, $id_order, $comment, $stars, $published_date);
+
+        $stmt->execute();
+
+        $lastID = $con->insert_id;
+
+        $con->close();
+
+        return $lastID;
+    }
+
+    public static function updateReview($id_review, $id_user, $id_order, $comment, $stars) {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('UPDATE REVIEWS SET id_user = ?, id_order = ?, comment = ?, stars = ? WHERE id_review = ?');
+        $stmt->bind_param('iisdi', $id_user, $id_order, $comment, $stars, $id_review);
+
+        $stmt->execute();
+
+        $con->close();
+    }
+
+    public static function deleteReview($id_review) {
+        $con = DataBase::connect();
+
+        $stmt = $con->prepare('DELETE FROM REVIEWS WHERE id_review = ?');
+        $stmt->bind_param('i', $id_review);
+
+        $stmt->execute();
+
+        $con->close();
+    }
+
+    public static function getRandomReviews() {
+        $con = DataBase::connect();
+
+        // Prepare the SQL statement
+        $stmt = $con->prepare("SELECT
+            r.*,
+            u.username
+        FROM
+            REVIEWS r
+        LEFT JOIN USERS u ON r.id_user = u.id_user
+        ORDER BY RAND()
+        LIMIT 6");
+
+        // Execute the query
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $reviews = [];
+        while ($review = $result->fetch_assoc()) {
+            $reviews[] = $review;
+        }
+
+        $con->close();
+
+        return $reviews;
     }
 }
 

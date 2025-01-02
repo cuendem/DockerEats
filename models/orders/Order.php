@@ -13,6 +13,11 @@ class Order {
     protected $username;
     protected $id_establishment;
     protected $establishment_name;
+    protected $id_review;
+    protected $review_id_user;
+    protected $comment;
+    protected $stars;
+    protected $published_date;
 
     public function __construct() {
 
@@ -310,6 +315,106 @@ class Order {
     public function setEstablishment_name($establishment_name)
     {
         $this->establishment_name = $establishment_name;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_review
+     */ 
+    public function getId_review()
+    {
+        return $this->id_review;
+    }
+
+    /**
+     * Set the value of id_review
+     *
+     * @return  self
+     */ 
+    public function setId_review($id_review)
+    {
+        $this->id_review = $id_review;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of review_id_user
+     */ 
+    public function getReview_id_user()
+    {
+        return $this->review_id_user;
+    }
+
+    /**
+     * Set the value of review_id_user
+     *
+     * @return  self
+     */ 
+    public function setReview_id_user($review_id_user)
+    {
+        $this->review_id_user = $review_id_user;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of comment
+     */ 
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Set the value of comment
+     *
+     * @return  self
+     */ 
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of stars
+     */ 
+    public function getStars()
+    {
+        return $this->stars;
+    }
+
+    /**
+     * Set the value of stars
+     *
+     * @return  self
+     */ 
+    public function setStars($stars)
+    {
+        $this->stars = $stars;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of published_date
+     */ 
+    public function getPublished_date()
+    {
+        return $this->published_date;
+    }
+
+    /**
+     * Set the value of published_date
+     *
+     * @return  self
+     */ 
+    public function setPublished_date($published_date)
+    {
+        $this->published_date = $published_date;
 
         return $this;
     }

@@ -19,6 +19,8 @@ if (!isset($_GET['controller'])) {
     $view = "views/homepage.php";
     $pageid = "home";
 
+    $reviews = ordersDAO::getRandomReviews();
+
     $customers = usersDAO::getAmount();
     $monthlyorders = ordersDAO::getAmount();
     $containersbuilt = containersDAO::getAmount();

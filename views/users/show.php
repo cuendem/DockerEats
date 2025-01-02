@@ -157,7 +157,14 @@
                     }
                 ?>
                 <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format(round($total_order_price * 100, 2) / 100, 2)?> €</span>
-                <a href="/orders/recover/<?=$order->getId_order()?>" class="copy position-absolute bottom-0 end-0 bi bi-copy" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Copy this order to cart"></a>
+                <div class="position-absolute bottom-0 end-0 extra-buttons d-flex align-items-center gap-3">
+                    <?php if ($order->getId_review()) { ?>
+                        <a href="/orders/review/<?=$order->getId_order()?>" class="review-button bi bi-chat-left-text-fill" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Update this order's review"></a>
+                    <?php } else { ?>
+                        <a href="/orders/review/<?=$order->getId_order()?>" class="review-button bi bi-chat-left-text" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Create a review for this order"></a>
+                    <?php } ?>
+                    <a href="/orders/recover/<?=$order->getId_order()?>" class="copy bi bi-copy" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-title="Copy this order to cart"></a>
+                </div>
             </div>
         </div>
     <?php } else { ?>

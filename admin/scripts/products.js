@@ -354,7 +354,7 @@ async function createProduct() {
 
     // Generate allergen options
     let allergenOptions = allergens.map(allergen => {
-        return `<option value="${allergen.id_allergen}">${allergens.name}</option>`;
+        return `<option value="${allergen.id_allergen}">${allergen.name}</option>`;
     }).join('');
 
     productForm.innerHTML = `

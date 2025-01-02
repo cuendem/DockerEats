@@ -923,7 +923,7 @@ footer .logo {
     width: 100%;
 }
 
-.inputDiv input {
+.inputDiv input, .inputDiv select, .inputDiv textarea {
     height: 52px;
     padding: 0px 16px;
     border: 1px solid var(--charon-gray);
@@ -931,6 +931,10 @@ footer .logo {
     width: 100%;
     transition: 0.2s ease;
     outline: 2px solid white;
+}
+
+.inputDiv textarea {
+    padding: 16px;
 }
 
 input[type='submit'] {
@@ -941,6 +945,15 @@ input[type='submit'] {
 
 input[type='submit']:hover {
     background-color: var(--ricardo-blue);
+}
+
+input[type='submit'].delete {
+    background-color: var(--aleph-red2);
+    border: 0px solid var(--aleph-red2);
+}
+
+input[type='submit'].delete:hover {
+    background-color: var(--aleph-red);
 }
 
 .inputDiv label {
@@ -964,11 +977,11 @@ input[type='submit']:hover {
     color: var(--aleph-red2);
 }
 
-.inputDiv:focus-within label, .inputDiv input:not(:placeholder-shown) + label {
+.inputDiv:focus-within label, .inputDiv input:not(:placeholder-shown) + label, .inputDiv.no-label label {
     transform: scale(0.8) translateX(-8px) translateY(calc(-36px - 50%));
 }
 
-.inputDiv:focus-within input {
+.inputDiv:focus-within input:not([type='submit']) {
     outline: 2px solid var(--ishmael-blue);
 }
 
@@ -2195,9 +2208,12 @@ input[type='submit']:hover {
     transform: translate(-50%, -45%) scale(120%);
 }
 
-.order .copy {
-    font-size: 30px;
+.order .extra-buttons {
     transform: translate(-10px, -95px);
+}
+
+.order .copy, .order .review-button {
+    font-size: 30px;
 }
 
 /*
@@ -2285,6 +2301,24 @@ input[type='submit']:hover {
 
 /*
 ======================
+    ADMIN USERS
+======================
+*/
+
+#review #banner {
+    background-color: var(--pilot-white);
+}
+
+#review #review-cont {
+    background-color: white;
+}
+
+#review textarea {
+    height: 104px;
+}
+
+/*
+======================
     SLIDER HOMEPAGE
 ======================
 */
@@ -2292,7 +2326,7 @@ input[type='submit']:hover {
 .container-slider {
     overflow: hidden;
     .slider {
-        animation: slidein 30s linear infinite;
+        animation: slidein 40s linear infinite;
         white-space: nowrap;
         .logos {
             width: 100%;
@@ -2307,7 +2341,7 @@ input[type='submit']:hover {
 }
 
 .container-slider.second .slider {
-    animation: slidein-second 30s linear infinite;
+    animation: slidein-second 40s linear infinite;
 }
 
 @keyframes slidein {

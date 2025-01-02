@@ -34,6 +34,24 @@ class ordersController {
         header('Location:/account/cart');
     }
 
+    public function review() {
+        include_once('models/protection.php');
+
+        $pageid = "review";
+        $title = "Write a review";
+        $view = "views/orders/review.php";
+
+        include_once("models/orders/create_review.php");
+
+        $order = OrdersDAO::get($_GET['order']);
+
+        if (!isset($order) || $order->getId_user() != $_SESSION['id_user'] || (isset($order->getReview_id_user) && $_SESSION['id_user'] != $order->getReview_id_user())) {
+            header('Location:/');
+        }
+
+        include_once("views/main.php");
+    }
+
     public static function createOrder($data) {
         // Delivery type
         if ($data['delivery-selected'] == 'true') {
