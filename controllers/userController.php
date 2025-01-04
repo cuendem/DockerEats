@@ -47,6 +47,14 @@ class userController {
         include_once("views/main.php");
     }
 
+    public function restore() {
+        $pageid = "restore";
+        $view = "views/users/restore_password.php";
+        $title = "Restore password";
+        include_once("models/users/user_password.php");
+        include_once("views/main.php");
+    }
+
     public function signout() {
         logsController::log("Logout");
         session_destroy();
@@ -87,6 +95,16 @@ class userController {
 
         if (!is_null($password)) {
             $user->setPassword($password);
+        }
+
+        UsersDAO::update($user);
+    }
+
+    public static function changePassword($email, $password) {
+        $user = UsersDAO::getByEmail($email);
+
+        if (!is_null($password)) {
+            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
         }
 
         UsersDAO::update($user);
