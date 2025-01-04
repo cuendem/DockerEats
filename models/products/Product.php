@@ -29,28 +29,39 @@ class Product {
     }
 
     public function isOnSale($currentSales) {
+        $sales = [];
         if (!is_null($currentSales)) {
             foreach ($currentSales as $i => $sale) {
                 if ($sale->getScope() == 2) {
                     # Product specific, not entire container
                     if (($sale->getProduct_type() == 0 || $sale->getProduct_type() == $this->id_type) && ($sale->getCategory_affected() == 0 || in_array($sale->getCategory_affected(), $this->getCategories()))) {
-                        return $sale;
+                        $sales[] = $sale;
                     }
                 }
             }
         }
-        return false;
+        return $sales;
     }
 
-    public function getDiscountedPrice($sale)
+    public function getDiscountedPrice($sales)
     {
-        if ($sale->getDiscount_type() == 1) {
-            # Base
-            return number_format($this->price - $sale->getDiscount(), 2);
-        } else {
-            # Percentage
-            return number_format(round($this->price*(1 - ($sale->getDiscount() / 100)), 2), 2);
+        $discountedPrice = $this->price;
+
+        // Apply percentage discounts first
+        foreach ($sales as $sale) {
+            if ($sale->getDiscount_type() == 2) {
+                $discountedPrice *= (1 - ($sale->getDiscount() / 100));
+            }
         }
+
+        // Apply base discounts next
+        foreach ($sales as $sale) {
+            if ($sale->getDiscount_type() == 1) {
+                $discountedPrice -= $sale->getDiscount();
+            }
+        }
+
+        return $discountedPrice >= 0 ? number_format(round($discountedPrice, 2), 2) : number_format(0, 2);
     }
 
     public function saleIcon() {

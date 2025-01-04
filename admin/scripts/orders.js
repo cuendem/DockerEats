@@ -102,11 +102,17 @@ async function listOrders(ordersJson) {
 
             const userDataDiv = document.createElement('div');
             userDataDiv.className = 'userdata d-flex position-absolute top-0 start-0';
+
             const userImg = document.createElement('img');
             const userImgPath = `/img/users/user${order.userId}.webp`;
-            const response = await fetch(userImgPath);
-            userImg.src = response.ok ? userImgPath : '/img/users/user0.webp';
+            const imgResponse = await fetch(userImgPath);
+            userImg.src = imgResponse.ok ? userImgPath : '/img/users/user0.webp';
             userImg.alt = order.username;
+
+            // Set fallback image if the main one doesn't load
+            userImg.onerror = () => {
+                userImg.src = '/img/users/user0.webp';
+            };
 
             const userDataText = document.createElement('div');
             userDataText.className = 'userdatatext d-flex flex-column';

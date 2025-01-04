@@ -23,19 +23,21 @@ export class Product {
         this.deleted = deleted;
     }
 
-    getDiscountedPrice(sale) {
-        if (sale.discountType === 1) {
-            return this.price - sale.discount;
-        } else {
-            return Math.round(this.price * (1 - (sale.discount / 100)) * 100) / 100;
-        }
-    }
-
     getPrice() {
+        let finalPrice = this.price;
+
         if (Array.isArray(this.sales) && this.sales.length > 0) {
-            return this.getDiscountedPrice(this.sales[0]);
-        } else {
-            return this.price;
+            // Apply percentage discounts first (discountType 2)
+            this.sales.filter(sale => sale.discountType === 2).forEach(sale => {
+                finalPrice = Math.round(finalPrice * (1 - (sale.discount / 100)) * 100) / 100;
+            });
+
+            // Apply fixed amount discounts (discountType 1)
+            this.sales.filter(sale => sale.discountType === 1).forEach(sale => {
+                finalPrice -= sale.discount;
+            });
         }
+
+        return finalPrice >= 0 ? finalPrice : 0;
     }
 }

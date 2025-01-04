@@ -15,9 +15,11 @@ if(isset($_POST['buy-button'])) {
 
                 // Sales (parts)
                 if (count($currentSales) > 0) {
-                    $appliedSale = $product->isOnSale($currentSales);
-                    if ($appliedSale) {
-                        salesController::addSalePartRelation($partId, $appliedSale->getId_sale());
+                    $appliedSales = $product->isOnSale($currentSales);
+                    if (count($appliedSales) > 0) {
+                        foreach ($appliedSales as $i => $sale) {
+                            salesController::addSalePartRelation($partId, $sale->getId_sale());
+                        }
                     }
                 }
             }

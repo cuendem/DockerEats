@@ -34,17 +34,19 @@
                                                 <div class="customs">
                                                     
                                                 </div>
-                                                <?php $appliedSale = $product->isOnSale($currentSales);
-                                                if ($appliedSale) {
-                                                    $finalProductPrice = $product->getDiscountedPrice($appliedSale); ?>
+                                                <?php $appliedSales = $product->isOnSale($currentSales);
+                                                if ($appliedSales) {
+                                                    $finalProductPrice = $product->getDiscountedPrice($appliedSales); ?>
                                                     <div class="d-flex align-items-end gap-2 position-absolute bottom-0 end-0">
                                                         <span class="price crossed-out"><?=number_format($product->getPrice(), 2)?> €</span>
                                                         <span class="price discounted"><?=number_format($finalProductPrice, 2)?> €</span>
                                                     </div>
                                                     <?php
-                                                    // Add the sale to the list of used sales in the order
-                                                    if (!in_array($appliedSale, $usedSales)) {
-                                                        array_push($usedSales, $appliedSale);
+                                                    // Add the sales to the list of used sales in the order
+                                                    foreach ($appliedSales as $sale) {
+                                                        if (!in_array($sale, $usedSales)) {
+                                                            array_push($usedSales, $sale);
+                                                        }
                                                     }
                                                     ?>
                                                 <?php } else {

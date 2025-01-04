@@ -126,7 +126,7 @@
                                                 <div class="allergens-overlay-bg w-100 h-100 position-absolute"></div>
                                                 <?php if (count($allergens) > 0) {
                                                         foreach ($allergens as $allergen) { ?>
-                                                            <img class="allergen-icon z-2" src="/svg/allergens/allergen<?=$allergen->getId_allergen()?>.svg" alt="<?=$allergen->getName()?>" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip-2" data-bs-title="<?=$allergen->getName()?>">
+                                                            <img loading="lazy" class="allergen-icon z-2" src="/svg/allergens/allergen<?=$allergen->getId_allergen()?>.svg" alt="<?=$allergen->getName()?>" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip-2" data-bs-title="<?=$allergen->getName()?>">
                                                         <?php }
                                                     } else { ?>
                                                         <span class="no-allergens d-flex align-items-center z-2">No allergens</span>
@@ -135,11 +135,11 @@
                                             <div class="card-body d-flex flex-column justify-content-between">
                                                 <?=$product->alcoholIcon($alcoholicProducts)?>
                                                 <h5 class="card-title"><?=$product->getName()?></h5>
-                                                <?php $appliedSale = $product->isOnSale($currentSales);
-                                                if ($appliedSale) { ?>
+                                                <?php $appliedSales = $product->isOnSale($currentSales);
+                                                if (count($appliedSales) > 0) { ?>
                                                     <div class="d-flex align-items-end gap-2">
                                                         <p class="card-subtitle crossed-out"><?=$product->getPrice()?> €</p>
-                                                        <p class="card-subtitle discounted"><?=$product->getDiscountedPrice($appliedSale)?> €</p>
+                                                        <p class="card-subtitle discounted"><?=$product->getDiscountedPrice($appliedSales)?> €</p>
                                                     </div>
                                                 <?php } else { ?>
                                                     <p class="card-subtitle"><?=$product->getPrice()?> €</p>

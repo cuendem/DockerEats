@@ -24,8 +24,8 @@ class Container {
     }
 
     public function getPrice() {
-        $parts = PartsDAO::getFromContainer($this->id_container);
         $total = 0;
+        $parts = PartsDAO::getFromContainer($this->id_container);
 
         foreach ($parts as $i => $part) {
             $total += $part->getPrice();

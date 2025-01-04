@@ -44,9 +44,13 @@ export class Order {
 
     async getSales() {
         const response = await fetch(`http://www.dockereats.com/api/getSalesByOrder&order=${this.idOrder}`);
-        const salesJson = await response.json();
-        const sales = salesJson.map(saleJson => new Sale(saleJson));
-        return sales;
+        if (response.ok) {
+            const salesJson = await response.json();
+            const sales = salesJson.map(saleJson => new Sale(saleJson));
+            return sales;
+        } else {
+            return [];
+        }
     }
 
     async getContainers() {

@@ -18,7 +18,7 @@ class Part {
         $sales = SalesDAO::getByPart($this->id_part);
 
         if (count($sales) > 0) {
-            return $product->getDiscountedPrice($sales[0]);
+            return $product->getDiscountedPrice($sales);
         } else {
             return $product->getPrice();
         }
