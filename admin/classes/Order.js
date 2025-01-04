@@ -32,7 +32,7 @@ export class Order {
     }
 
     async getCoupons() {
-        const response = await fetch(`http://www.dockereats.com/api/getOrderCoupons&order=${this.idOrder}`);
+        const response = await fetch(`/api/getOrderCoupons&order=${this.idOrder}`);
         if (response.ok) {
             const couponsJson = await response.json();
             const coupons = couponsJson.map(couponJson => new Coupon(couponJson));
@@ -43,7 +43,7 @@ export class Order {
     }
 
     async getSales() {
-        const response = await fetch(`http://www.dockereats.com/api/getSalesByOrder&order=${this.idOrder}`);
+        const response = await fetch(`/api/getSalesByOrder&order=${this.idOrder}`);
         if (response.ok) {
             const salesJson = await response.json();
             const sales = salesJson.map(saleJson => new Sale(saleJson));
@@ -54,7 +54,7 @@ export class Order {
     }
 
     async getContainers() {
-        const response = await fetch(`http://www.dockereats.com/api/getOrderContainers&order=${this.idOrder}`);
+        const response = await fetch(`/api/getOrderContainers&order=${this.idOrder}`);
         const containersJson = await response.json();
         const containers = containersJson.map(containerJson => new Container(containerJson));
         return containers;

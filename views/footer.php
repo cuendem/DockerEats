@@ -38,9 +38,15 @@
                     <li><a href="#">English</a></li>
                     <li><a href="#">Español</a></li>
                     <li><a href="#">Deutsch</a></li>
+                    <li><a href="#">Français</a></li>
+                    <li><a href="#">Русский</a></li>
+                    <li><a href="#">Italiano</a></li>
+                    <li><a href="#">Schweizerdeutsch</a></li>
+                    <li><a href="#">Ελληνικά</a></li>
+                    <li><a href="#">Čeština</a></li>
+                    <li><a href="#">한국어</a></li>
                     <li><a href="#">日本語</a></li>
-                    <li><a href="#">中国人</a></li>
-                    <li><a href="#">한국인</a></li>
+                    <li><a href="#">中文</a></li>
                 </ul>
             </div>
         </div>

@@ -14,6 +14,9 @@ function createSpinner() {
 
 window.onload = async () => {
     try {
+        if (localStorage.getItem('currency')) {
+            document.getElementById('currency-filter').selectedIndex = localStorage.getItem('currency');
+        }
         await get();
     } catch (error) {
         console.error('Error on page load:', error);
@@ -31,7 +34,7 @@ async function get(type = null, order = null) {
         createToast(`Getting all products...`);
     }
 
-    let url = 'http://www.dockereats.com/api/getProducts';
+    let url = '/api/getProducts';
 
     if (type) {
         url += '&type=' + type;
@@ -61,9 +64,9 @@ async function getDeleted(order = null) {
     let response;
 
     if (order) {
-        response = await fetch('http://www.dockereats.com/api/getDeletedProducts&order=' + order);
+        response = await fetch('/api/getDeletedProducts&order=' + order);
     } else {
-        response = await fetch('http://www.dockereats.com/api/getDeletedProducts');
+        response = await fetch('/api/getDeletedProducts');
     }
 
     if (response.ok) {
@@ -103,19 +106,19 @@ function previewImage(event) {
 async function listProducts(productsJson) {
     try {
         // Get the categories
-        let response = await fetch('http://www.dockereats.com/api/getCategories');
+        let response = await fetch('/api/getCategories');
         const categories = await response.json();
 
         // Get the product / categories links
-        response = await fetch('http://www.dockereats.com/api/getCategoriesProducts');
+        response = await fetch('/api/getCategoriesProducts');
         const categoriesProducts = await response.json();
 
         // Get the allergens
-        response = await fetch('http://www.dockereats.com/api/getAllergens');
+        response = await fetch('/api/getAllergens');
         const allergens = await response.json();
 
         // Get the product / allergens links
-        response = await fetch('http://www.dockereats.com/api/getAllergensProducts');
+        response = await fetch('/api/getAllergensProducts');
         const allergensProducts = await response.json();
 
         const products = productsJson.map(productJson => new Product(productJson));
@@ -240,7 +243,7 @@ async function listProducts(productsJson) {
                 createToast(`Updating ${formData.get('name')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/editProduct', {
+                    const response = await fetch('/api/editProduct', {
                         method: 'POST',
                         body: formData, // Send the form data
                     });
@@ -270,7 +273,7 @@ async function listProducts(productsJson) {
                 }
 
                 try {
-                    const response = await fetch(`http://www.dockereats.com/api/deleteProduct`, {
+                    const response = await fetch(`/api/deleteProduct`, {
                         method: 'POST',
                         body: JSON.stringify({
                             id: productId,
@@ -325,11 +328,11 @@ async function listProducts(productsJson) {
 
 async function createProduct() {
     // Get the categories
-    let response = await fetch('http://www.dockereats.com/api/getCategories');
+    let response = await fetch('/api/getCategories');
     const categories = await response.json();
 
     // Get the allergens
-    response = await fetch('http://www.dockereats.com/api/getAllergens');
+    response = await fetch('/api/getAllergens');
     const allergens = await response.json();
 
     // Get target container to add the elements inside, create the product-list container
@@ -421,7 +424,7 @@ async function createProduct() {
         createToast(`Creating ${formData.get('name')}...`);
 
         try {
-            const response = await fetch('http://www.dockereats.com/api/createProduct', {
+            const response = await fetch('/api/createProduct', {
                 method: 'POST',
                 body: formData, // Send the form data
             });
@@ -529,6 +532,9 @@ document.getElementById('currency-filter').addEventListener('change', (event) =>
     const selectedOption = event.target.options[event.target.selectedIndex];
     const selectedValue = selectedOption.value; // Gets the value attribute of the option
     const selectedText = selectedOption.text;  // Gets the visible text of the option
+
+    // Store desired currency in local storage
+    localStorage.setItem('currency', event.target.selectedIndex);
 
     // Call the appropriate function with both value and text
     changeCurrency(selectedValue, selectedText);

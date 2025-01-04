@@ -1,5 +1,5 @@
 async function addUsersToFilter() {
-    let response = await fetch('http://www.dockereats.com/api/getUsers');
+    let response = await fetch('/api/getUsers');
     const users = await response.json();
     const select = document.getElementById('user-filter');
     users.forEach(user => {
@@ -37,7 +37,7 @@ async function getAll() {
     console.log("Getting all logs");
     createToast("Getting all logs...");
 
-    let response = await fetch('http://www.dockereats.com/api/getLogs');
+    let response = await fetch('/api/getLogs');
 
     if (response.ok) {
         const logs = await response.json();
@@ -54,7 +54,7 @@ async function getAllButAdmin() {
     console.log("Getting all logs except admin");
     createToast("Getting all logs except admin...");
 
-    let response = await fetch('http://www.dockereats.com/api/getLogsButAdmin');
+    let response = await fetch('/api/getLogsButAdmin');
 
     if (response.ok) {
         const logs = await response.json();
@@ -74,7 +74,7 @@ async function getByUser() {
     console.log(`Getting logs by ${name}`);
     createToast(`Getting logs by ${name}...`);
 
-    let response = await fetch('http://www.dockereats.com/api/getLogsByUser&user=' + id);
+    let response = await fetch('/api/getLogsByUser&user=' + id);
 
     if (response.ok) {
         const logs = await response.json();

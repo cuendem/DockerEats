@@ -31,6 +31,8 @@ class ordersController {
             $_SESSION['cart'][] = $containerArray;
         }
 
+        logsController::log("Recovered order ".$_GET['order']);
+
         header('Location:/account/cart');
     }
 

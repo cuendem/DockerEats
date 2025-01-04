@@ -1,7 +1,7 @@
 import { Order } from '/admin/classes/Order.js';
 
 async function addUsersToFilter() {
-    let response = await fetch('http://www.dockereats.com/api/getUsers');
+    let response = await fetch('/api/getUsers');
     const users = await response.json();
     const select = document.getElementById('user-filter');
     users.forEach(user => {
@@ -14,6 +14,9 @@ async function addUsersToFilter() {
 
 window.onload = async () => {
     try {
+        if (localStorage.getItem('currency')) {
+            document.getElementById('currency-filter').selectedIndex = localStorage.getItem('currency');
+        }
         await addUsersToFilter();
         await get();
     } catch (error) {
@@ -44,7 +47,7 @@ async function get(order = null) {
     console.log("Getting all orders");
     createToast("Getting all orders...");
 
-    let url = 'http://www.dockereats.com/api/getOrders';
+    let url = '/api/getOrders';
 
     if (order) {
         url += '&order=' + order;
@@ -235,7 +238,7 @@ async function listOrders(ordersJson) {
 
                 deleteButton.addEventListener('click', async () => {
                     if (confirm('Are you sure you want to delete this container?')) {
-                        const response = await fetch(`http://www.dockereats.com/api/deleteContainer`, {
+                        const response = await fetch(`/api/deleteContainer`, {
                             method: 'POST',
                             body: JSON.stringify({
                                 id: container.idContainer
@@ -311,7 +314,7 @@ async function listOrders(ordersJson) {
 
             deleteButton.addEventListener('click', async () => {
                 if (confirm('Are you sure you want to delete this order?')) {
-                    const response = await fetch(`http://www.dockereats.com/api/deleteOrder`, {
+                    const response = await fetch(`/api/deleteOrder`, {
                         method: 'POST',
                         body: JSON.stringify({
                             id: order.idOrder
@@ -331,17 +334,17 @@ async function listOrders(ordersJson) {
                     }
                 }
             });
-        }
 
-        if (document.getElementById('currency-filter').selectedIndex != 0) {
-            // Price is not Euro, convert to selected currency
-            const currency = document.getElementById('currency-filter');
-            const selectedOption = currency.options[currency.selectedIndex];
-            const selectedValue = selectedOption.value; // Gets the value attribute of the option
-            const selectedText = selectedOption.text;  // Gets the visible text of the option
-
-            // Call the appropriate function with both value and text
-            changeCurrency(selectedValue, selectedText);
+            if (document.getElementById('currency-filter').selectedIndex != 0) {
+                // Price is not Euro, convert to selected currency
+                const currency = document.getElementById('currency-filter');
+                const selectedOption = currency.options[currency.selectedIndex];
+                const selectedValue = selectedOption.value; // Gets the value attribute of the option
+                const selectedText = selectedOption.text;  // Gets the visible text of the option
+    
+                // Call the appropriate function with both value and text
+                changeCurrency(orderDiv, selectedValue, selectedText);
+            }
         }
 
         const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -349,6 +352,34 @@ async function listOrders(ordersJson) {
     } catch (error) {
         console.error('Error fetching orders:', error);
     }
+}
+
+function orderByDate(order) {
+    const target = document.getElementById('target');
+    const orders = Array.from(target.getElementsByClassName('order'));
+
+    // Extract the dates and sort the orders
+    const sortedOrders = orders.sort((a, b) => {
+        const dateA = new Date(a.querySelector('.date').textContent);
+        const dateB = new Date(b.querySelector('.date').textContent);
+        if (dateA.getTime() === dateB.getTime()) {
+            const idA = parseInt(a.querySelector('.id').textContent.replace('ID: ', '').trim());
+            const idB = parseInt(b.querySelector('.id').textContent.replace('ID: ', '').trim());
+            return order === 'date_order-ASC' ? idA - idB : idB - idA;
+        }
+        return order === 'date_order-ASC' ? dateA - dateB : dateB - dateA;
+    });
+
+    // Clear the current target content
+    target.innerHTML = '';
+
+    // Append sorted orders back to the DOM
+    sortedOrders.forEach(orderDiv => {
+        const orderRow = document.createElement('div');
+        orderRow.className = 'row mb-5';
+        target.appendChild(orderRow);
+        orderRow.appendChild(orderDiv);
+    });
 }
 
 function orderByPrice(order) {
@@ -374,36 +405,32 @@ function orderByPrice(order) {
     });
 }
 
-async function changeCurrency(currency, iconText) {
+async function changeCurrency(order, currency, iconText) {
     const currencies = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/eur.json').then(response => response.json());
-    const target = document.getElementById('target');
-    const orders = Array.from(target.getElementsByClassName('order'));
     const icon = iconText.split(' ')[0];
 
-    for (const order of orders) {
-        const containers = Array.from(order.getElementsByClassName('ordercontainer'));
-        for (const container of containers) {
-            const euroPriceInput = container.querySelector('.container-euro-price');
-            const euroPrice = parseFloat(euroPriceInput.value);
-
-            let newPrice = euroPrice * currencies.eur[currency];
-            newPrice = Math.round(newPrice * 100) / 100;
-
-            container.setAttribute('data-bs-title', `Total: ${newPrice.toFixed(2)} ${icon}`);
-        }
-
-        const priceSpan = order.querySelector('.price');
-        const euroPriceInput = order.querySelector('.euro-price');
+    const containers = Array.from(order.getElementsByClassName('ordercontainer'));
+    for (const container of containers) {
+        const euroPriceInput = container.querySelector('.container-euro-price');
         const euroPrice = parseFloat(euroPriceInput.value);
 
         let newPrice = euroPrice * currencies.eur[currency];
         newPrice = Math.round(newPrice * 100) / 100;
 
-        priceSpan.textContent = `${newPrice.toFixed(2)} ${icon}`;
-
-        const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-        const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+        container.setAttribute('data-bs-title', `Total: ${newPrice.toFixed(2)} ${icon}`);
     }
+
+    const priceSpan = order.querySelector('.price');
+    const euroPriceInput = order.querySelector('.euro-price');
+    const euroPrice = parseFloat(euroPriceInput.value);
+
+    let newPrice = euroPrice * currencies.eur[currency];
+    newPrice = Math.round(newPrice * 100) / 100;
+
+    priceSpan.textContent = `${newPrice.toFixed(2)} ${icon}`;
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 }
 
 document.getElementById('listorders').addEventListener('click', () => get());
@@ -418,7 +445,7 @@ document.getElementById('order-filter').addEventListener('change', (event) => {
     switch (selectedValue) {
         case 'date_order-ASC':
         case 'date_order-DESC':
-            get(selectedValue);
+            orderByDate(selectedValue);
             break;
         case 'price-ASC':
         case 'price-DESC':
@@ -429,12 +456,20 @@ document.getElementById('order-filter').addEventListener('change', (event) => {
     }
 });
 
-// Add event listener to the select element
 document.getElementById('currency-filter').addEventListener('change', (event) => {
     const selectedOption = event.target.options[event.target.selectedIndex];
     const selectedValue = selectedOption.value; // Gets the value attribute of the option
     const selectedText = selectedOption.text;  // Gets the visible text of the option
 
+    // Store desired currency in local storage
+    localStorage.setItem('currency', event.target.selectedIndex);
+
     // Call the appropriate function with both value and text
     changeCurrency(selectedValue, selectedText);
+
+    const target = document.getElementById('target');
+    const orders = Array.from(target.getElementsByClassName('order'));
+    for (const order of orders) {
+        changeCurrency(order, selectedValue, selectedText);
+    }
 });

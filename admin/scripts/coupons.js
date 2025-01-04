@@ -31,7 +31,7 @@ async function getAll() {
     console.log("Getting all coupons");
     createToast("Getting all coupons...");
 
-    let response = await fetch('http://www.dockereats.com/api/getCoupons');
+    let response = await fetch('/api/getCoupons');
 
     if (response.ok) {
         const coupons = await response.json();
@@ -48,7 +48,7 @@ async function getCurrent() {
     console.log("Getting current coupons");
     createToast("Getting current coupons...");
 
-    let response = await fetch('http://www.dockereats.com/api/getCurrentCoupons');
+    let response = await fetch('/api/getCurrentCoupons');
 
     if (response.ok) {
         const coupons = await response.json();
@@ -65,7 +65,7 @@ async function getFuture() {
     console.log("Getting future coupons");
     createToast("Getting future coupons...");
 
-    let response = await fetch('http://www.dockereats.com/api/getFutureCoupons');
+    let response = await fetch('/api/getFutureCoupons');
 
     if (response.ok) {
         const coupons = await response.json();
@@ -82,7 +82,7 @@ async function getExpired() {
     console.log("Getting expired coupons");
     createToast("Getting expired coupons...");
 
-    let response = await fetch('http://www.dockereats.com/api/getExpiredCoupons');
+    let response = await fetch('/api/getExpiredCoupons');
 
     if (response.ok) {
         const coupons = await response.json();
@@ -149,7 +149,7 @@ async function listCoupons(couponsJson) {
                 createToast(`Updating ${formData.get('code')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/editCoupon', {
+                    const response = await fetch('/api/editCoupon', {
                         method: 'POST',
                         body: formData, // Send the form data
                     });
@@ -173,7 +173,7 @@ async function listCoupons(couponsJson) {
                 createToast(`Deleting ${formData.get('code')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/deleteCoupon', {
+                    const response = await fetch('/api/deleteCoupon', {
                         method: 'POST',
                         body: JSON.stringify({
                             id: couponId
@@ -206,7 +206,7 @@ async function listCoupons(couponsJson) {
 async function addCoupon() {
     try {
         // Get the categories
-        let response = await fetch('http://www.dockereats.com/api/getCategories');
+        let response = await fetch('/api/getCategories');
         const categories = await response.json();
 
         // Get target container to add the elements inside
@@ -256,7 +256,7 @@ async function addCoupon() {
             createToast(`Creating ${formData.get('code')}...`);
 
             try {
-                const response = await fetch('http://www.dockereats.com/api/createCoupon', {
+                const response = await fetch('/api/createCoupon', {
                     method: 'POST',
                     body: formData, // Send the form data
                 });

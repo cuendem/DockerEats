@@ -26,7 +26,7 @@ async function get() {
     console.log("Getting all users");
     createToast("Getting all users...");
 
-    let response = await fetch('http://www.dockereats.com/api/getUsers');
+    let response = await fetch('/api/getUsers');
 
     if (response.ok) {
         const users = await response.json();
@@ -128,7 +128,7 @@ async function listUsers(usersJson) {
                 createToast(`Updating ${formData.get('username')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/editUser', {
+                    const response = await fetch('/api/editUser', {
                         method: 'POST',
                         body: formData, // Send the form data
                     });
@@ -152,7 +152,7 @@ async function listUsers(usersJson) {
                 createToast(`Deleting ${formData.get('username')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/deleteUser', {
+                    const response = await fetch('/api/deleteUser', {
                         method: 'POST',
                         body: JSON.stringify({
                             id: userId

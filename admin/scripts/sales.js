@@ -31,7 +31,7 @@ async function getAll() {
     console.log("Getting all sales");
     createToast("Getting all sales...");
 
-    let response = await fetch('http://www.dockereats.com/api/getSales');
+    let response = await fetch('/api/getSales');
 
     if (response.ok) {
         const sales = await response.json();
@@ -48,7 +48,7 @@ async function getCurrent() {
     console.log("Getting current sales");
     createToast("Getting current sales...");
 
-    let response = await fetch('http://www.dockereats.com/api/getCurrentSales');
+    let response = await fetch('/api/getCurrentSales');
 
     if (response.ok) {
         const sales = await response.json();
@@ -65,7 +65,7 @@ async function getFuture() {
     console.log("Getting future sales");
     createToast("Getting future sales...");
 
-    let response = await fetch('http://www.dockereats.com/api/getFutureSales');
+    let response = await fetch('/api/getFutureSales');
 
     if (response.ok) {
         const sales = await response.json();
@@ -82,7 +82,7 @@ async function getEnded() {
     console.log("Getting ended sales");
     createToast("Getting ended sales...");
 
-    let response = await fetch('http://www.dockereats.com/api/getEndedSales');
+    let response = await fetch('/api/getEndedSales');
 
     if (response.ok) {
         const sales = await response.json();
@@ -96,7 +96,7 @@ async function getEnded() {
 async function listSales(salesJson) {
     try {
         // Get the categories
-        let response = await fetch('http://www.dockereats.com/api/getCategories');
+        let response = await fetch('/api/getCategories');
         const categories = await response.json();
 
         const sales = salesJson.map(saleData => new Sale(saleData));
@@ -180,7 +180,7 @@ async function listSales(salesJson) {
                 createToast(`Updating ${formData.get('name')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/editSale', {
+                    const response = await fetch('/api/editSale', {
                         method: 'POST',
                         body: formData, // Send the form data
                     });
@@ -204,7 +204,7 @@ async function listSales(salesJson) {
                 createToast(`Deleting ${formData.get('name')}...`);
 
                 try {
-                    const response = await fetch('http://www.dockereats.com/api/deleteSale', {
+                    const response = await fetch('/api/deleteSale', {
                         method: 'POST',
                         body: JSON.stringify({
                             id: saleId
@@ -237,7 +237,7 @@ async function listSales(salesJson) {
 async function addSale() {
     try {
         // Get the categories
-        let response = await fetch('http://www.dockereats.com/api/getCategories');
+        let response = await fetch('/api/getCategories');
         const categories = await response.json();
 
         // Get target container to add the elements inside
@@ -307,7 +307,7 @@ async function addSale() {
             createToast(`Creating ${formData.get('name')}...`);
 
             try {
-                const response = await fetch('http://www.dockereats.com/api/createSale', {
+                const response = await fetch('/api/createSale', {
                     method: 'POST',
                     body: formData, // Send the form data
                 });
