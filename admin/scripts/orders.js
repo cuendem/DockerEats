@@ -268,7 +268,7 @@ async function listOrders(ordersJson) {
 
             orderDiv.appendChild(orderBottomDiv);
 
-            totalOrderPrice = totalOrderPrice * 1.08;
+            totalOrderPrice = totalOrderPrice * (1 + parseFloat(target.dataset.tax) / 100);
 
             // Order sales to get discount type 2 first, then the other ones (apply percentage based discounts before flat discounts for highest savings)
             let orderedSales = sales.sort((b, a) => a.discountType - b.discountType);
@@ -288,7 +288,7 @@ async function listOrders(ordersJson) {
             });
 
             if (order.deliveryAddress) {
-                totalOrderPrice += 2.99;
+                totalOrderPrice += parseFloat(target.dataset.deliveryTax);
             }
 
             // Round to 2 decimal places

@@ -64,7 +64,7 @@
                 <?php
                     // Calculate total price with sales and coupons
                     // Apply taxes
-                    $total_order_price = $total_order_price*1.08;
+                    $total_order_price = $total_order_price * (1 + tax / 100);
 
                     // Apply sales
                     if (count($order_sales) > 0) {
@@ -98,7 +98,7 @@
 
                     // Delivery fee
                     if (!is_null($order->getDelivery_address())) {
-                        $total_order_price += 2.99;
+                        $total_order_price += delivery_tax;
                     }
                 ?>
                 <span class="price position-absolute bottom-0 end-0 py-2 px-3"><?=number_format(round($total_order_price * 100, 2) / 100, 2)?> €</span>

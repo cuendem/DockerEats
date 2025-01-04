@@ -12,6 +12,7 @@ export class Discount {
         this.dateEnd = date_end;
     }
 
+    // Apply the discount to a price
     applyDiscount(n) {
         if (this.discountType === 2) { // Percentage-based discount
             return n * (1 - (this.discount / 100));
@@ -20,30 +21,11 @@ export class Discount {
         }
     }
 
+    // Check if the discount is still active
     isActive() {
         const now = new Date();
         const startDate = new Date(this.dateStart);
         const endDate = new Date(this.dateEnd);
         return now >= startDate && now <= endDate;
-    }
-}
-
-// Coupon class extending Discount
-export class Coupon extends Discount {
-    constructor({
-        id_coupon,
-        code,
-        discount,
-        date_start,
-        date_end,
-        discount_type
-    }) {
-        super({ discount, discount_type, date_start, date_end }); // Call parent constructor
-        this.idCoupon = id_coupon;
-        this.code = code;
-    }
-
-    getSummary() {
-        return `${this.code} (-${this.discount}${this.discountType === 1 ? '€' : '%'})`;
     }
 }

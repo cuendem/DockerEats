@@ -1,4 +1,5 @@
 <?php
 define('default_action', 'index');
 define('url', '');
-// No es necesario cerrar el php
+define('tax', 8);
+define('delivery_tax', 2.99);

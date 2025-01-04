@@ -94,7 +94,7 @@
                                     <input type="text" id="city" name="city" placeholder="City..." autocomplete="address-level1">
                                     <input type="text" id="country" name="country" placeholder="Country..." autocomplete="country-name">
                                 </div>
-                                <input type="text" id="delivery-selected" name="delivery-selected" value="true" hidden>
+                                <input type="text" id="delivery-selected" name="delivery-selected" value="true" data-tax="<?=delivery_tax?>" hidden>
                             </div>
                             <a href="#" id="select-delivery" class="mb-2 btn btn-selected">Selected</a>
                         </div>
@@ -182,7 +182,7 @@
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Taxes</span>
                                 <hr class="flex-grow-1">
-                                <span class="added-extras d-flex align-items-center">8%</span>
+                                <span class="added-extras d-flex align-items-center"><?=tax?>%</span>
                             </div>
                             <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Sales</span>
@@ -225,7 +225,7 @@
                             <div id="delivery-fee" class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                 <span class="added-extras d-flex align-items-center">Delivery Fee</span>
                                 <hr class="flex-grow-1">
-                                <span class="added-extras d-flex align-items-center">2.99 €</span>
+                                <span class="added-extras d-flex align-items-center"><?=delivery_tax?> €</span>
                             </div>
                             <hr class="my-3">
                             <div class="d-flex justify-content-between align-items-center gap-3">
@@ -233,7 +233,7 @@
                                 <hr class="flex-grow-1">
                                 <span id="total-price" class="total-price align-self-end"><?php
                                     // Apply taxes
-                                    $totalContPrice = $totalContPrice*1.08;
+                                    $totalContPrice = $totalContPrice * (1 + tax / 100);
 
                                     // Apply sales
                                     if (count($usedSales) > 0) {
@@ -266,7 +266,7 @@
                                     }
 
                                     // Delivery fee
-                                    $totalContPrice += 2.99;
+                                    $totalContPrice += delivery_tax;
 
                                     echo number_format(round($totalContPrice * 100) / 100, 2);
                                 ?> €</span>

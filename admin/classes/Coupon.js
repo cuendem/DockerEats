@@ -15,6 +15,7 @@ export class Coupon extends Discount {
         this.code = code;
     }
 
+    // Get a small summary of the coupon to easily see its important info
     getSummary() {
         return `${this.code} (-${this.discount}${this.discountType === 1 ? '€' : '%'})`;
     }

@@ -181,7 +181,7 @@ function toggleSelection(isDelivery) {
     const countryField = document.getElementById('country');
 
     if ((isDelivery && deliveryInput.value !== 'true') || (!isDelivery && pickupInput.value !== 'true')) {
-        totalPrice.innerHTML = Math.round((parseFloat(totalPrice.innerHTML) + (isDelivery ? 2.99 : -2.99)) * 100) / 100 + " €";
+        totalPrice.innerHTML = Math.round((parseFloat(totalPrice.innerHTML) + (isDelivery ? parseFloat(deliveryInput.dataset.tax) : (parseFloat(deliveryInput.dataset.tax) * -1))) * 100) / 100 + " €";
     }
 
     // Update the hidden input values

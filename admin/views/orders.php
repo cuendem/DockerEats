@@ -32,7 +32,7 @@
         </select>
     </div>
 </section>
-<section id="target" class="container-fluid">
+<section id="target" class="container-fluid" data-tax="<?=tax?>" data-delivery-tax="<?=delivery_tax?>">
     
 </section>
 <?php include_once('admin/views/footer.html') ?>

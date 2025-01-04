@@ -18,6 +18,7 @@ export class Container {
         this.dessert = new Product(dessertPart) || null; // Set to null if no such part exists
     }
 
+    // Calculate total price of the container, summing the prices of all parts
     getPrice() {
         let total = 0;
 
