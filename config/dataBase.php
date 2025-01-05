@@ -1,30 +1,29 @@
 <?php
 
 class DataBase {
-    public static function connect($host = 'localhost', $user = 'root', $pass = '1234', $db = 'dockereats', $port = 3308) {
-        $con = new mysqli($host, $user, $pass, $db, $port);
+    private static $instance = null; // Store the single connection instance
+    private $connection;
 
-        if ($con->connect_error) {
-            die("ERROR: " . $con->connect_error);
+    private function __construct($host, $user, $pass, $db, $port) {
+        $this->connection = new mysqli($host, $user, $pass, $db, $port);
+
+        if ($this->connection->connect_error) {
+            die("Connection failed: " . $this->connection->connect_error);
         }
-
-        return $con;
     }
 
-    public static function getAllTables($host = 'localhost', $user = 'root', $pass = '1234', $db = 'dockereats', $port = 3308) {
-        $con = self::connect($host, $user, $pass, $db, $port);
-
-        $tables = [];
-        $result = $con->query("SHOW TABLES");
-
-        if ($result) {
-            while ($row = $result->fetch_array()) {
-                $tables[] = $row[0];
-            }
+    public static function getInstance($host = 'localhost', $user = 'root', $pass = '1234', $db = 'dockereats', $port = 3308) {
+        if (self::$instance === null) {
+            self::$instance = new DataBase($host, $user, $pass, $db, $port);
         }
+        return self::$instance->connection;
+    }
 
-        $con->close();
-        return $tables;
+    public static function closeConnection() {
+        if (self::$instance !== null) {
+            self::$instance->connection->close();
+            self::$instance = null;
+        }
     }
 }
 

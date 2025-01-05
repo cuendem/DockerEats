@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class CouponsDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM COUPONS ORDER BY date_start DESC, id_coupon DESC');
@@ -19,48 +19,43 @@ class CouponsDAO {
             $coupons[] = $coupon;
         }
 
-        $con->close();
-
         return $coupons;
     }
 
     public static function getAvailable($code) {
-        $con = DataBase::connect();
-    
+        $con = DataBase::getInstance(); // Reuse the singleton connection
+
         // Prepare the SQL statement with LIKE and date validity checks
         $stmt = $con->prepare('SELECT * FROM COUPONS WHERE code LIKE ? AND date_start <= CURDATE() AND (date_end IS NULL OR date_end >= CURDATE()) ORDER BY date_start DESC, id_coupon DESC');
-    
+
         // Bind the parameter (using 's' for a string pattern)
         $stmt->bind_param('s', $code);
-    
+
         // Execute the query
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         $coupons = [];
         while ($coupon = $result->fetch_object("Coupon")) {
             $coupons[] = $coupon;
         }
-    
-        $con->close();
-    
+
         // Return the first valid coupon, or null if none found
         return count($coupons) > 0 ? $coupons[0] : null;
     }
 
     public static function storeCouponOrderRelation($id_order, $coupon) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $id_coupon = $coupon->getId_coupon();
 
         $stmt = $con->prepare('INSERT INTO COUPONS_ORDERS (id_coupon, id_order) VALUES (?, ?)');
         $stmt->bind_param('ii', $id_coupon, $id_order);
         $stmt->execute();
-        $con->close();
     }
 
     public static function getOrderCoupons($id_order) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('
             SELECT c.*
@@ -79,8 +74,6 @@ class CouponsDAO {
         while ($coupon = $result->fetch_object("Coupon")) {
             $coupons[] = $coupon;
         }
-
-        $con->close();
 
         return $coupons;
     }

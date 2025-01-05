@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class PartsDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM CONTAINER_PARTS');
@@ -19,13 +19,11 @@ class PartsDAO {
             $parts[] = $part;
         }
 
-        $con->close();
-
         return $parts;
     }
 
     public static function getFromContainer($id_container) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM CONTAINER_PARTS WHERE id_container LIKE ?');
@@ -40,13 +38,11 @@ class PartsDAO {
             $parts[] = $part;
         }
 
-        $con->close();
-
         return $parts;
     }
 
     public static function store($part) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $id_container = $part->getId_container();
         $id_product = $part->getId_product();
@@ -57,8 +53,6 @@ class PartsDAO {
         $stmt->execute();
 
         $lastID = $con->insert_id;
-
-        $con->close();
 
         return $lastID;
     }

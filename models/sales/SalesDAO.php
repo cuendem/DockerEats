@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class SalesDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
@@ -22,13 +22,11 @@ class SalesDAO {
             $sales[] = $sale;
         }
 
-        $con->close();
-
         return $sales;
     }
 
     public static function getAllAvailable($date, $scope = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE and date validity checks
         $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
@@ -48,14 +46,12 @@ class SalesDAO {
             $sales[] = $sale;
         }
 
-        $con->close();
-
         // Return the valid sales, or null if none found
         return count($sales) > 0 ? $sales : null;
     }
 
     public static function addSaleOrderRelation($order_id, $sale_id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare('INSERT INTO SALES_ORDERS (id_sale, id_order) VALUES (?, ?)');
@@ -65,12 +61,10 @@ class SalesDAO {
 
         // Execute the query
         $stmt->execute();
-
-        $con->close();
     }
 
     public static function addSalePartRelation($part_id, $sale_id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare('INSERT INTO SALES_CONTAINER_PARTS (id_sale, id_part) VALUES (?, ?)');
@@ -80,12 +74,10 @@ class SalesDAO {
 
         // Execute the query
         $stmt->execute();
-
-        $con->close();
     }
 
     public static function getOrderSales($order_id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
@@ -105,13 +97,11 @@ class SalesDAO {
             $sales[] = $sale;
         }
 
-        $con->close();
-
         return $sales;
     }
 
     public static function getByPart($part_id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare('SELECT s.*, c.name AS category_name FROM SALES s
@@ -130,8 +120,6 @@ class SalesDAO {
         while ($sale = $result->fetch_object("Sale")) {
             $sales[] = $sale;
         }
-
-        $con->close();
 
         return $sales;
     }

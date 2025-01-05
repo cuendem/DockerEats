@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class OrdersDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT
@@ -42,13 +42,11 @@ class OrdersDAO {
             $orders[] = $order;
         }
 
-        $con->close();
-
         return $orders;
     }
 
     public static function get($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT
@@ -83,13 +81,11 @@ class OrdersDAO {
 
         $order = $result->fetch_object("Order");
 
-        $con->close();
-
         return $order;
     }
 
     public static function getByUser($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT
@@ -128,13 +124,11 @@ class OrdersDAO {
             $orders[] = $order;
         }
 
-        $con->close();
-
         return $orders;
     }
 
     public static function getLastByUser($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT
@@ -174,13 +168,11 @@ class OrdersDAO {
             $orders[] = $order;
         }
 
-        $con->close();
-
         return $orders;
     }
 
     public static function store($order) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $id_user = $order->getId_user();
         $id_establishment = $order->getId_establishment();
@@ -199,13 +191,11 @@ class OrdersDAO {
 
         $lastID = $con->insert_id;
 
-        $con->close();
-
         return $lastID;
     }
 
     public static function getAmount() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT COUNT(*) AS amount FROM ORDERS");
@@ -214,13 +204,11 @@ class OrdersDAO {
 
         $amount = $result->fetch_assoc()['amount'];
 
-        $con->close();
-
         return $amount;
     }
 
     public static function storeReview($id_user, $id_order, $comment, $stars, $published_date) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('INSERT INTO REVIEWS (id_user, id_order, comment, stars, published_date) VALUES (?, ?, ?, ?, ?)');
         $stmt->bind_param('iisds', $id_user, $id_order, $comment, $stars, $published_date);
@@ -229,35 +217,29 @@ class OrdersDAO {
 
         $lastID = $con->insert_id;
 
-        $con->close();
-
         return $lastID;
     }
 
     public static function updateReview($id_review, $id_user, $id_order, $comment, $stars) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('UPDATE REVIEWS SET id_user = ?, id_order = ?, comment = ?, stars = ? WHERE id_review = ?');
         $stmt->bind_param('iisdi', $id_user, $id_order, $comment, $stars, $id_review);
 
         $stmt->execute();
-
-        $con->close();
     }
 
     public static function deleteReview($id_review) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('DELETE FROM REVIEWS WHERE id_review = ?');
         $stmt->bind_param('i', $id_review);
 
         $stmt->execute();
-
-        $con->close();
     }
 
     public static function getRandomReviews() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT
@@ -277,8 +259,6 @@ class OrdersDAO {
         while ($review = $result->fetch_assoc()) {
             $reviews[] = $review;
         }
-
-        $con->close();
 
         return $reviews;
     }

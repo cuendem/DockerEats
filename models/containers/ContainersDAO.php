@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class ContainersDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM CONTAINERS');
@@ -19,13 +19,11 @@ class ContainersDAO {
             $containers[] = $container;
         }
 
-        $con->close();
-
         return $containers;
     }
 
     public static function getOrderContainers($id_order) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM CONTAINERS WHERE id_order LIKE ?');
@@ -40,13 +38,11 @@ class ContainersDAO {
             $containers[] = $container;
         }
 
-        $con->close();
-
         return $containers;
     }
 
     public static function store($order) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('INSERT INTO CONTAINERS (id_order) VALUES (?)');
         $stmt->bind_param('i', $order);
@@ -55,13 +51,11 @@ class ContainersDAO {
 
         $lastID = $con->insert_id;
 
-        $con->close();
-
         return $lastID;
     }
 
     public static function getAmount() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT COUNT(*) AS amount FROM CONTAINERS");
@@ -71,8 +65,6 @@ class ContainersDAO {
         $result = $stmt->get_result();
 
         $amount = $result->fetch_object()->amount;
-
-        $con->close();
 
         return $amount;
     }

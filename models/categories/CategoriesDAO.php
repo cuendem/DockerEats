@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class CategoriesDAO {
     public static function get($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('SELECT * FROM CATEGORIES WHERE id_category = ?');
         $stmt->bind_param('i', $id);
@@ -14,13 +14,11 @@ class CategoriesDAO {
 
         $category = $result->fetch_object("Category");
 
-        $con->close();
-
         return $category;
     }
 
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('SELECT * FROM CATEGORIES ORDER BY name');
         $stmt->execute();
@@ -39,13 +37,11 @@ class CategoriesDAO {
 
         $categories[] = $alcoholic;
 
-        $con->close();
-
         return $categories;
     }
 
     public static function getIDsByProduct($product = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('SELECT id_category FROM CATEGORIES_PRODUCTS WHERE id_product LIKE ?');
         $stmt->bind_param('s', $product);
@@ -57,21 +53,17 @@ class CategoriesDAO {
             $categories[] = $row['id_category'];
         }
 
-        $con->close();
-
         return $categories;
     }
 
     public static function store($category) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $stmt = $con->prepare('INSERT INTO CATEGORIES (name) VALUES (?)');
         $stmt->bind_param('s',$category->getName());
 
         $stmt->execute();
 
         $lastID = $con->insert_id;
-
-        $con->close();
 
         return $lastID;
     }

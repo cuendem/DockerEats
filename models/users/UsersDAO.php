@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class UsersDAO {
     public static function getByEmail($email = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM USERS WHERE email LIKE ?');
@@ -22,8 +22,6 @@ class UsersDAO {
             $users[] = $user;
         }
 
-        $con->close();
-
         if (count($users) > 0) {
             return $users[0];
         } else {
@@ -32,7 +30,7 @@ class UsersDAO {
     }
 
     public static function getById($id = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM USERS WHERE id_user LIKE ?');
@@ -49,8 +47,6 @@ class UsersDAO {
             $users[] = $user;
         }
 
-        $con->close();
-
         if (count($users) > 0) {
             return $users[0];
         } else {
@@ -59,7 +55,7 @@ class UsersDAO {
     }
 
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM USERS');
@@ -73,13 +69,11 @@ class UsersDAO {
             $users[] = $user;
         }
 
-        $con->close();
-
         return $users;
     }
 
     public static function store($user) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $username = $user->getUsername();
         $password = $user->getPassword();
@@ -92,13 +86,11 @@ class UsersDAO {
 
         $lastID = $con->insert_id;
 
-        $con->close();
-
         return $lastID;
     }
 
     public static function update($user) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $username = $user->getUsername();
         $password = $user->getPassword();
@@ -110,16 +102,14 @@ class UsersDAO {
         $stmt->execute();
 
         if ($stmt->execute()) {
-            $con->close();
             return true;
         } else {
-            $con->close();
             return false;
         }
     }
 
     public static function getAmount() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare("SELECT COUNT(*) AS amount FROM USERS");
@@ -127,8 +117,6 @@ class UsersDAO {
         $result = $stmt->get_result();
 
         $amount = $result->fetch_assoc()['amount'];
-
-        $con->close();
 
         return $amount;
     }

@@ -1,6 +1,6 @@
 <?php
 
-include_once("config/DataBase.php");
+include_once("config/dataBase.php");
 include_once("controllers/logsController.php");
 
 class apiController {
@@ -122,7 +122,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'id' parameter is provided in the GET request
         $id = $_GET['id'] ?? null;
@@ -141,8 +141,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($id && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -158,7 +156,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
     
         // Check if 'type' and 'order' parameters are provided in the GET request
         $order = $_GET['order'] ?? null;
@@ -193,8 +191,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if (count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -210,7 +206,7 @@ class apiController {
             return;
         }
     
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
     
         // Check if 'type' and 'order' parameters are provided in the GET request
         $type = $_GET['type'] ?? null;
@@ -256,8 +252,6 @@ class apiController {
             $data[] = $row;
         }
     
-        $con->close();
-    
         if ($type && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -273,7 +267,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $id = $_POST['id'] ?? null;
@@ -391,8 +385,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -402,7 +394,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $name = $_POST['name'] ?? null;
@@ -500,8 +492,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -511,7 +501,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Read and decode the JSON input
         $inputData = json_decode(file_get_contents('php://input'), true);
@@ -568,8 +558,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -579,7 +567,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM CATEGORIES ORDER BY name");
 
@@ -590,8 +578,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -608,7 +594,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM CATEGORIES_PRODUCTS");
 
@@ -619,8 +605,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -637,7 +621,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM ALLERGENS ORDER BY name");
 
@@ -648,8 +632,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -666,7 +648,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM ALLERGENS_PRODUCTS");
 
@@ -677,8 +659,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -695,7 +675,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if a 'product' parameter is provided in the GET request
         $product = $_GET['product'] ?? null;
@@ -716,8 +696,6 @@ class apiController {
             $categories[] = $row['id_category'];
         }
 
-        $con->close();
-
         if (count($categories) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -733,7 +711,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if a 'product' parameter is provided in the GET request
         $product = $_GET['product'] ?? null;
@@ -754,8 +732,6 @@ class apiController {
             $categories[] = $row['id_allergen'];
         }
 
-        $con->close();
-
         if (count($categories) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -771,7 +747,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'id' parameter is provided in the GET request
         $id = $_GET['id'] ?? null;
@@ -790,8 +766,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($id && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -807,7 +781,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM USERS");
 
@@ -818,8 +792,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -836,7 +808,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $id = $_POST['id'] ?? null;
@@ -935,8 +907,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -946,7 +916,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Read and decode the JSON input
         $inputData = json_decode(file_get_contents('php://input'), true);
@@ -985,8 +955,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -997,7 +965,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if 'order' parameters are provided in the GET request
         $order = $_GET['order'] ?? null;
@@ -1050,8 +1018,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if (count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1068,7 +1034,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if a 'user' parameter is provided in the GET request
         $user = $_GET['user'] ?? null;
@@ -1105,8 +1071,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($user && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1122,7 +1086,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'order' parameter is provided in the GET request
         $order = $_GET['order'] ?? null;
@@ -1147,8 +1111,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($order && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1164,7 +1126,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'order' parameter is provided in the GET request
         $order = $_GET['order'] ?? null;
@@ -1214,8 +1176,6 @@ class apiController {
             ];
         }
 
-        $con->close();
-
         // Convert the grouped containers to a regular array
         $containers = array_values($containers);
 
@@ -1234,7 +1194,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
@@ -1248,8 +1208,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1266,7 +1224,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
@@ -1281,8 +1239,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1299,7 +1255,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
@@ -1314,8 +1270,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1332,7 +1286,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT s.*, c.name AS category_name FROM SALES s
@@ -1347,8 +1301,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1365,7 +1317,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $id = $_POST['id'] ?? null;
@@ -1411,8 +1363,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1422,7 +1372,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $name = $_POST['name'] ?? null;
@@ -1456,8 +1406,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1467,7 +1415,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $inputData = json_decode(file_get_contents('php://input'), true);
 
         $id = $inputData['id'] ?? null;
@@ -1504,8 +1452,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1515,7 +1461,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM COUPONS ORDER BY date_start DESC, id_coupon DESC");
 
@@ -1526,8 +1472,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1544,7 +1488,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_start <= NOW() AND (date_end IS NULL OR date_end >= NOW()) ORDER BY date_start DESC, id_coupon DESC");
 
@@ -1555,8 +1499,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1573,7 +1515,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_start > NOW() ORDER BY date_start DESC, id_coupon DESC");
 
@@ -1584,8 +1526,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1602,7 +1542,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare("SELECT * FROM COUPONS WHERE date_end < NOW() ORDER BY date_start DESC, id_coupon DESC");
 
@@ -1613,8 +1553,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1631,7 +1569,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $id = $_POST['id'] ?? null;
@@ -1673,8 +1611,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1684,7 +1620,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Collect and validate input parameters
         $code = $_POST['code'] ?? null;
@@ -1714,8 +1650,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1725,7 +1659,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $inputData = json_decode(file_get_contents('php://input'), true);
 
         $id = $inputData['id'] ?? null;
@@ -1762,8 +1696,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -1773,7 +1705,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if a 'part' parameter is provided in the GET request
         $part = $_GET['part'] ?? null;
@@ -1796,8 +1728,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         // Return the data
         echo json_encode($data);
     }
@@ -1808,7 +1738,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'id' parameter is provided in the GET request
         $id = $_GET['id'] ?? null;
@@ -1827,8 +1757,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($id && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1844,7 +1772,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'id' parameter is provided in the GET request
         $container = $_GET['container'] ?? null;
@@ -1864,8 +1792,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($container && $part && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1881,7 +1807,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT *
@@ -1896,8 +1822,6 @@ class apiController {
         while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
-
-        $con->close();
 
         if (count($data) === 0) {
             http_response_code(404);
@@ -1914,7 +1838,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Fetch a specific record by the dynamic ID column
         $stmt = $con->prepare("SELECT *
@@ -1931,8 +1855,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if (count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1948,7 +1870,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if a 'user' parameter is provided in the GET request
         $user = $_GET['user'] ?? null;
@@ -1971,8 +1893,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($user && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -1988,7 +1908,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Check if an 'order' parameter is provided in the GET request
         $order = $_GET['order'] ?? null;
@@ -2007,8 +1927,6 @@ class apiController {
             $data[] = $row;
         }
 
-        $con->close();
-
         if ($order && count($data) === 0) {
             http_response_code(404);
             echo json_encode(['error' => 'Record not found']);
@@ -2024,7 +1942,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $inputData = json_decode(file_get_contents('php://input'), true);
 
         $id = $inputData['id'] ?? null;
@@ -2061,8 +1979,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 
@@ -2072,7 +1988,7 @@ class apiController {
             return;
         }
 
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $inputData = json_decode(file_get_contents('php://input'), true);
 
         $id = $inputData['id'] ?? null;
@@ -2126,8 +2042,6 @@ class apiController {
         } catch (Exception $e) {
             http_response_code(500);
             echo json_encode(['error' => 'An error occurred: ' . $e->getMessage()]);
-        } finally {
-            $con->close();
         }
     }
 }

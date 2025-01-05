@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class AllergensDAO {
     public static function getByProduct($product = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('SELECT a.* FROM ALLERGENS_PRODUCTS ap JOIN ALLERGENS a ON ap.id_allergen = a.id_allergen WHERE ap.id_product LIKE ?');
         $stmt->bind_param('s', $product);
@@ -16,8 +16,6 @@ class AllergensDAO {
         while ($allergen = $result->fetch_object("Allergen")) {
             $allergens[] = $allergen;
         }
-
-        $con->close();
 
         return $allergens;
     }

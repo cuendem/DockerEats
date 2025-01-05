@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class EstablishmentsDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $stmt = $con->prepare('SELECT * FROM ESTABLISHMENTS ORDER BY id_establishment');
         $stmt->execute();
@@ -16,13 +16,11 @@ class EstablishmentsDAO {
             $establishments[] = $establishment;
         }
 
-        $con->close();
-
         return $establishments;
     }
 
     public static function get($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM ESTABLISHMENTS WHERE id_establishment LIKE ?');
@@ -38,8 +36,6 @@ class EstablishmentsDAO {
         while ($establishment = $result->fetch_object("Establishment")) {
             $establishments[] = $establishment;
         }
-
-        $con->close();
 
         if (count($establishments) > 0) {
             return $establishments[0];

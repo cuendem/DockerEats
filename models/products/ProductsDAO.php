@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class ProductsDAO {
     public static function get($id) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_product LIKE ?');
@@ -22,8 +22,6 @@ class ProductsDAO {
             $products[] = $product;
         }
 
-        $con->close();
-
         if (count($products) > 0) {
             return $products[0];
         } else {
@@ -32,7 +30,7 @@ class ProductsDAO {
     }
 
     public static function getAll($type = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
@@ -48,14 +46,12 @@ class ProductsDAO {
         while ($product = $result->fetch_object("Product")) {
             $products[] = $product;
         }
-
-        $con->close();
 
         return $products;
     }
 
     public static function getRandom($type = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare('SELECT * FROM PRODUCTS WHERE id_type LIKE ? ORDER BY id_type, name');
@@ -72,13 +68,11 @@ class ProductsDAO {
             $products[] = $product;
         }
 
-        $con->close();
-
         return $products[array_rand($products)];
     }
 
     public static function getByCat($category, $type = '%') {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement with LIKE
         $stmt = $con->prepare(
@@ -101,21 +95,17 @@ class ProductsDAO {
             $products[] = $product;
         }
 
-        $con->close();
-
         return $products;
     }
 
     public static function store($product) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
         $stmt = $con->prepare('INSERT INTO PRODUCTS (id_type, id_category, name, price) VALUES (?, ?, ?, ?)');
         $stmt->bind_param('iisdi',$product->getId_type(),$product->getId_category(),$product->getName(),$product->getPrice());
 
         $stmt->execute();
 
         $lastID = $con->insert_id;
-
-        $con->close();
 
         return $lastID;
     }

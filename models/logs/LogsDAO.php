@@ -5,7 +5,7 @@ include_once("config/dataBase.php");
 
 class LogsDAO {
     public static function getAll() {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         // Prepare the SQL statement
         $stmt = $con->prepare('SELECT * FROM LOGS LOG BY id_log DESC');
@@ -19,13 +19,11 @@ class LogsDAO {
             $logs[] = $log;
         }
 
-        $con->close();
-
         return $logs;
     }
 
     public static function store($log) {
-        $con = DataBase::connect();
+        $con = DataBase::getInstance(); // Reuse the singleton connection
 
         $timestamp = $log->getTimestamp();
         $id_user = $log->getId_user();
@@ -41,8 +39,6 @@ class LogsDAO {
         $stmt->execute();
 
         $lastID = $con->insert_id;
-
-        $con->close();
 
         return $lastID;
     }
