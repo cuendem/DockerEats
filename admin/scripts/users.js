@@ -86,7 +86,7 @@ async function listUsers(usersJson) {
             userForm.innerHTML = `
                 <div class="d-flex align-items-center">
                     <div id="preview-image-container${user.idUser}" class="preview-image-container position-relative">
-                        <img id="preview-image${user.idUser}" class="preview-image" src="${'/img/users/user'+user.idUser+'.webp' || '/img/users/user0.webp'}" alt="${user.username}">
+                        <img id="preview-image${user.idUser}" class="preview-image" src="/img/users/user${user.idUser}.webp" alt="${user.username}">
                         <label id="preview-image-label${user.idUser}" class="preview-image-label position-absolute" for="image${user.idUser}">
                             <span class="label-bg"></span>
                             <svg viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,6 +108,13 @@ async function listUsers(usersJson) {
                     <input type="number" name="id" id="id${user.idUser}" value="${user.idUser}" hidden>
                 </div>
             `;
+
+            const userImg = userForm.querySelector(`#preview-image${user.idUser}`)
+
+            // Set fallback image if the main one doesn't load
+            userImg.onerror = () => {
+                userImg.src = '/img/users/user0.webp';
+            };
 
             userForm.addEventListener('submit', async function (event) {
                 event.preventDefault(); // Prevent the default form submission behavior

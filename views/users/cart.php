@@ -207,13 +207,13 @@
                                 <span class="added-extras d-flex align-items-center">Coupons</span>
                                 <hr class="flex-grow-1">
                                 <?php if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 0) { ?>
-                                    <span class="added-extras d-flex align-items-center"><?=$_SESSION['coupons'][0]->getSummary()?></span>
+                                    <span class="added-extras d-flex align-items-center"><?=Discount::order($_SESSION['coupons'])[0]->getSummary()?></span>
                                 <?php } else { ?>
                                     <span class="added-extras d-flex align-items-center grayed">No coupons used</span>
                                 <?php } ?>
                             </div>
                             <?php if (isset($_SESSION['coupons']) && count($_SESSION['coupons']) > 1) {
-                                foreach ($_SESSION['coupons'] as $i => $coupon) {
+                                foreach (Discount::order($_SESSION['coupons']) as $i => $coupon) {
                                     if ($i != 0) { ?>
                                         <div class="w-75 align-self-end d-flex justify-content-between align-items-center gap-3">
                                             <div></div>

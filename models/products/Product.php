@@ -5,6 +5,7 @@ class Product {
     protected $id_type;
     protected $name;
     protected $price;
+    protected $deleted;
 
     public function __construct() {
 
@@ -112,6 +113,26 @@ class Product {
     public function setPrice($price)
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of deleted
+     */ 
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    /**
+     * Set the value of deleted
+     *
+     * @return  self
+     */ 
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
 
         return $this;
     }
