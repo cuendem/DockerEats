@@ -1,6 +1,6 @@
 <div class="d-flex flex-column gap-4 justify-content-center align-items-center position-relative sign">
     <div class="sign-cont big p-5 d-flex flex-column align-items-center gap-4">
-        <img class="logo" src="/img/logos/DockerEatsLogo.png" alt="DockerEats Logo">
+        <img class="logo" src="/svg/DockerEatsLogo.svg" alt="DockerEats Logo">
         <h1>Sign in</h1>
         <p>We recommend signing into DockerEats with your personal email address, not your work one that you may already use on Docker.</p>
         <form class="d-flex flex-column gap-3" action="" method="POST">

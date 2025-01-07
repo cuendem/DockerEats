@@ -248,6 +248,7 @@ class OrdersDAO {
         FROM
             REVIEWS r
         LEFT JOIN USERS u ON r.id_user = u.id_user
+        WHERE r.stars >= 3.5
         ORDER BY RAND()
         LIMIT 6");
 

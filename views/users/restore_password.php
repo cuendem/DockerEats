@@ -1,6 +1,6 @@
 <div class="d-flex flex-column gap-4 justify-content-center align-items-center position-relative sign">
     <div class="sign-cont big p-5 d-flex flex-column align-items-center gap-4">
-        <img class="logo" src="/img/logos/DockerEatsLogo.png" alt="DockerEats Logo">
+        <img class="logo" src="/svg/DockerEatsLogo.svg" alt="DockerEats Logo">
         <h1>Restore password</h1>
         <p>Forgot your password? No problem! Restore it using this page.</p>
         <form class="d-flex flex-column gap-3" action="" method="POST">
